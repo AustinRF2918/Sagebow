@@ -1,0 +1,9 @@
+@mixin va-card-overlay{
+    top: 50%;
+    $transform-constant: -50%;
+    transform: translateY($transform-constant);
+    -webkit-transform: translateY($transform-constant);
+    -ms-transform: translateY($transform-constant);
+    -moz-transform: translateY($transform-constant);
+    -o-transform: translateY($transform-constant);
+}

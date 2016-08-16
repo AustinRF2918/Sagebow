@@ -1,0 +1,12 @@
+.btn-make-account {
+    color: #03A9F4;
+    transition-duration: 0.2s;
+    border-radius: 0px;
+    font-size: 14px;
+
+    &:hover {
+	background: rgba(0, 0, 0, 0.5);
+	color: white;
+	box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.31);
+    }
+}

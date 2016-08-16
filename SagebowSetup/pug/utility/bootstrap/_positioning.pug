@@ -1,0 +1,56 @@
+mixin generateMargin(input, positioning)
+  if positioning == "top" || positioning == null
+    if input == "small"
+      .m-t-1
+        block
+    else if input == "medium"
+      .m-t-2
+        block
+    else if input == "large"
+      .m-t-3
+        block
+    else
+      .m-t-2
+        block
+  else if positioning == "bottom"
+    if input == "small"
+      .m-b-1
+        block
+    else if input == "medium"
+      .m-b-2
+        block
+    else if input == "large"
+      .m-b-3
+        block
+    else
+      .m-b-2
+        block
+
+
+mixin generatePadding(input, positioning)
+  if positioning == "top" || positioning == null
+    if input == "small"
+      .p-t-1
+        block
+    else if input == "medium"
+      .p-t-2
+        block
+    else if input == "large"
+      .p-t-3
+        block
+    else
+      .p-t-2
+        block
+  else if positioning == "bottom"
+    if input == "small"
+      .p-b-1
+        block
+    else if input == "medium"
+      .p-b-2
+        block
+    else if input == "large"
+      .p-b-3
+        block
+    else
+      .p-b-2
+        block
