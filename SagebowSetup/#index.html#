@@ -1,4 +1,5 @@
 
+
 <html>
   <head>
     <meta charset="utf-8"/>
@@ -13,31 +14,85 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
     <script src="js/app.js"></script>
   </head>
+  <!--This mixin corresponds to the mixins contained within-->
+  <!--sass/component/container/. container::generateCenteredContainer-->
+  <!--takes a simple selector and generates it.-->
+  <!--This mixin corresponds to the mixins contained within-->
+  <!--sass/component/container/. container::generateClusterContainer-->
+  <!--takes a simple selector and generates it.-->
+  <!--This mixin corresponds to the mixins contained within-->
+  <!--sass/component/container/. container::generateCenteredElement-->
+  <!--takes a simple selector and generates it.-->
+  <!--This mixin corresponds to the mixins contained within-->
+  <!--sass/component/background/ and sass/component/sizing/-->
+  <!--background::generateBackground takes a simple selector -->
+  <!--for the page that we are referring to (which will be-->
+  <!--promptly expanded, and a selector for the background -->
+  <!--which will fill up our entire area.-->
   <body>
-        <nav class="navbar navbar-fixed navbar-rocket">
-          <div class="navbar-contents">
-            <div class="button-cluster"><a class="nav-btn">Deck <i class="fa fa-angle-down fa-1x nav-down"></i></a><a class="nav-btn">Activity</a><a class="nav-btn">Company</a><a class="nav-btn">Messages</a><a class="nav-btn">Tools</a></div>
-            <div class="brand-cluster text-xs-center disable-mobile"><a class="navbar-brand"><img class="img-brand" src="img/brand.png"/></a></div>
-            <div class="text-xs-right form-cluster">
-              <div class="col-md-12 children-no-padding">
-                <div class="col-md-5"></div>
-                <div class="col-md-2">
-                  <div class="nav-mag-container text-xs-center"><i class="fa fa-search nav-mag"></i></div>
-                </div>
-                <div class="col-md-2">
-                  <div class="nav-form-container text-xs-left">
-                    <form class="nav-form" role="search">
-                      <div class="form-group">
-                        <input class="form-control nav-input" type="[&quot;text&quot;]" placeholder="search"/>
+      <div class="full-page full-page-background">
+          <div class="primary-container">
+            <div class="row no-margin-mobile">
+              <div class="col-lg-12 text-lg-left text-xs-center"><i class="fa fa-tree fa-2x" aria-hidden="true"></i></div>
+            </div>
+            <div class="row m-t-1 no-margin-mobile">
+              <div class="col-lg-6 text-lg-left text-xs-center">
+                <h1 class="light-text">Sign Up</h1>
+              </div>
+              <div class="col-lg-6 text-lg-right text-xs-center">
+                <h4 class="light-text-smaller">Welcome To Sagebow!</h4>
+              </div>
+            </div>
+            <div class="row m-t-1 no-margin-mobile">
+              <div class="col-lg-12 p-y-2">
+                  <div class="cta-container">
+                      <div class="row m-t-1">
+                        <div class="col-lg-12 p-y-0">
+                          <div class="form-group">
+                            <input class="form-control materialize-form" type="info" id="weight-input" placeholder="Weight (in pounds)"/>
+                          </div>
+                        </div>
                       </div>
-                    </form>
+                      <div class="row m-t-1">
+                        <div class="col-lg-12 p-y-0">
+                          <div class="form-group">
+                            <input class="form-control materialize-form" type="info" id="height-input" placeholder="Height (in feet)"/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row m-t-1">
+                        <div class="col-lg-12 p-y-0">
+                          <div class="form-group">
+                            <input class="form-control materialize-form" type="info" id="age-input" placeholder="Age"/>
+                          </div>
+                        </div>
+                      </div>
+                    <div class="row m-t-1 text-xs-center">
+                      <div class="col-xs-6"><a class="btn btn-login">Gender</a></div>
+                      <div class="col-xs-6 p-y-0 super-small p-x-2">
+                        <p class="text-xs-left">All users of Sagebow should consult a physician before following any dietary advice given on this website.</p>
+                      </div>
+                    </div>
+                    <div class="row m-t-1 text-xs-center">
+                      <div class="col-xs-12"><a class="btn btn-login">Create a new account.</a></div>
+                    </div>
+                    <!--+_accountCreation_form_generateDropdownForm("dropdown-gender", "Dropdown", ["Female", "Male"])-->
+                    <!--+_accountCreation_form_generateDropdownForm("dropdown-goal", "Goal", ["Bodybuilding", "Weight Loss", "Maintainence"])-->
                   </div>
-                </div>
-                <div class="col-md-1 m-r-1"><a class="navbar-search pull-xs-left"><img class="img-search" src="img/icons/dialogue.png"/></a></div>
-                <div class="col-md-1"><a class="navbar-user pull-xs-left"><img class="img-user" src="img/icons/user-image.png"/></a></div>
               </div>
             </div>
           </div>
-        </nav>
+      </div>
   </body>
+    <div class="modal-rejected modal-rejected-hidden">
+      <div class="overlay">
+        <div class="window">
+          <div class="top-text">
+            <h2 class="m-b-1 danger-text">Oh No!</h2>
+            <p>Unfourtunately your input information was not correct. Please enter it again.</p>
+          </div>
+          <div class="bottom-text text-xs-right"><a class="btn-reject btn">Exit</a></div>
+        </div>
+      </div>
+    </div>
 </html>

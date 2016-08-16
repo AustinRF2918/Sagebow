@@ -324,6 +324,102 @@ html, body {
         margin-right: 8px;
         margin-top: 25px; }
 
+.modal-user-exists {
+  position: fixed;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+  transition-duration: background .8s;
+  background: transparent; }
+  .modal-user-exists-hidden {
+    z-index: -9999 !important; }
+    .modal-user-exists-hidden .overlay {
+      transition-duration: background .8s;
+      background: transparent !important; }
+  .modal-user-exists .overlay {
+    transition-duration: background .8s;
+    z-index: 9999;
+    transition-duration: .8s;
+    background: rgba(0, 0, 0, 0.5001);
+    position: fixed;
+    width: 100%;
+    height: 100%; }
+    .modal-user-exists .overlay .window {
+      position: fixed;
+      background: white;
+      top: 37.5%;
+      transform: translateY(-37.5%);
+      padding-top: 35px; }
+      @media screen and (max-width: 899px) {
+        .modal-user-exists .overlay .window {
+          width: 90vw;
+          margin-left: 5vw;
+          margin-right: 5vw; } }
+      @media screen and (min-width: 900px) {
+        .modal-user-exists .overlay .window {
+          width: 500px;
+          left: 50%;
+          transform: translateX(-50%); } }
+      .modal-user-exists .overlay .window .top-text {
+        margin-left: 35px;
+        margin-right: 35px;
+        margin-bottom: 25px; }
+      .modal-user-exists .overlay .window .bottom-text {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        margin-top: 25px; }
+
+.modal-internal-error {
+  position: fixed;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+  transition-duration: background .8s;
+  background: transparent; }
+  .modal-internal-error-hidden {
+    z-index: -9999 !important; }
+    .modal-internal-error-hidden .overlay {
+      transition-duration: background .8s;
+      background: transparent !important; }
+  .modal-internal-error .overlay {
+    transition-duration: background .8s;
+    z-index: 9999;
+    transition-duration: .8s;
+    background: rgba(0, 0, 0, 0.5001);
+    position: fixed;
+    width: 100%;
+    height: 100%; }
+    .modal-internal-error .overlay .window {
+      position: fixed;
+      background: white;
+      top: 37.5%;
+      transform: translateY(-37.5%);
+      padding-top: 35px; }
+      @media screen and (max-width: 899px) {
+        .modal-internal-error .overlay .window {
+          width: 90vw;
+          margin-left: 5vw;
+          margin-right: 5vw; } }
+      @media screen and (min-width: 900px) {
+        .modal-internal-error .overlay .window {
+          width: 500px;
+          left: 50%;
+          transform: translateX(-50%); } }
+      .modal-internal-error .overlay .window .top-text {
+        margin-left: 35px;
+        margin-right: 35px;
+        margin-bottom: 25px; }
+      .modal-internal-error .overlay .window .bottom-text {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        margin-top: 25px; }
+
 .materialize-form {
   background: rgba(255, 255, 255, 0.7);
   border-radius: 0px;
