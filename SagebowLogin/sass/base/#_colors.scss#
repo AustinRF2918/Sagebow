@@ -13,20 +13,3 @@ $palette-3: $blue;
 $palette-4: $dark-blue;
 $palette-5: $light-grey;
 $palette-6: $grey;
-
-.light-text {
-    color: $white;
-    opacity: 1;
-    @media screen and (min-width: 768px) {
-	font-size: 30px;
-    }
-
-    @media screen and (max-width: 767px) {
-	font-size: 20px;
-    }
-}
-
-i {
-    color: $white;
-}
-

@@ -23,24 +23,7 @@
 	margin: 0px;
     }
 }
-.materialize-form {
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 0px;
-    line-height: 30px;
-    border-color: transparent;
-    border-left: 0px;
-    border-right: 0px;
-    border-top: 0px;
-    transition-duration: 0.2s;
 
-    &+label {
-      transition-duration: 0.2s;
-    }
-
-    &:focus {
-      background: rgba(255, 255, 255, 1);
-    }
-}
 
 @include _login_container_generateCenteredContainer(".primary-container", 55vw, 60vh, 50%);
 

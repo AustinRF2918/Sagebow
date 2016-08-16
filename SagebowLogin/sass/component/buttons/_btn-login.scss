@@ -1,0 +1,25 @@
+.btn-login {
+  background: #0288D1;
+  padding: 10px 24px 10px 24px;
+  position: relative;
+  top: -2px;
+  margin: 0px;
+  min-width: 88px;
+  border-radius: 0px;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration:none;
+  border: none;
+  outline: none;
+  transition-duration: 0.2s;
+
+  &:hover {
+    background: #01579B;
+    color: white;
+    transition-duration: 0.2s;
+    box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.4);
+  }
+}
+
