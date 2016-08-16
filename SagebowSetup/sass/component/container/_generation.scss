@@ -12,6 +12,9 @@
 	}
 
 	@media screen and (max-width: 991px) {
+	  * {
+	      display: block;
+	  }
 	  position: absolute;
 	  width: 100%;
 	  top: $mobileHeight;
@@ -27,6 +30,10 @@
 	@warning("Utilizing _login_container_generateCTAClusterContainer requires the mixin");
 	@warning("_login_container_CTAPrerequisite to be defined.");
 
+	* {
+	    max-width: 100%;
+	}
+
 	@include _login_container_generateCTAClusterContainer
 	@media screen and (min-width: 991px) {
 	  height: $height;
@@ -37,7 +44,6 @@
 	    margin: 0px;
 	    padding:0px;
 	    width: 100%;
-	    height: $mobileHeight;
 	}
     }
 }

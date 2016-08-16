@@ -43,6 +43,10 @@ i {
 i {
   color: white; }
 
+.super-small {
+  color: white;
+  font-size: 10px; }
+
 @media screen and (max-width: 768px) {
   .m-t-md-2 {
     margin-top: 2em; } }
@@ -191,8 +195,10 @@ html, body {
   .primary-container {
     position: absolute;
     width: 100%;
-    top: 50%;
-    transform: translateY(-50%); } }
+    top: 20%;
+    transform: translateY(-20%); }
+    .primary-container * {
+      display: block; } }
 
 .cta-container {
   @warning ("Utilizing _login_container_generateCTAClusterContainer requires the mixin");
@@ -200,6 +206,8 @@ html, body {
   padding-left: 30px;
   padding-right: 30px;
   border-radius: 0px; }
+  .cta-container * {
+    max-width: 100%; }
   .cta-container::before {
     content: "";
     position: absolute;
@@ -218,8 +226,7 @@ html, body {
     .cta-container {
       margin: 0px;
       padding: 0px;
-      width: 100%;
-      height: 280px; } }
+      width: 100%; } }
 
 .email-address-container {
   width: 90%;
