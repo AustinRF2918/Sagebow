@@ -29,7 +29,7 @@ var getNetworkInformation = function(){
     return addresses;
 }
 
-function startExpress(){
+function startServer(){
     var express = require('express');
     var app = express();
     app.use(require('connect-livereload')());
@@ -93,7 +93,7 @@ gulp.task('default', function()
 {
     console.log("Current network information")
     console.log(getNetworkInformation());
-    startExpress();
+    startServer();
     startLiveReload();
     gulp.watch(['*.html', 'css/app.css', 'js/*'], notifyLivereload);
 });
