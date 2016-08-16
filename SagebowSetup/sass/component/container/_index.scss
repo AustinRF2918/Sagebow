@@ -42,7 +42,7 @@
     }
 }
 
-@include _login_container_generateCenteredContainer(".primary-container", 55vw, 60vh, 50%);
+@include _login_container_generateCenteredContainer(".primary-container", 40vw, 60vh, 50%);
 
 @mixin _login_container_generateCTAClusterContainer {
     padding-left: 30px;

@@ -27,6 +27,22 @@ i {
 i {
   color: white; }
 
+.light-text-smaller {
+  color: white !important;
+  opacity: 1; }
+  @media screen and (min-width: 768px) {
+    .light-text-smaller {
+      font-size: 19.998px; } }
+  @media screen and (max-width: 767px) {
+    .light-text-smaller {
+      font-size: 13.332px; } }
+
+.danger-text {
+  color: #E53935; }
+
+i {
+  color: white; }
+
 @media screen and (max-width: 768px) {
   .m-t-md-2 {
     margin-top: 2em; } }
@@ -164,12 +180,12 @@ html, body {
 
 @media screen and (min-width: 992px) {
   .primary-container {
-    width: 55vw;
+    width: 40vw;
     height: 60vh;
     position: absolute;
     left: 50%;
-    top: 50%;
-    transform: translateY(-50%) translateX(-50%); } }
+    top: 10%;
+    transform: translateY(-10%) translateX(-50%); } }
 
 @media screen and (max-width: 991px) {
   .primary-container {

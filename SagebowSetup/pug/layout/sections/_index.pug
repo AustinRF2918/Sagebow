@@ -1,6 +1,7 @@
 include ../../utility/component-lib/_login_container_generateContainer.pug
 include ../../utility/component-lib/_login_background_generateBackground.pug
 include ../../utility/component-lib/_modalWindow-mixins.pug
+include ../../utility/component-lib/_mkacct_element_mixins.pug
 body
   +_login_background_generateBackground("full-page", "full-page-background")
     +_login_container_generateCenteredContainer("primary-container")
@@ -9,30 +10,16 @@ body
           i(class=["fa", "fa-tree fa-2x"] aria-hidden="true")
       .row.m-t-1.no-margin-mobile
         .col-lg-6
-          h1.light-text Welcome back to Sagebow.
+          h1.light-text Sign Up
+        .col-lg-6.text-xs-right
+          h4.light-text-smaller Welcome To Sagebow!
       .row.m-t-1.no-margin-mobile
         .col-lg-12.p-y-2
           +_login_container_generateClusterContainer("cta-container")
-            .row
-              .col-lg-5.extend-full-height
-                +_login_container_generateVCenteredElementContainer("email-address-container")
-                  .form-group
-                    input(type="email" class=["form-control", "materialize-form"], id="email-input", placeholder="Enter your email")
-                    label(for="emailAddress" class="label") Email Address:
-              .col-lg-5.extend-full-height
-                +_login_container_generateVCenteredElementContainer("password-container")
-                  .form-group
-                    input(type="password" class=["form-control", "materialize-form"], id="password-input", placeholder="Enter your password")
-                    label(for="emailAddress" class="label") Password:
-              .col-lg-2.extend-full-height
-                +_login_container_generateVCenteredElementContainer("login-container")
-                  .form-group
-                    a(class=["btn", "btn-login"]) Login
-                    label(class=["consistency-hide"] for="btn") Password:
-            .row
-              .col-lg-5.m.y-3
-                +_login_container_generateVCenteredElementContainer("email-address-container")
-                  .form-group
-                    a(class=["btn", "btn-make-account"]) Create a new account.
+            +_accountCreation_form_generateFormInput("weight-input", "Weight")
+            +_accountCreation_form_generateFormInput("height-input", "Height")
+            +_accountCreation_form_generateFormInput("age-input", "Age")
+            //+_accountCreation_form_generateDropdownForm("dropdown-gender", "Dropdown", ["Female", "Male"])
+            //+_accountCreation_form_generateDropdownForm("dropdown-goal", "Goal", ["Bodybuilding", "Weight Loss", "Maintainence"])
 
 +generateModalWindow("modal-rejected", "Oh No!", "danger-text", "Unfourtunately your input information was not correct. Please enter it again.", "Exit", "btn-reject")
