@@ -1,9 +1,9 @@
-mixin generateModalWindow(selector, headerText, bodyText, btnText, btnSelector)
-  div(class=selector)
+mixin generateModalWindow(selector, headerText, headerSelector, bodyText, btnText, btnSelector)
+  div(class=[selector, selector+"-hidden"])
     .overlay
       .window
         .top-text
-          h2.m-b-1=headerText
+          h2.m-b-1(class=headerSelector)=headerText
           p=bodyText
         .bottom-text.text-xs-right
           a(class=[btnSelector, "btn"])=btnText

@@ -2,12 +2,25 @@
     position: fixed;
     width: 100vw !important;
     height: 100vh !important;
-    z-index: 100000;
+    z-index: 10000;
     left: 0;
     top: 0;
     box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+    transition-duration: background .8s;
+    background: rgba(0, 0, 0, 0);
+
+    &-hidden {
+	z-index: -9999 !important;
+	.overlay {
+	  transition-duration: background .8s;
+	  background: rgba(0, 0, 0, 0) !important;
+	}
+    }
 
     .overlay {
+	transition-duration: background .8s;
+	z-index: 9999;
+	transition-duration: .8s;
 	background: rgba(0, 0, 0, 0.5001);
 	position: fixed;
 	width: 100%;

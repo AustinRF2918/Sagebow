@@ -21,6 +21,9 @@ i {
     .light-text {
       font-size: 20px; } }
 
+.danger-text {
+  color: #E53935; }
+
 i {
   color: white; }
 
@@ -103,7 +106,7 @@ html, body {
   margin: 0px;
   min-width: 88px;
   border-radius: 0px;
-  color: #01579B;
+  color: #B71C1C;
   font-size: 14px;
   text-align: center;
   text-transform: uppercase;
@@ -112,7 +115,7 @@ html, body {
   outline: none;
   transition-duration: 0.2s; }
   .btn-reject:hover {
-    background: #0288D1;
+    background: #B71C1C;
     color: white;
     transition-duration: 0.2s;
     box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.4); }
@@ -244,11 +247,21 @@ html, body {
   position: fixed;
   width: 100vw !important;
   height: 100vh !important;
-  z-index: 100000;
+  z-index: 10000;
   left: 0;
   top: 0;
-  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8); }
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+  transition-duration: background .8s;
+  background: transparent; }
+  .modal-rejected-hidden {
+    z-index: -9999 !important; }
+    .modal-rejected-hidden .overlay {
+      transition-duration: background .8s;
+      background: transparent !important; }
   .modal-rejected .overlay {
+    transition-duration: background .8s;
+    z-index: 9999;
+    transition-duration: .8s;
     background: rgba(0, 0, 0, 0.5001);
     position: fixed;
     width: 100%;
