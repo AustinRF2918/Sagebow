@@ -32,4 +32,38 @@
   }
 }
 			    
-			     
+	@mixin generateLowHeightButton($background,
+			    $border-radius,
+			    $text-color,
+			    $text-transform,
+			    $offset-top,
+			    $transition-duration,
+			    $hover-background,
+			    $hover-text-color,
+			    $shadow-parameters)
+{
+  background: $background;
+  line-height: 15px;
+  padding: 10px 24px 10px 24px;
+  position: relative;
+  top: $offset-top;
+  margin: 0px;
+  min-width: 88px;
+  border-radius: $border-radius;
+  color: $text-color;
+  font-size: 14px;
+  text-align: center;
+  text-transform: $text-transform;
+  text-decoration:none;
+  border: none;
+  outline: none;
+  transition-duration: $transition-duration;
+
+  &:hover {
+    background: $hover-background;
+    color: $hover-text-color;
+    transition-duration: $transition-duration;
+    box-shadow: $shadow-parameters;
+  }
+}
+					     

@@ -120,6 +120,16 @@ html, body {
     transition-duration: 0.2s;
     box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.4); }
 
+.btn-make-account {
+  color: #03A9F4;
+  transition-duration: 0.2s;
+  border-radius: 0px;
+  font-size: 14px; }
+  .btn-make-account:hover {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.31); }
+
 @media screen and (min-width: 992px) {
   .extend-full-height {
     height: 100%; } }
