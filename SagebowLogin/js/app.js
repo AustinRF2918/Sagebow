@@ -42,7 +42,7 @@ var requestURL = function(key){
 };
 
 $(document).ready(function(){
-    $(".btn-login").on('click', function(){
+    var authenticate = function(){return function(){
 	//General application logic goes here.
 	  //Step 1: Send request to server.
 	  //Step 2: Response good?
@@ -65,10 +65,18 @@ $(document).ready(function(){
 	    
 	  //Redirect to a newly generated dashboard page.
 	}
-    });
+    }};
 
     $(".btn-reject").on('click', function(){
 	$(".modal-rejected").toggleClass("modal-rejected-hidden");
     });
+
+    $(".btn-login").on('click', authenticate());
+    $("input").keydown(function (event) {
+	if (event.keyCode === 13){
+	    event.preventDefault();
+	    authenticate()();
+	}
+    })
 });
 
