@@ -28,6 +28,7 @@ var authenticateForms = function() {
     var emailInput = $("#email-input").val();
     var passwordInput = $("#password-input").val();
 
+    //Mock authentication call to server.
     if (authenticateUser(emailInput, passwordInput)){
 	return getUserKey(emailInput);
     } else {
@@ -35,8 +36,9 @@ var authenticateForms = function() {
     }
 };
 
-var requestURL = function(){
-    return "192.168.1.104:4001:/";
+//mock generated url
+var requestURL = function(key){
+    return "192.168.1.104:4001/" + key;
 };
 
 $(document).ready(function(){
@@ -53,7 +55,14 @@ $(document).ready(function(){
 	if (!authenticateForms()) {
 	  $(".modal-rejected").toggleClass("modal-rejected-hidden");
 	} else {
-	    alert("You logged in! with the key " + myKey);
+	    alert("You logged in! with the key " + myKey + " , redirecting to: " + requestURL(myKey));
+
+	    //I'm assuming at this point, the key is stored as a cookie and
+	    //said cookie is generated via hash mentioned earlier, therefore
+	    //all we have to do is send requests to the server with the key
+	    //appended?
+	    window.location = requestURL(myKey);
+	    
 	  //Redirect to a newly generated dashboard page.
 	}
     });
