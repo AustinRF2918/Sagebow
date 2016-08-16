@@ -1,0 +1,186 @@
+.light-text {
+  color: white;
+  opacity: 0.7; }
+  @media screen and (min-width: 768px) {
+    .light-text {
+      font-size: 30px; } }
+  @media screen and (max-width: 767px) {
+    .light-text {
+      font-size: 20px; } }
+
+@media screen and (max-width: 768px) {
+  .m-t-md-2 {
+    margin-top: 2em; } }
+
+.rel-opl {
+  position: relative;
+  top: -90px; }
+
+@media screen and (max-width: 767px) {
+  .dam {
+    display: none; } }
+
+@media screen and (max-height: 767px) {
+  .p-l-0-mobile {
+    padding-left: 0px !important; } }
+
+.full-page-background {
+  background: url("/img/primary_background.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+
+html, body {
+  width: 100vw;
+  height: 100vh; }
+
+.full-page {
+  width: 100%;
+  height: 100%; }
+
+@media screen and (min-width: 992px) {
+  .extend-full-height {
+    height: 100%; } }
+
+@media screen and (max-width: 991px) {
+  .extend-full-height {
+    height: 100px; } }
+
+.extend-full-width {
+  height: 100%; }
+
+.consistency-hide {
+  color: transparent; }
+
+@media screen and (max-width: 992px) {
+  .no-margin-mobile {
+    margin: 0px; } }
+
+.btn-login {
+  background: #0288D1;
+  padding: 10px 24px 10px 24px;
+  position: relative;
+  top: -2px;
+  margin: 0px;
+  min-width: 88px;
+  border-radius: 0px;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  transition-duration: 0.2s; }
+
+.btn-login:hover {
+  background: #01579B;
+  color: white;
+  transition-duration: 0.2s;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.26); }
+
+.materialize-form {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 0px;
+  line-height: 30px;
+  border-color: transparent;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 0px;
+  transition-duration: 0.2s; }
+  .materialize-form + label {
+    transition-duration: 0.2s; }
+  .materialize-form:focus {
+    border-color: #00806a; }
+
+@media screen and (min-width: 992px) {
+  .primary-container {
+    width: 55vw;
+    height: 60vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%); } }
+
+@media screen and (max-width: 991px) {
+  .primary-container {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%); } }
+
+.cta-container {
+  @warning ("Utilizing _login_container_generateCTAClusterContainer requires the mixin");
+  @warning ("_login_container_CTAPrerequisite to be defined.");
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 0px; }
+  .cta-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.2);
+    filter: blur(20px);
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.26); }
+  @media screen and (min-width: 991px) {
+    .cta-container {
+      height: 150px;
+      width: 100%; } }
+  @media screen and (max-width: 992px) {
+    .cta-container {
+      margin: 0px;
+      padding: 0px;
+      width: 100%;
+      height: 280px; } }
+
+.email-address-container {
+  width: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%); }
+  .email-address-container .form-group {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start; }
+  @media screen and (max-width: 992px) {
+    .email-address-container a {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%); } }
+
+.password-container {
+  width: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%); }
+  .password-container .form-group {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start; }
+  @media screen and (max-width: 992px) {
+    .password-container a {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%); } }
+
+.login-container {
+  width: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%); }
+  .login-container .form-group {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start; }
+  @media screen and (max-width: 992px) {
+    .login-container a {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%); } }

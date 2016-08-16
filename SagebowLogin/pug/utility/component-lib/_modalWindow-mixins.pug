@@ -1,0 +1,7 @@
+mixin generateModalWindow(text, btnText, btnSelector)
+  .overlay
+    .window
+      .top-text
+        p=text
+      .bottom-text
+        a(class=btnSelector)=btnText

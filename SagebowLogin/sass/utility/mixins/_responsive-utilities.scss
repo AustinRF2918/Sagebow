@@ -1,0 +1,15 @@
+.dam
+{
+    @media screen and (max-width: 767px)
+    {
+	display: none;
+    }
+}
+
+.p-l-0-mobile
+{
+    @media screen and (max-height: 767px)
+    {
+	padding-left: 0px !important;
+    }
+}

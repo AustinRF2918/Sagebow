@@ -1,0 +1,4 @@
+@import 'generation';
+
+//See "generation" for more information on this mixin.
+@include _login_background_generateBackgroundOnElement(".full-page-background", "/img/primary_background.jpg");

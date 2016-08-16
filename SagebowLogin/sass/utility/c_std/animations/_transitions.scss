@@ -1,0 +1,164 @@
+@mixin STD-GenerateBackgroundTransition($speed)
+{
+    transition: background-color $speed ease;
+    -webkit-transition: background-color $speed ease;
+    -o-transition: background-color $speed ease;
+    -ms-transition: background-color $speed ease;
+    -moz-transition: background-color $speed ease;
+}
+
+@mixin STD-GenerateTransition($time)
+{
+    transition: $time ease-in-out;
+    -webkit-transition: $time ease-in-out;
+    -o-transition: $time ease-in-out;
+    -ms-transition: $time ease-in-out;
+    -moz-transition: $time ease-in-out;
+}
+
+@mixin STD-GenerateTransition-In($time)
+{
+    transition: $time ease-in;
+    -webkit-transition: $time ease-in;
+    -o-transition: $time ease-in;
+    -ms-transition: $time ease-in;
+    -moz-transition: $time ease-in;
+}
+
+@mixin STD-GenerateTransition-Out($time)
+{
+    transition: $time ease-out;
+    -webkit-transition: $time ease-out;
+    -o-transition: $time ease-out;
+    -ms-transition: $time ease-out;
+    -moz-transition: $time ease-out;
+}
+
+@mixin STD-GenerateRotation($deg)
+{
+    transform: rotate($deg);
+    -webkit-transform: rotate($deg);
+    -o-transform: rotate($deg);
+    -ms-transform: rotate($deg);
+    -moz-transform: rotate($deg);
+}
+
+@mixin STD-GenerateScale($scale)
+{
+    transform: scale($scale);
+    -webkit-transform: scale($scale);
+    -o-transform: scale($scale);
+    -ms-transform: scale($scale);
+    -moz-transform: scale($scale);
+}
+
+@mixin STD-GenerateY($percentage)
+{
+    transform: translateY($percentage);
+    -webkit-transform: translateY($percentage);
+    -o-transform: translateY($percentage);
+    -ms-transform: translateY($percentage);
+    -moz-transform: translateY($percentage);
+}
+
+@mixin STD-GenerateX($percentage)
+{
+    transform: translateX($percentage);
+    -webkit-transform: translateX($percentage);
+    -o-transform: translateX($percentage);
+    -ms-transform: translateX($percentage);
+    -moz-transform: translateX($percentage);
+}
+
+@mixin STD-GenerateXY($x, $y)
+{
+    position: relative;
+
+    left: $x;
+    @include STD-GenerateX(-$x);
+
+    top: $y;
+    @include STD-GenerateY(-$y);
+}
+
+@mixin STD-GenerateTransition-Linear($time)
+{
+    transition: $time linear;
+    -webkit-transition: $time linear;
+    -o-transition: $time linear;
+    -ms-transition: $time linear;
+    -moz-transition: $time linear;
+}
+//Unique buttons.
+@mixin P01b-ButtonTransition($time)
+{
+    transition: background-color $time, transform $time ease-out;
+    -webkit-transition: background-color $time, transform $time ease-out;
+    -o-transition: background-color $time, transform $time ease-out;
+    -ms-transition: background-color $time, transform $time ease-out;
+    -moz-transition: background-color $time, transform $time ease-out;
+}
+
+@mixin P01b-GenerateIntroduction-Left($selector, $reveal, $percentage, $speed)
+{
+
+    .#{$selector}
+    {
+	*{
+	opacity: 0;
+	position: relative;
+	-webkit-transition: $speed ease-in-out;
+	-moz-transition: $speed ease-in-out;
+	-o-transition: $speed ease-in-out;
+	-ms-transition: $speed ease-in-out;
+	transition: transform 1s left $speed ease-in-out;
+	transform: translateX(-$percentage);
+	}
+    }
+    
+    .#{$reveal}
+    {
+	*{
+	opacity: 1;
+	position: relative;
+	-webkit-transition: $speed ease-in-out;
+	-moz-transition: $speed ease-in-out;
+	-o-transition: $speed ease-in-out;
+	-ms-transition: $speed ease-in-out;
+	transition: transform 1s left $speed ease-in-out;
+	transform: translateX(0px);
+	}
+    }
+}
+
+@mixin P01b-GenerateIntroduction-Top($selector, $reveal, $percentage, $speed)
+{
+
+    .#{$selector}
+    {
+	*{
+	opacity: 0;
+	position: relative;
+	-webkit-transition: $speed ease-in-out;
+	-moz-transition: $speed ease-in-out;
+	-o-transition: $speed ease-in-out;
+	-ms-transition: $speed ease-in-out;
+	transition: transform 1s left $speed ease-in-out;
+	transform: translateY(-$percentage);
+	}
+    }
+    
+    .#{$reveal}
+    {
+	*{
+	opacity: 1;
+	position: relative;
+	-webkit-transition: $speed ease-in-out;
+	-moz-transition: $speed ease-in-out;
+	-o-transition: $speed ease-in-out;
+	-ms-transition: $speed ease-in-out;
+	transition: transform 1s left $speed ease-in-out;
+	transform: translateY(0px);
+	}
+    }
+}

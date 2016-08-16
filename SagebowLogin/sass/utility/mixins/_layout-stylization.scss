@@ -1,0 +1,11 @@
+@mixin generateSideBorders($size, $type, $color)
+{
+    border-left: $size $type $color;
+    border-right: $size $type $color;
+}
+
+@mixin removePositioning
+{
+    padding: 0px;
+    margin: 0px;
+}

@@ -1,0 +1,9 @@
+//This mixin corresponds to the mixins contained within
+//sass/component/background/ and sass/component/sizing/
+//background::generateBackground takes a simple selector 
+//for the page that we are referring to (which will be
+//promptly expanded, and a selector for the background 
+//which will fill up our entire area.
+mixin _login_background_generateBackground(pageSelector, backgroundSelector)
+  div(class=[pageSelector, backgroundSelector])
+    block
