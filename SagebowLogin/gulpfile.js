@@ -5,7 +5,7 @@ var pug = require('gulp-pug');
 var gutil = require('gulp-util');
 var minify = require('gulp-minifier');
 
-var EXPRESS_PORT = 4001;
+var EXPRESS_PORT = process.env.PORT || 4001;
 var EXPRESS_ROOT = __dirname;
 var LIVERELOAD_PORT = 35729;
 
