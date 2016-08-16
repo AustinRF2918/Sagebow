@@ -1,7 +1,9 @@
-mixin generateModalWindow(text, btnText, btnSelector)
-  .overlay
-    .window
-      .top-text
-        p=text
-      .bottom-text
-        a(class=btnSelector)=btnText
+mixin generateModalWindow(selector, headerText, bodyText, btnText, btnSelector)
+  div(class=selector)
+    .overlay
+      .window
+        .top-text
+          h2.m-b-1=headerText
+          p=bodyText
+        .bottom-text.text-xs-right
+          a(class=[btnSelector, "btn"])=btnText

@@ -1,5 +1,6 @@
 include ../../utility/component-lib/_login_container_generateContainer.pug
 include ../../utility/component-lib/_login_background_generateBackground.pug
+include ../../utility/component-lib/_modalWindow-mixins.pug
 body
   +_login_background_generateBackground("full-page", "full-page-background")
     +_login_container_generateCenteredContainer("primary-container")
@@ -27,3 +28,4 @@ body
                 .form-group
                   a(class=["btn", "btn-login"]) Login
                   label(class=["consistency-hide"] for="btn") Password:
++generateModalWindow("modal-rejected", "Oh No!", "Unfourtunately your input information was not correct. Please enter it again.", "Exit", "btn-reject")
