@@ -84,6 +84,7 @@ var Dropdown = function( btnClassName, dropdownClassName ) {
 	var _pushItemSelector = function ( selector ) {
 
 	    $("." + selector).on("click", function(){
+		console.log(_localBtnClassName);
 		if (_mode == "replace"){
 		    $("."+_localBtnClassName).html($("." + selector).text());
 		    $("." + _localDropdownClassName).addClass(_localDropdownClassName+"-hidden");

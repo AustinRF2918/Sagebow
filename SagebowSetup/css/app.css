@@ -488,24 +488,17 @@ html, body {
     background: white; }
 
 .gender-selector {
-  border-radius: 0px; }
+  display: flex;
+  min-width: 200% !important; }
   .gender-selector-hidden {
     display: none; }
     .gender-selector-hidden * {
       display: none; }
   .gender-selector * {
-    border-radius: 0px;
-    width: 99%; }
-  .gender-selector .dropdown {
-    position: relative;
-    margin-right: 200px; }
+    width: 100%;
+    margin: 5px; }
 
-.goal-selector {
-  border-radius: 0px; }
-  .goal-selector-hidden {
+.goal-selector-hidden {
+  display: none; }
+  .goal-selector-hidden * {
     display: none; }
-    .goal-selector-hidden * {
-      display: none; }
-  .goal-selector * {
-    border-radius: 0px;
-    width: 99%; }

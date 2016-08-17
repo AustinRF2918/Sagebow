@@ -1,5 +1,4 @@
 @mixin generateDropdown {
-    border-radius: 0px;
     &-hidden {
 	display: none;
 	* {
@@ -8,7 +7,5 @@
     }
 
     * {
-	border-radius: 0px;
-	width: 99%;
     }
 }
