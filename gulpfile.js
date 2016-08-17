@@ -5,7 +5,7 @@ var pug = require('gulp-pug');
 var gutil = require('gulp-util');
 var minify = require('gulp-minifier');
 
-var EXPRESS_PORT = 4001;
+var EXPRESS_PORT = process.env.PORT || 4001;
 var EXPRESS_ROOT = __dirname + '/public';
 var LIVERELOAD_PORT = 35729;
 
@@ -29,12 +29,8 @@ var getNetworkInformation = function(){
     return addresses;
 }
 
-function startExpress(){
-    var express = require('express');
-    var app = express();
-    app.use(require('connect-livereload')());
-    app.use(express.static(EXPRESS_ROOT));
-    app.listen(EXPRESS_PORT);
+function startServer(){
+    require('./server.js')(EXPRESS_PORT,EXPRESS_ROOT);
 }
 
 var lr;
@@ -93,7 +89,7 @@ gulp.task('default', function()
 {
     console.log("Current network information")
     console.log(getNetworkInformation());
-    startExpress();
+    startServer();
     startLiveReload();
     gulp.watch(['*.html', 'css/app.css', 'js/*'], notifyLivereload);
 });
