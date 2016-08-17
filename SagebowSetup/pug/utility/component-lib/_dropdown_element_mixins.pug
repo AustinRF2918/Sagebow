@@ -1,5 +1,5 @@
-mixin generateBtnGroup(customSelector, btnDict)
+mixin generateBtnGroup(customSelector, btnDict, btnStyle)
   div(class=["btn-group"])
     div(class=["dropdown-menu dropdown", customSelector, customSelector+"-hidden"])
       each entry in btnDict
-        a(class=["dropdown-item btn btn-login", entry[2]] href=entry[1])=entry[0]
+        a(class=["dropdown-item btn", btnStyle, entry[2]] href=entry[1])=entry[0]

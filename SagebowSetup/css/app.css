@@ -150,6 +150,28 @@ html, body {
     color: white;
     box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.31); }
 
+.btn-setup-dropdown {
+  background: #C2185B;
+  padding: 10px 24px 10px 24px;
+  position: relative;
+  top: 0px;
+  margin: 0px;
+  min-width: 88px;
+  border-radius: 0px;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  transition-duration: 0.2s; }
+  .btn-setup-dropdown:hover {
+    background: white;
+    color: #C2185B;
+    transition-duration: 0.2s;
+    box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.4); }
+
 @media screen and (min-width: 992px) {
   .extend-full-height {
     height: 100%; } }
@@ -489,16 +511,24 @@ html, body {
 
 .gender-selector {
   display: flex;
-  min-width: 200% !important; }
+  flex-direction: column;
+  background: #c2185b;
+  margin: 0px;
+  padding: 0px;
+  border-radius: 0px !important; }
   .gender-selector-hidden {
     display: none; }
     .gender-selector-hidden * {
       display: none; }
-  .gender-selector * {
-    width: 100%;
-    margin: 5px; }
 
-.goal-selector-hidden {
-  display: none; }
-  .goal-selector-hidden * {
+.goal-selector {
+  display: flex;
+  border-radius: 0px;
+  flex-direction: column;
+  background: #c2185b;
+  margin: 0px;
+  padding: 0px; }
+  .goal-selector-hidden {
     display: none; }
+    .goal-selector-hidden * {
+      display: none; }

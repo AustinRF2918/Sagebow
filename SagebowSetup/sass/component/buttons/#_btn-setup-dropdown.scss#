@@ -1,0 +1,12 @@
+.btn-setup-dropdown {
+    @include generateMediumButton(#C2185B,
+				  0px,
+				  white,
+				  uppercase,
+				  0px,
+				  .2s,
+				  white,
+				  #C2185B,
+				  0 6px 15px 0 rgba(0, 0, 0, 0.4));
+}
+

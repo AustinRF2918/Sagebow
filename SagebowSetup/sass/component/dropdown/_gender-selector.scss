@@ -1,12 +1,13 @@
 .gender-selector {
     @include generateDropdown();
     display: flex;
-    min-width: 200% !important;
+    flex-direction: column;
+    background: darken(#C2185B, 0%);
+    margin: 0px;
+    padding: 0px;
+    border-radius: 0px !important;
 
     * {
-
-	width: 100%;
-	margin: 5px;
     }
 }
 
