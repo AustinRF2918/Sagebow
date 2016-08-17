@@ -1,0 +1,32 @@
+$purple:  #28237f;
+$light-grey: darken(#e0e0e0, 5%);
+$dark-grey: #4c5360;
+$grey: darken(#e0e0e0, 15%);
+$blue: #28237f;
+$dark-blue: 28237f;
+$white: white;
+
+
+$palette-1: $purple;
+$palette-2: $dark-grey;
+$palette-3: $blue;
+$palette-4: $dark-blue;
+$palette-5: $light-grey;
+$palette-6: $grey;
+
+.light-text {
+    color: $white;
+    opacity: 1;
+    @media screen and (min-width: 768px) {
+	font-size: 30px;
+    }
+
+    @media screen and (max-width: 767px) {
+	font-size: 20px;
+    }
+}
+
+i {
+    color: white;
+}
+

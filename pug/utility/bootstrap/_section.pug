@@ -1,0 +1,17 @@
+mixin generateSection(name)
+  section(class=[name, "page-layout-element"] id=name)
+    div(class=["container-fluid"])
+      block
+  
+mixin generateRow(rowName)  
+  div(class=["row", rowName + "-row"])
+    block
+      
+mixin generateSubRow(rowName, rowParent)
+  div(class=[rowParent+"-row" + "-" + rowName])
+    block
+
+mixin generateColumn(columnNumber, columnName, columnParent)
+  div(class=["col-md-"+columnNumber, columnParent+"-row" + "-" + columnName])
+    block
+    

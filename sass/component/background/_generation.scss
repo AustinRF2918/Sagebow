@@ -1,0 +1,16 @@
+//Generate a background on a full element, will cover and automatically
+//center is self, non repeating. First parameter is the element which
+//must be prefixed by a CSS selector, second parameter is the link in
+//which the image is located.
+@mixin _login_background_generateBackgroundOnElement($selector, $link) {
+    #{$selector} {
+	background: url($link) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+    }
+}
+
+//Example usage:
+//@include _login_background_generateBackgroundOnElement(".full-page-background", "/img/primary_background.jpg");

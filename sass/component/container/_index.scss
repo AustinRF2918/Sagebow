@@ -1,0 +1,66 @@
+@import 'generation';
+
+.extend-full-height {
+    @media screen and (min-width: 992px){
+      height: 100%;
+    }
+
+    @media screen and (max-width: 991px){
+	height: 100px;
+    }
+}
+
+.extend-full-width {
+    height: 100%;
+}
+
+.consistency-hide {
+    color: transparent;
+}
+
+.no-margin-mobile {
+    @media screen and (max-width: 992px) {
+	margin: 0px;
+    }
+}
+.materialize-form {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 0px;
+    line-height: 30px;
+    border-color: transparent;
+    border-left: 0px;
+    border-right: 0px;
+    border-top: 0px;
+    transition-duration: 0.2s;
+
+    &+label {
+      transition-duration: 0.2s;
+    }
+
+    &:focus {
+      background: rgba(255, 255, 255, 1);
+    }
+}
+
+@include _login_container_generateCenteredContainer(".primary-container", 55vw, 60vh, 50%);
+
+@mixin _login_container_generateCTAClusterContainer {
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 0px;
+
+    &::before{
+	content: "";
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	background: rgba(255, 255, 255, 0.2);
+	filter: blur(20px);
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.26);
+    }
+}
+
+@include _login_container_generateClusterContainer(".cta-container", 150px, 100%, 280px);
+
+@include _login_container_generateCenteredElement(".email-address-container", true, ".form-group");
+@include _login_container_generateCenteredElement(".password-container", true, ".form-group");
+@include _login_container_generateCenteredElement(".login-container", true, ".form-group");

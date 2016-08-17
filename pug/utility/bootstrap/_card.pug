@@ -1,0 +1,25 @@
+mixin generateCardMinimal(className, cardTitle, cardText, imgSource)
+  div(class=["card", className])
+    img(class="card-img-top", rel=lightbox src=imgSource, alt="Top")
+    div(class="card-block")
+      h4(class="card-title")= cardTitle
+      p(class="card-text")= cardText
+  block
+
+mixin generateCardWithOverlay(className, cardTitle, cardText, imgSource, data, caption)
+  a(data-lightbox=data rel=lightbox data-title=caption href=imgSource)
+    div(class=["card", className])
+      img(data-title="My caption" class="card-img-top", src=imgSource, alt="Top")
+      div(class="card-img-overlay")
+        h4(class="card-title")= cardTitle
+        p(class="card-text")= cardText
+  block
+
+mixin generateInvisibleCard(className, cardTitle, cardText, imgSource, data, caption)
+  a(data-lightbox=data data-title=caption href=imgSource)
+    div(class=["card", className])
+      img(data-title="My caption" class="card-img-top", src=imgSource, alt="Top")
+      div(class="card-img-overlay")
+        h4(class="card-title")= cardTitle
+        p(class="card-text")= cardText
+  block

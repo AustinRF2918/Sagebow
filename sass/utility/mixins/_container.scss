@@ -1,0 +1,10 @@
+@mixin generateContainer($background, $paddingTop, $paddingBottom)
+{
+    .container-fluid
+    {
+	@content;
+	background: $background;
+	padding-top: $paddingTop;
+	padding-bottom: $paddingBottom;
+    }
+}

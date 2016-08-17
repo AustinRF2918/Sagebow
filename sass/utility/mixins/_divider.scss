@@ -1,0 +1,28 @@
+@mixin generateDivider($symetric-padding, $background-color, $text-color, $subheader-color)
+{
+    @include generateContainer($background-color, $symetric-padding/2, $symetric-padding/2)
+    {
+	h1{
+	    color: $text-color
+	}
+
+	p{
+	    color: $subheader-color;
+	}
+    }
+}
+
+//Simple temporary margin values.
+   .m-t-md-2
+   {
+      @media screen and (max-width: 768px)
+      {
+	  margin-top: 2em;
+      }
+   }
+
+.rel-opl
+{
+    position: relative;
+    top: -90px;
+}

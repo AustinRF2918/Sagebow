@@ -1,0 +1,11 @@
+.btn-reject {
+    @include generateMediumButton(white,
+				  0px,
+				  #B71C1C,
+				  uppercase,
+				  0px,
+				  .2s,
+				  #B71C1C,
+				  white,
+				  0 6px 15px 0 rgba(0, 0, 0, 0.4));
+}
