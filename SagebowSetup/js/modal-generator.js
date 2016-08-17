@@ -15,6 +15,7 @@ var modalGenerator = function( modalClassName, btnClassName ) {
     return (function() {
 	var _localModalClassName = modalClassName;
 	var _localBtnClassName = btnClassName;
+	var _checkToggled = false;
 
 	/*
 	* Internal function for our ModalGenerator, generates the 
@@ -26,6 +27,19 @@ var modalGenerator = function( modalClassName, btnClassName ) {
 	*/
 	var _generateHiddenClass = function( primaryClassName ) {
 	    return (primaryClassName + "-hidden");
+	};
+
+	/*
+	* Internal function for our ModalGenerator, sets checkToggled
+	* as false again to allow multiple refirings: this is to avoid
+	* the use of the display method multiple times which results in
+        * bugs.
+	* @method
+	* @param {string} primaryClassName - the name of the modal
+	* window which we will be hiding. 
+	*/
+	var _rearm = function( ) {
+	    _checkToggled = false;
 	};
 
 	/*
@@ -53,8 +67,13 @@ var modalGenerator = function( modalClassName, btnClassName ) {
 	* button contained within our modal window.
 	*/
 	var displayModalOnView = function ( ) {
+	    if (_checkToggled == false) {
 	      $("." + _localModalClassName).removeClass( _generateHiddenClass(_localModalClassName));
 	      _buildToggleableUnit( _localModalClassName, _localBtnClassName);
+	      _checkToggled = true;
+	    } else {
+		throw "A modal window was already created: please call the rearm method to allow another toggle.";
+	    }
 	};
 
 	return {
@@ -62,10 +81,4 @@ var modalGenerator = function( modalClassName, btnClassName ) {
 	};
     })();
 };
-
-
-$(document).ready(function(){
-    var displayModal = modalGenerator( "modal-internal-error", "btn-internal-error-close" );
-    displayModal.display();
-});
 
