@@ -6,7 +6,7 @@ var gutil = require('gulp-util');
 var minify = require('gulp-minifier');
 
 var EXPRESS_PORT = process.env.PORT || 4001;
-var EXPRESS_ROOT = __dirname;
+var EXPRESS_ROOT = __dirname + '/public';
 var LIVERELOAD_PORT = 35729;
 
 
@@ -33,7 +33,7 @@ function startServer(){
     var express = require('express');
     var app = express();
     app.use(require('connect-livereload')());
-    app.use(express.static(EXPRESS_ROOT));
+    app.use(express.static(EXPRESS_ROOT+'/../../public'));
     app.listen(EXPRESS_PORT);
 }
 
@@ -60,7 +60,7 @@ gulp.task('pug', function(){
     .pipe(pug({
        pretty: true
     }).on('error', gutil.log))
-    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('../public'))
 });
 
 gulp.task('watch', function(){
@@ -71,7 +71,7 @@ gulp.task('watch', function(){
 gulp.task('sass', function(){
     return gulp.src(['sass/app.scss'])
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('css/'));
+    .pipe(gulp.dest('../public/res/css/'));
 });
 
 gulp.task('produce', function(){
