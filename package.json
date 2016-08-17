@@ -1,0 +1,37 @@
+{
+  "name": "sagebow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "private": true,
+  "dependencies": {
+    "bcryptjs": "^2.3.0",
+    "body-parser": "^1.15.2",
+    "connect-livereload": "^0.5.4",
+    "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "gulp": "^3.9.1",
+    "gulp-minifier": "^0.1.4",
+    "gulp-pug": "^3.0.4",
+    "gulp-sass": "^2.3.2",
+    "gulp-util": "^3.0.7",
+    "node-redis": "^0.1.7",
+    "path": "^0.12.7",
+    "tiny-lr": "^0.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AustinRF2918/Sagebow.git"
+  },
+  "author": "Austin Fell and John Sanders",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AustinRF2918/Sagebow/issues"
+  },
+  "homepage": "https://github.com/AustinRF2918/Sagebow#readme"
+}
