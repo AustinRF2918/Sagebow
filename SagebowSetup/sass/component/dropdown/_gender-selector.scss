@@ -1,3 +1,8 @@
 .gender-selector {
     @include generateDropdown();
+    .dropdown {
+	position: relative;
+	margin-right: 200px;
+    }
 }
+

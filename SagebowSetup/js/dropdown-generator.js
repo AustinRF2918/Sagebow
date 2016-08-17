@@ -1,5 +1,5 @@
 /*
- * Constructor for a DropdownGenerator, which via the display
+ * Constructor for a Dropdown, which via the display
  * method allows a dropdown to be displayed on document startup.
  * @constructor
  * @param {string} btnClassName - the name of the button being
@@ -10,7 +10,7 @@
  *
 */
 
-var DropdownGenerator = function( btnClassName, dropdownClassName ) {
+var Dropdown = function( btnClassName, dropdownClassName ) {
     return (function() {
 	var _localBtnClassName = btnClassName;
 	var _localDropdownClassName = dropdownClassName;
@@ -33,8 +33,7 @@ var DropdownGenerator = function( btnClassName, dropdownClassName ) {
         * a build pattern.
 	* @method
 	*/
-	var _generateBinding = function ( ) {
-
+	var _generateBinding = function ( debug ) {
 	    $("body").on("click", function() {
 		if (_isActive){
 		  window.setTimeout(function(){
@@ -45,10 +44,11 @@ var DropdownGenerator = function( btnClassName, dropdownClassName ) {
 
 	    $("." + _localBtnClassName).on("click", function() {
 		window.setTimeout(function(){
-		_isActive = !_isActive;
+		  _isActive = !_isActive;
 		}, 10);
 		$("." + _localDropdownClassName).toggleClass(_localDropdownClassName+"-hidden");
 	    });
+
 	};
 	
 	/*
@@ -82,6 +82,7 @@ var DropdownGenerator = function( btnClassName, dropdownClassName ) {
         * method.
 	*/
 	var _pushItemSelector = function ( selector ) {
+
 	    $("." + selector).on("click", function(){
 		if (_mode == "replace"){
 		    $("."+_localBtnClassName).html($("." + selector).text());

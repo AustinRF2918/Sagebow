@@ -496,3 +496,16 @@ html, body {
   .gender-selector * {
     border-radius: 0px;
     width: 99%; }
+  .gender-selector .dropdown {
+    position: relative;
+    margin-right: 200px; }
+
+.goal-selector {
+  border-radius: 0px; }
+  .goal-selector-hidden {
+    display: none; }
+    .goal-selector-hidden * {
+      display: none; }
+  .goal-selector * {
+    border-radius: 0px;
+    width: 99%; }

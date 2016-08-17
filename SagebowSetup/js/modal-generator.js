@@ -1,5 +1,5 @@
 /*
- * Constructor for a ModalGenerator, which via the display
+ * Constructor for a Modal, which via the display
  * method allows a modal to be displayed on document startup.
  * @constructor
  * @param {string} primaryClassName - the name of the modal
@@ -11,7 +11,7 @@
  * displayModal.display();
  *
 */
-var modalGenerator = function( modalClassName, btnClassName ) {
+var Modal = function( modalClassName, btnClassName ) {
     return (function() {
 	var _localModalClassName = modalClassName;
 	var _localBtnClassName = btnClassName;

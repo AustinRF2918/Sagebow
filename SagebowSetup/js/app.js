@@ -7,14 +7,20 @@ $(document).ready(function(){
 
 
     //For when user has not entered complete data (maybe call this from the front end?
-    var displayModal = modalGenerator( "modal-incomplete-data", "btn-incomplete-data-close" );
+    var displayModal = Modal( "modal-incomplete-data", "btn-incomplete-data-close" );
 
-    var genderDropdown = DropdownGenerator("btn-gender", "gender-selector");
-
+    var genderDropdown = Dropdown( "btn-gender", "gender-selector" );
     genderDropdown.setMode( "replace" );
     genderDropdown.pushItem( "dropdown-female" );
     genderDropdown.pushItem( "dropdown-male" );
-    genderDropdown.buildButton();
+    genderDropdown.buildButton( );
+
+    var goalDropdown = Dropdown( "btn-goal", "goal-selector" );
+    goalDropdown.setMode( "replace" );
+    goalDropdown.pushItem( "dropdown-weight-loss" );
+    goalDropdown.pushItem( "dropdown-maintainence" );
+    goalDropdown.pushItem( "dropdown-bodybuilding" );
+    goalDropdown.buildButton( );
 
     //displayModal.display();
 });
