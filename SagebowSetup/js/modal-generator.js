@@ -67,6 +67,7 @@ var modalGenerator = function( modalClassName, btnClassName ) {
 	* button contained within our modal window.
 	*/
 	var displayModalOnView = function ( ) {
+	    //See: rearm to understand why I use this checkToggled parameter.
 	    if (_checkToggled == false) {
 	      $("." + _localModalClassName).removeClass( _generateHiddenClass(_localModalClassName));
 	      _buildToggleableUnit( _localModalClassName, _localBtnClassName);
@@ -77,7 +78,8 @@ var modalGenerator = function( modalClassName, btnClassName ) {
 	};
 
 	return {
-	    display: displayModalOnView
+	    display: displayModalOnView,
+	    rearm: _rearm
 	};
     })();
 };

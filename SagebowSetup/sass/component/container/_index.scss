@@ -48,6 +48,12 @@
     padding-left: 30px;
     padding-right: 30px;
     border-radius: 0px;
+    margin: 0px;
+    * {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px;
+    }
 
     &::before{
 	content: "";

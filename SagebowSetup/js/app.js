@@ -9,6 +9,6 @@ $(document).ready(function(){
     //For when user has not entered complete data (maybe call this from the front end?
     var displayModal = modalGenerator( "modal-incomplete-data", "btn-incomplete-data-close" );
 
-    displayModal.display();
+    //displayModal.display();
 });
 

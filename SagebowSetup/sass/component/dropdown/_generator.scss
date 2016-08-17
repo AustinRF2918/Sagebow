@@ -1,0 +1,9 @@
+@mixin generateDropdown {
+    &-hidden {
+	display: none;
+	* {
+	    display: none;
+	}
+    }
+
+}

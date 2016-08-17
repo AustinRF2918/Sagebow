@@ -100,7 +100,7 @@ html, body {
   background: #0288D1;
   padding: 10px 24px 10px 24px;
   position: relative;
-  top: -2px;
+  top: 0px;
   margin: 0px;
   min-width: 88px;
   border-radius: 0px;
@@ -205,9 +205,14 @@ html, body {
   @warning ("_login_container_CTAPrerequisite to be defined.");
   padding-left: 30px;
   padding-right: 30px;
-  border-radius: 0px; }
+  border-radius: 0px;
+  margin: 0px; }
   .cta-container * {
     max-width: 100%; }
+  .cta-container * {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px; }
   .cta-container::before {
     content: "";
     position: absolute;
@@ -481,3 +486,8 @@ html, body {
     transition-duration: 0.2s; }
   .materialize-form:focus {
     background: white; }
+
+.gender-selector-hidden {
+  display: none; }
+  .gender-selector-hidden * {
+    display: none; }

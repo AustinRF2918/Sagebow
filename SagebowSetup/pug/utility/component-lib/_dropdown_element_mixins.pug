@@ -1,0 +1,5 @@
+mixin generateBtnGroup(customSelector, btnDict)
+  div(class=["btn-group"])
+    div(class=["dropdown-menu dropdown", customSelector, customSelector+"-hidden"])
+      each entry in btnDict
+        a(class="dropdown-item" href=entry[1])=entry[0]
