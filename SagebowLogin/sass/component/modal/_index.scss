@@ -3,3 +3,15 @@
 .modal-rejected{
   @include modalWindowStyling();
 }
+
+.modal-user-exists{
+  @include modalWindowStyling();
+}
+
+.modal-internal-error{
+  @include modalWindowStyling();
+}
+
+.modal-incomplete-data{
+  @include modalWindowStyling();
+}

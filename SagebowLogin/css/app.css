@@ -27,6 +27,26 @@ i {
 i {
   color: white; }
 
+.light-text-smaller {
+  color: white !important;
+  opacity: 1; }
+  @media screen and (min-width: 768px) {
+    .light-text-smaller {
+      font-size: 19.998px; } }
+  @media screen and (max-width: 767px) {
+    .light-text-smaller {
+      font-size: 13.332px; } }
+
+.danger-text {
+  color: #E53935; }
+
+i {
+  color: white; }
+
+.super-small {
+  color: white;
+  font-size: 10px; }
+
 @media screen and (max-width: 768px) {
   .m-t-md-2 {
     margin-top: 2em; } }
@@ -80,7 +100,7 @@ html, body {
   background: #0288D1;
   padding: 10px 24px 10px 24px;
   position: relative;
-  top: -2px;
+  top: 0px;
   margin: 0px;
   min-width: 88px;
   border-radius: 0px;
@@ -121,7 +141,7 @@ html, body {
     box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.4); }
 
 .btn-make-account {
-  color: #2ebcfc;
+  color: #03A9F4;
   transition-duration: 0.2s;
   border-radius: 0px;
   font-size: 14px; }
@@ -129,6 +149,28 @@ html, body {
     background: rgba(0, 0, 0, 0.5);
     color: white;
     box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.31); }
+
+.btn-setup-dropdown {
+  background: #C2185B;
+  padding: 10px 24px 10px 24px;
+  position: relative;
+  top: 0px;
+  margin: 0px;
+  min-width: 88px;
+  border-radius: 0px;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  transition-duration: 0.2s; }
+  .btn-setup-dropdown:hover {
+    background: white;
+    color: #C2185B;
+    transition-duration: 0.2s;
+    box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.4); }
 
 @media screen and (min-width: 992px) {
   .extend-full-height {
@@ -164,26 +206,35 @@ html, body {
 
 @media screen and (min-width: 992px) {
   .primary-container {
-    width: 55vw;
+    width: 30vw;
     height: 60vh;
     position: absolute;
     left: 50%;
-    top: 50%;
-    transform: translateY(-50%) translateX(-50%); } }
+    top: 10%;
+    transform: translateY(-10%) translateX(-50%); } }
 
 @media screen and (max-width: 991px) {
   .primary-container {
     position: absolute;
     width: 100%;
-    top: 50%;
-    transform: translateY(-50%); } }
+    top: 20%;
+    transform: translateY(-20%); }
+    .primary-container * {
+      display: block; } }
 
 .cta-container {
   @warning ("Utilizing _login_container_generateCTAClusterContainer requires the mixin");
   @warning ("_login_container_CTAPrerequisite to be defined.");
   padding-left: 30px;
   padding-right: 30px;
-  border-radius: 0px; }
+  border-radius: 0px;
+  margin: 0px; }
+  .cta-container * {
+    max-width: 100%; }
+  .cta-container * {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px; }
   .cta-container::before {
     content: "";
     position: absolute;
@@ -301,6 +352,150 @@ html, body {
         margin-right: 8px;
         margin-top: 25px; }
 
+.modal-user-exists {
+  position: fixed;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+  transition-duration: background .8s;
+  background: transparent; }
+  .modal-user-exists-hidden {
+    z-index: -9999 !important; }
+    .modal-user-exists-hidden .overlay {
+      transition-duration: background .8s;
+      background: transparent !important; }
+  .modal-user-exists .overlay {
+    transition-duration: background .8s;
+    z-index: 9999;
+    transition-duration: .8s;
+    background: rgba(0, 0, 0, 0.5001);
+    position: fixed;
+    width: 100%;
+    height: 100%; }
+    .modal-user-exists .overlay .window {
+      position: fixed;
+      background: white;
+      top: 37.5%;
+      transform: translateY(-37.5%);
+      padding-top: 35px; }
+      @media screen and (max-width: 899px) {
+        .modal-user-exists .overlay .window {
+          width: 90vw;
+          margin-left: 5vw;
+          margin-right: 5vw; } }
+      @media screen and (min-width: 900px) {
+        .modal-user-exists .overlay .window {
+          width: 500px;
+          left: 50%;
+          transform: translateX(-50%); } }
+      .modal-user-exists .overlay .window .top-text {
+        margin-left: 35px;
+        margin-right: 35px;
+        margin-bottom: 25px; }
+      .modal-user-exists .overlay .window .bottom-text {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        margin-top: 25px; }
+
+.modal-internal-error {
+  position: fixed;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+  transition-duration: background .8s;
+  background: transparent; }
+  .modal-internal-error-hidden {
+    z-index: -9999 !important; }
+    .modal-internal-error-hidden .overlay {
+      transition-duration: background .8s;
+      background: transparent !important; }
+  .modal-internal-error .overlay {
+    transition-duration: background .8s;
+    z-index: 9999;
+    transition-duration: .8s;
+    background: rgba(0, 0, 0, 0.5001);
+    position: fixed;
+    width: 100%;
+    height: 100%; }
+    .modal-internal-error .overlay .window {
+      position: fixed;
+      background: white;
+      top: 37.5%;
+      transform: translateY(-37.5%);
+      padding-top: 35px; }
+      @media screen and (max-width: 899px) {
+        .modal-internal-error .overlay .window {
+          width: 90vw;
+          margin-left: 5vw;
+          margin-right: 5vw; } }
+      @media screen and (min-width: 900px) {
+        .modal-internal-error .overlay .window {
+          width: 500px;
+          left: 50%;
+          transform: translateX(-50%); } }
+      .modal-internal-error .overlay .window .top-text {
+        margin-left: 35px;
+        margin-right: 35px;
+        margin-bottom: 25px; }
+      .modal-internal-error .overlay .window .bottom-text {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        margin-top: 25px; }
+
+.modal-incomplete-data {
+  position: fixed;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+  transition-duration: background .8s;
+  background: transparent; }
+  .modal-incomplete-data-hidden {
+    z-index: -9999 !important; }
+    .modal-incomplete-data-hidden .overlay {
+      transition-duration: background .8s;
+      background: transparent !important; }
+  .modal-incomplete-data .overlay {
+    transition-duration: background .8s;
+    z-index: 9999;
+    transition-duration: .8s;
+    background: rgba(0, 0, 0, 0.5001);
+    position: fixed;
+    width: 100%;
+    height: 100%; }
+    .modal-incomplete-data .overlay .window {
+      position: fixed;
+      background: white;
+      top: 37.5%;
+      transform: translateY(-37.5%);
+      padding-top: 35px; }
+      @media screen and (max-width: 899px) {
+        .modal-incomplete-data .overlay .window {
+          width: 90vw;
+          margin-left: 5vw;
+          margin-right: 5vw; } }
+      @media screen and (min-width: 900px) {
+        .modal-incomplete-data .overlay .window {
+          width: 500px;
+          left: 50%;
+          transform: translateX(-50%); } }
+      .modal-incomplete-data .overlay .window .top-text {
+        margin-left: 35px;
+        margin-right: 35px;
+        margin-bottom: 25px; }
+      .modal-incomplete-data .overlay .window .bottom-text {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        margin-top: 25px; }
+
 .materialize-form {
   background: rgba(255, 255, 255, 0.7);
   border-radius: 0px;
@@ -314,3 +509,27 @@ html, body {
     transition-duration: 0.2s; }
   .materialize-form:focus {
     background: white; }
+
+.gender-selector {
+  display: flex;
+  flex-direction: column;
+  background: #c2185b;
+  margin: 0px;
+  padding: 0px;
+  border-radius: 0px !important; }
+  .gender-selector-hidden {
+    display: none; }
+    .gender-selector-hidden * {
+      display: none; }
+
+.goal-selector {
+  display: flex;
+  border-radius: 0px;
+  flex-direction: column;
+  background: #c2185b;
+  margin: 0px;
+  padding: 0px; }
+  .goal-selector-hidden {
+    display: none; }
+    .goal-selector-hidden * {
+      display: none; }

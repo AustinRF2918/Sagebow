@@ -6,12 +6,15 @@
 	  position: absolute;
 
 	  left: 50%;
-	  top: 50%;
+	  top: 10%;
 
-	  transform: translateY(-50%) translateX(-50%);
+	  transform: translateY(-10%) translateX(-50%);
 	}
 
 	@media screen and (max-width: 991px) {
+	  * {
+	      display: block;
+	  }
 	  position: absolute;
 	  width: 100%;
 	  top: $mobileHeight;
@@ -26,6 +29,10 @@
     #{$selector} {
 	@warning("Utilizing _login_container_generateCTAClusterContainer requires the mixin");
 	@warning("_login_container_CTAPrerequisite to be defined.");
+
+	* {
+	    max-width: 100%;
+	}
 
 	@include _login_container_generateCTAClusterContainer
 	@media screen and (min-width: 991px) {
