@@ -11,3 +11,7 @@
 .modal-internal-error{
   @include modalWindowStyling();
 }
+
+.modal-incomplete-data{
+  @include modalWindowStyling();
+}
