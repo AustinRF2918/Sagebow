@@ -30,11 +30,7 @@ var getNetworkInformation = function(){
 }
 
 function startServer(){
-    var express = require('express');
-    var app = express();
-    app.use(require('connect-livereload')());
-    app.use(express.static(EXPRESS_ROOT));
-    app.listen(EXPRESS_PORT);
+    require('./server.js')(EXPRESS_PORT,EXPRESS_ROOT);
 }
 
 var lr;

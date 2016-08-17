@@ -11,6 +11,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
     var appPort = EXPRESS_PORT;
     
     // Express modules
+    app.use(require('connect-livereload')());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
         extended: true
