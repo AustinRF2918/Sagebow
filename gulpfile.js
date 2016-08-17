@@ -60,7 +60,7 @@ gulp.task('pug', function(){
     .pipe(pug({
        pretty: true
     }).on('error', gutil.log))
-    .pipe(gulp.dest('../public'))
+    .pipe(gulp.dest('./public'))
 });
 
 gulp.task('watch', function(){
@@ -71,7 +71,7 @@ gulp.task('watch', function(){
 gulp.task('sass', function(){
     return gulp.src(['sass/app.scss'])
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('../public/res/css/'));
+    .pipe(gulp.dest('./public/res/css/'));
 });
 
 gulp.task('produce', function(){
