@@ -12,6 +12,18 @@
   @include modalWindowStyling();
 }
 
+.modal-incomplete-input{
+  @include modalWindowStyling();
+}
+
+.modal-dne-input{
+  @include modalWindowStyling();
+}
+
+.modal-ip-input{
+  @include modalWindowStyling();
+}
+
 .modal-incomplete-data{
   @include modalWindowStyling();
 }

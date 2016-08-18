@@ -4,16 +4,16 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>EVenture Home</title>
+    <title>Sagebow</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous"/>
     <link rel="stylesheet" href="/res/css/app.css"/>
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet" type="text/css"/>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
-    <script src="/res/js/modal-generator.js"></script>
-    <script src="/res/js/dropdown-generator.js"></script>
-    <script src="/res/js/login_app.js"></script>
+    <script src="res/js/dropdown-generator.js"></script>
+    <script src="res/js/modal-generator.js"></script>
+    <script src="res/js/login_app.js"></script>
   </head>
   <!--This mixin corresponds to the mixins contained within-->
   <!--sass/component/container/. container::generateCenteredContainer-->
@@ -32,7 +32,7 @@
   <!--which will fill up our entire area.-->
   <body>
       <div class="full-page full-page-background">
-          <div class="primary-container">
+          <div class="primary-container-login">
             <div class="row no-margin-mobile">
               <div class="col-lg-12"><i class="fa fa-tree fa-2x" aria-hidden="true"></i></div>
             </div>
@@ -48,7 +48,7 @@
                       <div class="col-lg-5 extend-full-height">
                           <div class="email-address-container">
                             <div class="form-group">
-                              <input class="form-control materialize-form" type="email" id="email-input" placeholder="Enter your email"/>
+                              <input class="form-control materialize-form" type="email" id="email-input" for="username" placeholder="Enter your email"/>
                               <label class="label" for="emailAddress">Email Address:</label>
                             </div>
                           </div>
@@ -56,7 +56,7 @@
                       <div class="col-lg-5 extend-full-height">
                           <div class="password-container">
                             <div class="form-group">
-                              <input class="form-control materialize-form" type="password" id="password-input" placeholder="Enter your password"/>
+                              <input class="form-control materialize-form" type="password" for="password" id="password-input" placeholder="Enter your password"/>
                               <label class="label" for="emailAddress">Password:</label>
                             </div>
                           </div>
@@ -72,7 +72,7 @@
                     <div class="row">
                       <div class="col-lg-5 m y-3">
                           <div class="email-address-container">
-                            <div class="form-group"><a class="btn btn-make-account">Create a new account.</a></div>
+                            <div class="form-group"><a class="btn btn-make-account" href="/setup">Create a new account.</a></div>
                           </div>
                       </div>
                     </div>
@@ -82,14 +82,36 @@
           </div>
       </div>
   </body>
-    <div class="modal-rejected modal-rejected-hidden">
+    <div class="modal-incomplete-input modal-incomplete-input-hidden">
       <div class="overlay">
         <div class="window">
           <div class="top-text">
             <h2 class="m-b-1 danger-text">Oh No!</h2>
-            <p>Unfourtunately your input information was not correct. Please enter it again.</p>
+            <p>You entered incomplete data! Please fill out all the forms.</p>
           </div>
-          <div class="bottom-text text-xs-right"><a class="btn-reject btn">Exit</a></div>
+          <div class="bottom-text text-xs-right"><a class="btn-modal-incomplete-input-reject btn">Exit</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-dne-input modal-dne-input-hidden">
+      <div class="overlay">
+        <div class="window">
+          <div class="top-text">
+            <h2 class="m-b-1 danger-text">Oh No!</h2>
+            <p>Your username is not in our database! Maybe make an account?</p>
+          </div>
+          <div class="bottom-text text-xs-right"><a class="btn-modal-dne-input-reject btn">Exit</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-ip-input modal-ip-input-hidden">
+      <div class="overlay">
+        <div class="window">
+          <div class="top-text">
+            <h2 class="m-b-1 danger-text">Oh No!</h2>
+            <p>Your password is incorrect.</p>
+          </div>
+          <div class="bottom-text text-xs-right"><a class="btn-modal-ip-input-reject btn">Exit</a></div>
         </div>
       </div>
     </div>

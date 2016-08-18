@@ -3,6 +3,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
     var app = require('express')();
     var bodyParser = require('body-parser');
     var session = require('express-session');
+
     // var fs = require('fs');
     var redisConn = require('redis').createClient();
     var bcrypt = require('bcryptjs');
@@ -16,51 +17,30 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
     app.use(bodyParser.urlencoded({
         extended: true
     }));
+
     app.use(session({
         secret: require('hat')(),
         resave: false,
         saveUninitialized: false
     }));
-    
-    // File server helper
-    function serveFile(uri,res){
-        res.set('Content-Type', 'text/html');
-        res.sendFile(uri, {
-            root: EXPRESS_ROOT,
-            dotfiles: 'deny',
-            headers: {
-                'x-timestamp': Date.now(),
-                'x-sent': true
-            }
-        });
-    }
-    
-    // DB persistence helper
-    function attemptSave(req,res,fallback){
-        redisConn.set(
-            req.session.userObj.username,
-            JSON.stringify(req.session.userObj),
-            function(err){
-            if(err){
-                console.error(err);
-                req.session.userObj = fallback;
-                res.sendStatus(500);
-            }else{
-                res.sendStatus(200);
-            }
-        });
-    }
+
+    //Helper functions described in server/helper.js.
+    var serveFile = require('./server/helpers.js')( EXPRESS_PORT, EXPRESS_ROOT ).serveFile;
+    var attemptSave = require('./server/helpers.js')( EXPRESS_PORT, EXPRESS_ROOT ).attemptSave;
+    var responseGenerator = require('./server/ajResponse.js');
     
     // PUBLIC ROUTES:
     // Public
     app.get(/^\/res\/.+/, function(req, res) {
         serveFile(req.url.match('[^?#]+')[0],res);
     });
+
     app.get('/login',function(req,res){
-        serveFile('login.html',res);
+        serveFile('/login.html',res);
     });
+
     app.get('/setup',function(req,res){
-        serveFile('setup.html',res);
+        serveFile('/setup.html',res);
     });
     
     // Post Login
@@ -68,36 +48,36 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
         var username = req.body.username.trim();
         var password = req.body.password.trim();
         
-        if(!username || !password){
-            res.redirect('/login#incomplete');
-        } else {
+	//Not neccessary anymore: handled on the front end.
+        //if(!username || !password){
+        //    res.redirect('/login.html#incomplete');
+        //} else {
             // Attempt user lookup
-            redisConn.get(username,function(err,userObj){
+            redisConn.get(username,function( err, userObj ){
                 userObj = JSON.parse(userObj);
-                if(err){
-                    // Internal error
-                    console.error(err);
-                    res.redirect('/login#error');
-                }else{
-                    if(!userObj){
-                        // User not found
-                        console.log('user not found');
-                        res.redirect('/login#invalid');
-                    }else{
-                        if(!bcrypt.compareSync(password, userObj.passwordHash)){
-                            // Invalid password
-                            console.log('invalid password');
-                            res.redirect('/login#invalid');
-                        }else{
-                            // Grant access!
-                            console.log('granting access');
-                            req.session.userObj = userObj;
-                            res.redirect('/metrics');
-                        }
-                    }
-                }
-            });
-        }
+                if( err ){
+		    //Internal server error.
+		    var responseData = responseGenerator.loginErrorResponse( err );
+		    responseGenerator.sendResponseObject( res, responseData );
+
+                } else if ( !userObj ) {
+		    // User not found.
+		    var responseData = responseGenerator.userNotFoundResponse( );
+		    responseGenerator.sendResponseObject( res, responseData );
+
+                } else if( !bcrypt.compareSync(password, userObj.passwordHash )){
+		    // Bad password.
+		    var responseData = responseGenerator.invalidPasswordResponse( );
+		    responseGenerator.sendResponseObject( res, responseData );
+
+                } else {
+		    // Grant access!
+		    console.log('granting access');
+		    req.session.userObj = userObj;
+		    res.redirect('/metrics');
+		}
+	    }
+	);
     });
     
     // Post setup

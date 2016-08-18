@@ -3,7 +3,7 @@ include ../../utility/component-lib/_login_background_generateBackground.pug
 include ../../utility/component-lib/_modalWindow-mixins.pug
 body
   +_login_background_generateBackground("full-page", "full-page-background")
-    +_login_container_generateCenteredContainer("primary-container")
+    +_login_container_generateCenteredContainer("primary-container-login")
       .row.no-margin-mobile
         .col-lg-12
           i(class=["fa", "fa-tree fa-2x"] aria-hidden="true")
@@ -17,12 +17,12 @@ body
               .col-lg-5.extend-full-height
                 +_login_container_generateVCenteredElementContainer("email-address-container")
                   .form-group
-                    input(type="email" class=["form-control", "materialize-form"], id="email-input", placeholder="Enter your email")
+                    input(type="email" class=["form-control", "materialize-form"], id="email-input", for="username", placeholder="Enter your email")
                     label(for="emailAddress" class="label") Email Address:
               .col-lg-5.extend-full-height
                 +_login_container_generateVCenteredElementContainer("password-container")
                   .form-group
-                    input(type="password" class=["form-control", "materialize-form"], id="password-input", placeholder="Enter your password")
+                    input(type="password", for="password", class=["form-control", "materialize-form"], id="password-input", placeholder="Enter your password")
                     label(for="emailAddress" class="label") Password:
               .col-lg-2.extend-full-height
                 +_login_container_generateVCenteredElementContainer("login-container")
@@ -33,6 +33,7 @@ body
               .col-lg-5.m.y-3
                 +_login_container_generateVCenteredElementContainer("email-address-container")
                   .form-group
-                    a(class=["btn", "btn-make-account"]) Create a new account.
-
-+generateModalWindow("modal-rejected", "Oh No!", "danger-text", "Unfourtunately your input information was not correct. Please enter it again.", "Exit", "btn-reject")
+                    a(class=["btn", "btn-make-account"] href="/setup") Create a new account.
++generateModalWindow("modal-incomplete-input", "Oh No!", "danger-text", "You entered incomplete data! Please fill out all the forms.", "Exit", "btn-modal-incomplete-input-reject")
++generateModalWindow("modal-dne-input", "Oh No!", "danger-text", "Your username is not in our database! Maybe make an account?", "Exit", "btn-modal-dne-input-reject")
++generateModalWindow("modal-ip-input", "Oh No!", "danger-text", "Your password is incorrect.", "Exit", "btn-modal-ip-input-reject")

@@ -1,4 +1,4 @@
-@mixin _login_container_generateCenteredContainer($selector, $widthAsPercent, $heightAsPercent, $mobileHeight) {
+@mixin _login_container_generateCenteredContainer($selector, $widthAsPercent, $heightAsPercent, $mobileHeight, $topAsPercent) {
     #{$selector} {
 	@media screen and (min-width: 992px){
 	  width: $widthAsPercent;
@@ -6,15 +6,12 @@
 	  position: absolute;
 
 	  left: 50%;
-	  top: 10%;
+	  top: $topAsPercent;
 
-	  transform: translateY(-10%) translateX(-50%);
+	  transform: translateY(-$topAsPercent) translateX(-50%);
 	}
 
 	@media screen and (max-width: 991px) {
-	  * {
-	      display: block;
-	  }
 	  position: absolute;
 	  width: 100%;
 	  top: $mobileHeight;
@@ -44,7 +41,6 @@
 	    margin: 0px;
 	    padding:0px;
 	    width: 100%;
-	    height: $mobileHeight;
 	}
     }
 }

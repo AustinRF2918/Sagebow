@@ -11,6 +11,7 @@
 }
 
 .extend-full-width {
+
     height: 100%;
 }
 
@@ -42,7 +43,8 @@
     }
 }
 
-@include _login_container_generateCenteredContainer(".primary-container", 30vw, 60vh, 20%);
+@include _login_container_generateCenteredContainer(".primary-container-login", 50vw, -100vh, 20%, 35%);
+@include _login_container_generateCenteredContainer(".primary-container-setup", 30vw, 60vh, 20%, 10%);
 
 @mixin _login_container_generateCTAClusterContainer {
     padding-left: 30px;

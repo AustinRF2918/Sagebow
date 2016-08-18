@@ -1,4 +1,8 @@
-.btn-reject {
+.btn-reject,
+.btn-modal-incomplete-input-reject,
+.btn-modal-dne-input-reject,
+.btn-modal-ip-input-reject
+{
     @include generateMediumButton(white,
 				  0px,
 				  #B71C1C,

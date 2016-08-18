@@ -118,7 +118,10 @@ html, body {
     transition-duration: 0.2s;
     box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.4); }
 
-.btn-reject {
+.btn-reject,
+.btn-modal-incomplete-input-reject,
+.btn-modal-dne-input-reject,
+.btn-modal-ip-input-reject {
   background: white;
   padding: 10px 24px 10px 24px;
   position: relative;
@@ -134,7 +137,10 @@ html, body {
   border: none;
   outline: none;
   transition-duration: 0.2s; }
-  .btn-reject:hover {
+  .btn-reject:hover,
+  .btn-modal-incomplete-input-reject:hover,
+  .btn-modal-dne-input-reject:hover,
+  .btn-modal-ip-input-reject:hover {
     background: #B71C1C;
     color: white;
     transition-duration: 0.2s;
@@ -205,7 +211,23 @@ html, body {
     background: white; }
 
 @media screen and (min-width: 992px) {
-  .primary-container {
+  .primary-container-login {
+    width: 50vw;
+    height: -100vh;
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    transform: translateY(-35%) translateX(-50%); } }
+
+@media screen and (max-width: 991px) {
+  .primary-container-login {
+    position: absolute;
+    width: 100%;
+    top: 20%;
+    transform: translateY(-20%); } }
+
+@media screen and (min-width: 992px) {
+  .primary-container-setup {
     width: 30vw;
     height: 60vh;
     position: absolute;
@@ -214,13 +236,11 @@ html, body {
     transform: translateY(-10%) translateX(-50%); } }
 
 @media screen and (max-width: 991px) {
-  .primary-container {
+  .primary-container-setup {
     position: absolute;
     width: 100%;
     top: 20%;
-    transform: translateY(-20%); }
-    .primary-container * {
-      display: block; } }
+    transform: translateY(-20%); } }
 
 .cta-container {
   @warning ("Utilizing _login_container_generateCTAClusterContainer requires the mixin");
@@ -253,8 +273,7 @@ html, body {
     .cta-container {
       margin: 0px;
       padding: 0px;
-      width: 100%;
-      height: 280px; } }
+      width: 100%; } }
 
 .email-address-container {
   width: 90%;
@@ -444,6 +463,150 @@ html, body {
         margin-right: 35px;
         margin-bottom: 25px; }
       .modal-internal-error .overlay .window .bottom-text {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        margin-top: 25px; }
+
+.modal-incomplete-input {
+  position: fixed;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+  transition-duration: background .8s;
+  background: transparent; }
+  .modal-incomplete-input-hidden {
+    z-index: -9999 !important; }
+    .modal-incomplete-input-hidden .overlay {
+      transition-duration: background .8s;
+      background: transparent !important; }
+  .modal-incomplete-input .overlay {
+    transition-duration: background .8s;
+    z-index: 9999;
+    transition-duration: .8s;
+    background: rgba(0, 0, 0, 0.5001);
+    position: fixed;
+    width: 100%;
+    height: 100%; }
+    .modal-incomplete-input .overlay .window {
+      position: fixed;
+      background: white;
+      top: 37.5%;
+      transform: translateY(-37.5%);
+      padding-top: 35px; }
+      @media screen and (max-width: 899px) {
+        .modal-incomplete-input .overlay .window {
+          width: 90vw;
+          margin-left: 5vw;
+          margin-right: 5vw; } }
+      @media screen and (min-width: 900px) {
+        .modal-incomplete-input .overlay .window {
+          width: 500px;
+          left: 50%;
+          transform: translateX(-50%); } }
+      .modal-incomplete-input .overlay .window .top-text {
+        margin-left: 35px;
+        margin-right: 35px;
+        margin-bottom: 25px; }
+      .modal-incomplete-input .overlay .window .bottom-text {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        margin-top: 25px; }
+
+.modal-dne-input {
+  position: fixed;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+  transition-duration: background .8s;
+  background: transparent; }
+  .modal-dne-input-hidden {
+    z-index: -9999 !important; }
+    .modal-dne-input-hidden .overlay {
+      transition-duration: background .8s;
+      background: transparent !important; }
+  .modal-dne-input .overlay {
+    transition-duration: background .8s;
+    z-index: 9999;
+    transition-duration: .8s;
+    background: rgba(0, 0, 0, 0.5001);
+    position: fixed;
+    width: 100%;
+    height: 100%; }
+    .modal-dne-input .overlay .window {
+      position: fixed;
+      background: white;
+      top: 37.5%;
+      transform: translateY(-37.5%);
+      padding-top: 35px; }
+      @media screen and (max-width: 899px) {
+        .modal-dne-input .overlay .window {
+          width: 90vw;
+          margin-left: 5vw;
+          margin-right: 5vw; } }
+      @media screen and (min-width: 900px) {
+        .modal-dne-input .overlay .window {
+          width: 500px;
+          left: 50%;
+          transform: translateX(-50%); } }
+      .modal-dne-input .overlay .window .top-text {
+        margin-left: 35px;
+        margin-right: 35px;
+        margin-bottom: 25px; }
+      .modal-dne-input .overlay .window .bottom-text {
+        margin-bottom: 8px;
+        margin-right: 8px;
+        margin-top: 25px; }
+
+.modal-ip-input {
+  position: fixed;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.8);
+  transition-duration: background .8s;
+  background: transparent; }
+  .modal-ip-input-hidden {
+    z-index: -9999 !important; }
+    .modal-ip-input-hidden .overlay {
+      transition-duration: background .8s;
+      background: transparent !important; }
+  .modal-ip-input .overlay {
+    transition-duration: background .8s;
+    z-index: 9999;
+    transition-duration: .8s;
+    background: rgba(0, 0, 0, 0.5001);
+    position: fixed;
+    width: 100%;
+    height: 100%; }
+    .modal-ip-input .overlay .window {
+      position: fixed;
+      background: white;
+      top: 37.5%;
+      transform: translateY(-37.5%);
+      padding-top: 35px; }
+      @media screen and (max-width: 899px) {
+        .modal-ip-input .overlay .window {
+          width: 90vw;
+          margin-left: 5vw;
+          margin-right: 5vw; } }
+      @media screen and (min-width: 900px) {
+        .modal-ip-input .overlay .window {
+          width: 500px;
+          left: 50%;
+          transform: translateX(-50%); } }
+      .modal-ip-input .overlay .window .top-text {
+        margin-left: 35px;
+        margin-right: 35px;
+        margin-bottom: 25px; }
+      .modal-ip-input .overlay .window .bottom-text {
         margin-bottom: 8px;
         margin-right: 8px;
         margin-top: 25px; }
