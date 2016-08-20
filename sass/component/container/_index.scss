@@ -10,6 +10,15 @@
     }
 }
 
+.extend-full-height-absolute {
+    @media screen and (min-width: 992px){
+      height: 25px;
+    }
+
+    @media screen and (max-width: 991px){
+	height: 25px;
+    }
+}
 .extend-full-width {
 
     height: 100%;
@@ -51,10 +60,11 @@
     padding-right: 30px;
     border-radius: 0px;
     margin: 0px;
+    
     * {
-    display: block;
-    margin-left: 0px;
-    margin-right: 0px;
+        align-items: center;
+        margin-left: 0px;
+        margin-right: 0px;
     }
 
     &::before{

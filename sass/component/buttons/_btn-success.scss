@@ -1,0 +1,12 @@
+.btn-success,
+{
+    @include generateMediumButton(white,
+				  0px,
+				  #2E7D32,
+				  uppercase,
+				  0px,
+				  .2s,
+				  #2E7D32,
+				  white,
+				  0 6px 15px 0 rgba(0, 0, 0, 0.4));
+}

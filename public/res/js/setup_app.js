@@ -18,10 +18,10 @@ function calculateBmi(weight, height) {
 }
 
 function calculateBmr(weight, height, gender, age) {
-	if (gender === 'douche') {
+	if (gender === 'Male') {
 		return 655 + (4.35 * weight) + (4.7 * toInches(height)) - (4.7 * age);
 	}
-	else if (gender === 'hoe') {
+	else if (gender === 'Female') {
 		return 66 + (6.23 * weight) + (12.7 * toInches(height)) - (6.8 * age);
 	}
 	//     BMR for men: 655 + (4.35 x weight in pounds) + (4.7 x height in inches) - (4.7 x age in years)
@@ -68,11 +68,15 @@ $(document).ready(function() {
 	activityDropdown.buildButton();
 
 	$(".btn-modal-incomplete-input-reject").on('click', function() {
-		$(".modal-incomplete-input").toggleClass("modal-incomplete-input-hidden");
+		$(".modal-incomplete-input").addClass("modal-incomplete-input-hidden");
 	});
-
+	
+	$(".btn-user-exists-close").on('click', function() {
+		$(".modal-user-exists").addClass("modal-user-exists-hidden");
+	});
+	
 	$(".btn-modal-internal-error-reject").on('click', function() {
-		$(".modal-internal-error").toggleClass("modal-internal-error-hidden");
+		$(".modal-internal-error").addClass("modal-internal-error-hidden");
 	});
 
 	$(".btn-incomplete-data-close").on('click', function() {
@@ -82,18 +86,28 @@ $(document).ready(function() {
 	$(".btn-internal-error-close").on('click', function() {
 		$(".modal-internal-error").addClass("modal-internal-error-hidden");
 	});
+	
+	$(".btn-modal-success-close").on('click', function() {
+		window.location.pathname = '/login';
+	});
+	
+	$(".btn-malformed-data-close").on('click', function() {
+		$(".modal-malformed-data").addClass("modal-malformed-data-hidden");
+	});
+	
 	$(".btn-login").on('click', function() {
 		if (checkInputs()) {
 			var username = $('#username').val(),
 				password = $('#password').val(),
-				weight = $('#weight').val(),
-				height = $('#height').val(),
+				weight = Number($('#weight').val()),
+				height = Number($('#height').val()),
 				bmi = calculateBmi(weight, height),
 				activityLevel = $('#activity-level').text(),
 				gender = $('#gender').text(),
-				age = $('#age').val(),
+				age = Number($('#age').val()),
 				bmr = calculateBmr(weight, height, gender, age),
 				dailyCalories = calculateDailyCalories(bmr, activityLevel);
+			
 			$.post("/setup", {
 				username: username,
 				password: password,
@@ -103,13 +117,12 @@ $(document).ready(function() {
 				'dataType': "text"
 				
 			}).done(function(msg) {
-				console.log(msg);
 				switch(msg){
 					case 'error': $(".modal-internal-error").removeClass("modal-internal-error-hidden"); break;
-					//case 'exists': ; break;
-					//case 'malformed': ; break
+					case 'exists': $(".modal-user-exists").removeClass("modal-user-exists-hidden"); break;
+					case 'malformed': $(".modal-malformed-data").removeClass("modal-malformed-data-hidden"); break;
 					case 'incomplete': $(".modal-incomplete-data").removeClass("modal-incomplete-data-hidden"); break;
-					//case 'success': ; break;
+					case 'success': $(".modal-success").removeClass("modal-success-hidden"); break;
 				}
 			});
 		} else {

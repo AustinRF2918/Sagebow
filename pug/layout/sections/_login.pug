@@ -24,13 +24,13 @@ body
                   .form-group
                     input(type="password", for="password", class=["form-control", "materialize-form"], id="password-input", placeholder="Enter your password")
                     label(for="emailAddress" class="label") Password:
-              .col-lg-2.extend-full-height
+              .col-lg-2
                 +_login_container_generateVCenteredElementContainer("login-container")
                   .form-group
                     a(class=["btn", "btn-login"]) Login
                     label(class=["consistency-hide"] for="btn") Password:
             .row
-              .col-lg-5.m.y-3
+              .col-lg-5.m.t-1.extend-full-height-absolute
                 +_login_container_generateVCenteredElementContainer("email-address-container")
                   .form-group
                     a(class=["btn", "btn-make-account"] href="/setup") Create a new account.

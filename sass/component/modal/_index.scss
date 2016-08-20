@@ -27,3 +27,12 @@
 .modal-incomplete-data{
   @include modalWindowStyling();
 }
+
+.modal-malformed-data{
+  @include modalWindowStyling();
+}
+
+.modal-success{
+  @include modalWindowStyling();
+}
+

@@ -98,7 +98,16 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
         }
         if(fieldsPresent){
             // verify integrity
-            // if(req.body.username.match(/.{6,}/) && req.body.password.match())
+            if(
+                req.body.username.match(/[0-9a-z]{3,}/i) && 
+                req.body.password.match(/.{6,}/) &&
+                req.body.weight.match(/[0-9]+/) &&
+                parseFloat(req.body.weight) > 0 &&
+                req.body.bmi.match(/[0-9]+/) &&
+                parseFloat(req.body.bmi) > 0 && 
+                req.body.dailyCalories.match(/[0-9]*/) &&
+                parseFloat(req.body.dailyCalories) > 0
+            ){
             
             // Hash password
             var passwordHash = bcrypt.hashSync(req.body.password);
@@ -150,6 +159,10 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
             }).catch(function(err){
                 console.error(err);
             });
+            }else{
+                res.status(200).send('malformed');
+                console.log('malformed data');
+            }
         }else{
             // Missing fields
             res.status(200).send('incomplete');
