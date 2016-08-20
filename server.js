@@ -48,36 +48,20 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         var username = req.body.username.trim();
         var password = req.body.password.trim();
 
-        //Not neccessary anymore: handled on the front end.
-        //if(!username || !password){
-        //    res.redirect('/login.html#incomplete');
-        //} else {
         // Attempt user lookup
         redisConn.get(username, function(err, userObj) {
             userObj = JSON.parse(userObj);
-            if (err) {
-                //Internal server error.
-                var responseData = responseGenerator.loginErrorResponse(err);
-                responseGenerator.sendResponseObject(res, responseData);
-
-            }
-            else if (!userObj) {
-                // User not found.
-                var responseData = responseGenerator.userNotFoundResponse();
-                responseGenerator.sendResponseObject(res, responseData);
-
-            }
-            else if (!bcrypt.compareSync(password, userObj.passwordHash)) {
-                // Bad password.
-                var responseData = responseGenerator.invalidPasswordResponse();
-                responseGenerator.sendResponseObject(res, responseData);
-
-            }
+            if (err)
+                res.send('error');
+            else if (!userObj)
+                res.send('invalid');
+            else if (!bcrypt.compareSync(password, userObj.passwordHash))
+                res.send('invalid');
             else {
                 // Grant access!
                 console.log('granting access');
                 req.session.userObj = userObj;
-                res.redirect('/metrics');
+                res.send('success');
             }
         });
     });

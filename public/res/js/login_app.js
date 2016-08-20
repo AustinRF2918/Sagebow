@@ -30,8 +30,18 @@ $(document).ready(function(){
 		'username': $("#email-input").val(),
 		'password': $("#password-input").val(),
 		'dataType': "json"
-	    }).done(function( msg, status, jqXHR ) {
-		var response = $.parseJSON( msg );
+	    }).done(function( msg) {
+	    	switch(msg){
+	    		case 'invalid': 
+	    			new FingModal('Oh No!','The information you have entered is invalid. Check your username and password and try again!',true).show();
+	    			break;
+    			case 'error':
+    				new FingModal('Oops...','We experienced an error and couldn\'t log you in. Try again in a minute.',true).show();
+	    			break;
+	    		case 'success':
+    				window.location.pathname = '/metrics';
+	    		
+	    	}
 		if ( response.code == 404 ) {
 		    $(".modal-dne-input").toggleClass("modal-dne-input-hidden");
 		} else if ( response.code == 401 ) {
