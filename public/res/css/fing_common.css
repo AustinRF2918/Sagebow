@@ -33,3 +33,53 @@
 .hidden {
     display: none !important;
 }
+
+.center {
+    margin: .5in auto;
+    width:80%;
+}
+
+.graph {
+    background-color:#EEE;
+    width:100%;
+    min-height:3in;
+    display: flex;
+    justify-content:flex-end;
+    align-items:flex-end;
+}
+
+.dot {
+    width:10px;
+    height:10px;
+    background-color:blue;
+    border-radius: 100%;
+}
+
+#resolutionSwitcher {
+    display:flex;
+}
+
+.resolution {
+    flex:1;
+    margin:.25in;
+}
+
+@media screen and (min-width: 768px) {
+    .container-bs {
+        margin-left: 5vw;
+        margin-right: 5vw;
+        width: 90vw;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .container-bs {
+        margin-left: 2vw;
+        margin-right: 2vw;
+        width: 94vw;
+    }
+}
+
+.row-bs {
+    display: flex;
+}

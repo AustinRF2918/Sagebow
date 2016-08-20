@@ -1,0 +1,21 @@
+.page-header {
+    margin-top: 40px;
+    padding: 30px;
+    background: #AED581;
+    color: white;
+    
+    .row-bs {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 2 1px 1px rgba(0, 0, 0, 0.34);
+    }
+    
+    @media screen and (min-width: 768px) {
+        width: 450px !important;
+    }
+    
+    h1 {
+        @media screen and (max-width: 768px) {
+            text-align: center;
+        }
+        
+    }
+}

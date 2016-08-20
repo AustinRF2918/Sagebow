@@ -1,6 +1,7 @@
+include utility/_boilerplate.pug
 html
   head
-    include utility/_boilerplate.pug
+    +generateBoilerplate(true)
     script(src="res/js/login_app.js")
     
   include utility/_modalWindow-mixins.pug
@@ -38,7 +39,3 @@ html
                   div
                     .form-group
                       a.btn.btn-make-account(href="/setup") Create a new account.
-                      
-  //- +generateModalWindow("modal-incomplete-input", "Oh No!", "danger-text", "You entered incomplete data! Please fill out all the forms.", "Exit", "btn-modal-incomplete-input-reject")
-  //- +generateModalWindow("modal-dne-input", "Oh No!", "danger-text", "Your username is not in our database! Maybe make an account?", "Exit", "btn-modal-dne-input-reject")
-  //- +generateModalWindow("modal-ip-input", "Oh No!", "danger-text", "Your password is incorrect.", "Exit", "btn-modal-ip-input-reject")

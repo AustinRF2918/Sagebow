@@ -1,19 +1,22 @@
+include utility/_boilerplate.pug
 html
   head
-    include utility/_boilerplate.pug
+    +generateBoilerplate(false)
   body
-  .full-background
-  .full-container
-    .primary-container
-      .row.m-t-1.no-margin-mobile
-        .col-lg-12.text-lg-left.text-xs-center
-          i.fa.fa-tree.fa-2x(aria-hidden="true")
-      .row.m-t-1.no-margin-mobile
-        .col-lg-6.text-lg-left.text-xs-center
-          h1.light-text   Sagebow
-        .col-lg-6.text-lg-right.text-xs-center
-          h4.light-text-smaller Viewing your history
-      .row.m-t-1.no-margin-mobile
-        .col-lg-12.p-y-2
-          div.cta-container
-            h2 tl;dr ... YOU'RE A FAT FUCK
+    .navbar-sagebow
+      .left-side
+        a.brand-nav Sagebow
+      .right-side
+        a.page-nav Metrics
+        a.page-nav Entry
+        a.page-nav Log-Off
+    .container-bs.page-header
+      .row-bs
+        h1 Fat Person History:
+    .center 
+      .graph
+        .dot
+      #resolutionSwitcher
+        button.resolution(value='7') Week
+        button.resolution(value='31') Month
+        button.resolution(value='365') Year

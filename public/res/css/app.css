@@ -809,3 +809,61 @@ html, body {
     display: none; }
     .activity-selector-hidden * {
       display: none; }
+
+.navbar-sagebow {
+  top: 0;
+  width: 100vw !important;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #f3f3f3; }
+  @media screen and (min-width: 768px) {
+    .navbar-sagebow {
+      padding-left: 5vw;
+      padding-right: 5vw; } }
+  @media screen and (max-width: 768px) {
+    .navbar-sagebow {
+      flex-direction: column; } }
+  .navbar-sagebow .brand-nav {
+    font-size: 28px;
+    line-height: 80px;
+    padding-top: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 23px;
+    transition: color .2s;
+    color: #4CAF50; }
+    .navbar-sagebow .brand-nav:hover {
+      cursor: pointer;
+      text-decoration: none;
+      border-bottom: 2px solid #4CAF50;
+      color: #3d8b40; }
+  .navbar-sagebow .page-nav {
+    font-size: 16px;
+    line-height: 80px;
+    padding-top: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 29.5px;
+    transition: color .2s;
+    color: #00695C; }
+    .navbar-sagebow .page-nav:hover {
+      cursor: pointer;
+      text-decoration: none;
+      border-bottom: 2px solid #00695C;
+      color: #00362f; }
+
+.page-header {
+  margin-top: 40px;
+  padding: 30px;
+  background: #AED581;
+  color: white; }
+  .page-header .row-bs {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 2 1px 1px rgba(0, 0, 0, 0.34); }
+  @media screen and (min-width: 768px) {
+    .page-header {
+      width: 450px !important; } }
+  @media screen and (max-width: 768px) {
+    .page-header h1 {
+      text-align: center; } }

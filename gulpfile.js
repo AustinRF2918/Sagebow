@@ -37,7 +37,7 @@ var lr;
 
 function startLiveReload(){
     lr = require('tiny-lr')();
-    lr.listen(LIVERELOAD_PORT);
+    // lr.listen(LIVERELOAD_PORT);
 }
 
 function notifyLivereload(event){
