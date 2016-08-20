@@ -16,72 +16,57 @@
     <script src="res/js/modal-generator.js"></script>
     <script src="res/js/login_app.js"></script>
   </head>
-  <!--This mixin corresponds to the mixins contained within-->
-  <!--sass/component/container/. container::generateCenteredContainer-->
-  <!--takes a simple selector and generates it.-->
-  <!--This mixin corresponds to the mixins contained within-->
-  <!--sass/component/container/. container::generateClusterContainer-->
-  <!--takes a simple selector and generates it.-->
-  <!--This mixin corresponds to the mixins contained within-->
-  <!--sass/component/container/. container::generateCenteredElement-->
-  <!--takes a simple selector and generates it.-->
-  <!--This mixin corresponds to the mixins contained within-->
-  <!--sass/component/background/ and sass/component/sizing/-->
-  <!--background::generateBackground takes a simple selector -->
-  <!--for the page that we are referring to (which will be-->
-  <!--promptly expanded, and a selector for the background -->
-  <!--which will fill up our entire area.-->
   <body>
-      <div class="full-page full-page-background">
-          <div class="primary-container-login">
-            <div class="row no-margin-mobile">
-              <div class="col-lg-12"><i class="fa fa-tree fa-2x" aria-hidden="true"></i></div>
-            </div>
-            <div class="row m-t-1 no-margin-mobile">
-              <div class="col-lg-6">
-                <h1 class="light-text">Welcome back to Sagebow.</h1>
-              </div>
-            </div>
-            <div class="row m-t-1 no-margin-mobile">
-              <div class="col-lg-12 p-y-2">
-                  <div class="cta-container">
-                    <div class="row">
-                      <div class="col-lg-5 extend-full-height">
-                          <div class="email-address-container">
-                            <div class="form-group">
-                              <input class="form-control materialize-form" type="email" id="email-input" for="username" placeholder="Enter your username"/>
-                              <label class="label" for="emailAddress">Username:</label>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-5 extend-full-height">
-                          <div class="password-container">
-                            <div class="form-group">
-                              <input class="form-control materialize-form" type="password" for="password" id="password-input" placeholder="Enter your password"/>
-                              <label class="label" for="emailAddress">Password:</label>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-2">
-                          <div class="login-container">
-                            <div class="form-group"><a class="btn btn-login">Login</a>
-                              <label class="consistency-hide" for="btn">Password:</label>
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-5 m t-1 extend-full-height-absolute">
-                          <div class="email-address-container">
-                            <div class="form-group"><a class="btn btn-make-account" href="/setup">Create a new account.</a></div>
-                          </div>
-                      </div>
+    <div class="full-background">
+      <div class="primary-container-login">
+        <div class="row no-margin-mobile">
+          <div class="col-lg-12"><i class="fa fa-tree fa-2x" aria-hidden="true"></i></div>
+        </div>
+        <div class="row m-t-1 no-margin-mobile">
+          <div class="col-lg-6">
+            <h1 class="light-text">Welcome back to Sagebow.</h1>
+          </div>
+        </div>
+        <div class="row m-t-1 no-margin-mobile">
+          <div class="col-lg-12 p-y-2">
+            <div class="cta-container">
+              <div class="row">
+                <div class="col-lg-5 extend-full-height">
+                  <div class="email-address-container">
+                    <div class="form-group">
+                      <input class="form-control materialize-form" type="email" id="email-input" for="username" placeholder="Enter your username"/>
+                      <label class="label" for="emailAddress">Username:</label>
                     </div>
                   </div>
+                </div>
+                <div class="col-lg-5 extend-full-height">
+                  <div class="password-container">
+                    <div class="form-group">
+                      <input class="form-control materialize-form" type="password" for="password" id="password-input" placeholder="Enter your password"/>
+                      <label class="label" for="emailAddress">Password:</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <div class="login-container">
+                    <div class="form-group"><a class="btn btn-login">Login</a>
+                      <label class="consistency-hide" for="btn">Password:</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-5 m t-1 extend-full-height-absolute">
+                  <div class="email-address-container">
+                    <div class="form-group"><a class="btn btn-make-account" href="/setup">Create a new account.</a></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+        </div>
       </div>
+    </div>
   </body>
     <div class="modal-incomplete-input modal-incomplete-input-hidden">
       <div class="overlay">

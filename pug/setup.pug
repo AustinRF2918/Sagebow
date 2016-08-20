@@ -1,5 +1,59 @@
-include ./component/_index.pug
 html
   head
-    include utility/head/_setup.pug
-  include layout/sections/_setup.pug
+    include utility/_boilerplate.pug
+    script(src="res/js/setup_app.js")
+  include utility/_modalWindow-mixins.pug
+  include utility/_mkacct_element_mixins.pug
+  include utility/_dropdown_element_mixins.pug
+  body
+    div.full-background
+      div.primary-container-setup
+        .row.no-margin-mobile
+          .col-lg-12.text-lg-left.text-xs-center
+            i(class=["fa", "fa-tree fa-2x"] aria-hidden="true")
+        .row.m-t-1.no-margin-mobile
+          .col-lg-6.text-lg-left.text-xs-center
+            h1.light-text Sign Up
+          .col-lg-6.text-lg-right.text-xs-center
+            h4.light-text-smaller Welcome To Sagebow!
+        .row.m-t-1.no-margin-mobile
+          .col-lg-12.p-y-2
+            div.cta-container
+              +_accountCreation_form_generateFormInput("username", "Username")
+              +_accountCreation_form_generateFormInputPassword("password", "Password")
+              .row.m-t-1
+                .col-xs-6.btn-cluster
+                  .row
+                    a(id="gender" class=["btn", "btn-gender", "required", "btn-setup-dropdown"]) Gender
+                  .row
+                    +generateBtnGroup("gender-selector", [["Female", "#", "dropdown-female"], ["Male", "#", "dropdown-male"]], "btn-setup-dropdown")
+                .col-xs-6.p-y-0.super-small.p-x-2
+                  p.text-xs-left All users of Sagebow should consult a physician before following any dietary advice given on this website.
+              .row.m-t-1
+                .col-xs-12.btn-cluster
+                  .row
+                    a(id="goal" class=["btn", "required", "btn-goal", "btn-setup-dropdown"]) Goal
+                  .row
+                    +generateBtnGroup("goal-selector", [["Weight Loss", "#", "dropdown-weight-loss"], ["Maintainence", "#", "dropdown-maintainence"], ["Bodybuilding", "#", "dropdown-bodybuilding"]], "btn-setup-dropdown")
+                  .row.m-t-1
+                .col-xs-12.btn-cluster
+                  .row
+                    a(id="activity-level" class=["btn", "required", "btn-activity", "btn-setup-dropdown"]) Activity Level
+                  .row
+                    +generateBtnGroup("activity-selector", [["Very Active", "#", "dropdown-very-active"], ["Moderately Active", "#", "dropdown-moderately-active"], ["Lightly Active", "#", "dropdown-lightly-active"], ["Sedentary", "#", "dropdown-sedentary"]], "btn-setup-dropdown")
+              +_accountCreation_form_generateFormInput("weight", "Weight (in pounds)")
+              +_accountCreation_form_generateFormInput("height", "Height (in feet)")
+              +_accountCreation_form_generateFormInput("age", "Age")
+              .row.m-t-1.text-xs-center
+                .col-xs-12
+                  a(class=["btn", "btn-login"]) Create a new account.
+              //+_accountCreation_form_generateDropdownForm("dropdown-gender", "Dropdown", ["Female", "Male"])
+              //+_accountCreation_form_generateDropdownForm("dropdown-goal", "Goal", ["Bodybuilding", "Weight Loss", "Maintainence"])
+  
+  +generateModalWindow("modal-rejected", "Oh No!", "danger-text", "Unfourtunately your input information was not correct. Please enter it again.", "Exit", "btn-reject")
+  +generateModalWindow("modal-user-exists", "Oh No!", "danger-text", "We have detected that a user with this email already exists!", "Exit", "btn-reject btn-user-exists-close")
+  +generateModalWindow("modal-internal-error", "Oh No!", "danger-text", "Internal server error.", "Exit", "btn-reject btn-internal-error-close")
+  +generateModalWindow("modal-incomplete-data", "Oh No!", "danger-text", "You did not enter all the required data fields.", "Exit", "btn-reject btn-incomplete-data-close")
+  +generateModalWindow("modal-malformed-data", "Oh No!", "danger-text", "Your data was improperly formatted: make sure username is 6 characters and has a number at the end, password is 6 characters and has a number at the end, and weight and height are entered as decimals.", "Exit", "btn-reject btn-malformed-data-close")
+  +generateModalWindow("modal-success", "Nice!", "success-text", "You have successfully made an account on Sagebow!", "Go to login", "btn-success btn-modal-success-close")
+  //- make success-text. Make btn-accept class. 
