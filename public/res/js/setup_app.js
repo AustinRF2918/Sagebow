@@ -45,7 +45,6 @@ function calculateDailyCalories(bmr, activityLevel) {
 
 $(document).ready(function() {
 
-	// var successfulCreationModal = (function() {new FingModal('Nice!', 'Your information has been saved to our database!', false)})();
 	var unsuccessfulHead = 'Oh no!';
 	var successfulHead = 'Nice!';
 	
@@ -101,7 +100,7 @@ $(document).ready(function() {
 				}
 			});
 		} else {
-			$(".modal-incomplete-data").removeClass("modal-incomplete-data-hidden");
+			new FingModal(unsuccessfulHead, incompleteMsg, true).show();
 		}
 	});
 

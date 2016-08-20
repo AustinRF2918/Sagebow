@@ -5,8 +5,9 @@ html
     
   include utility/_modalWindow-mixins.pug
   body
-    div.full-background
-      div.primary-container-login
+    .full-background
+    .full-container
+      .primary-container-login
         .row.no-margin-mobile
           .col-lg-12
             i(class=["fa", "fa-tree fa-2x"] aria-hidden="true")
@@ -18,7 +19,7 @@ html
             div.cta-container
               .row
                 .col-lg-5.extend-full-height
-                  div.email-address-container
+                  .email-address-container
                     .form-group
                       input#username.required.form-control.materialize-form(type="text", placeholder="Enter your username")
                       label.label(for="username") Username:

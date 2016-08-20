@@ -84,13 +84,6 @@ i {
   .no-margin-mobile {
     margin: 0px; } }
 
-.full-page-background {
-  background: url("/res/img/primary_background.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover; }
-
 html, body {
   width: 100vw;
   height: 100vh; }

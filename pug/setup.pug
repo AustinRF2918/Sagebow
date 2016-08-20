@@ -6,8 +6,9 @@ html
     include utility/_mkacct_element_mixins.pug
     include utility/_dropdown_element_mixins.pug
   body
-    div.full-background
-      div.primary-container-setup
+    .full-background
+    .full-container
+      .primary-container-setup
         .row.no-margin-mobile
           .col-lg-12.text-lg-left.text-xs-center
             i(class=["fa", "fa-tree fa-2x"] aria-hidden="true")
@@ -18,7 +19,7 @@ html
             h4.light-text-smaller Welcome To Sagebow!
         .row.m-t-1.no-margin-mobile
           .col-lg-12.p-y-2
-            div.cta-container
+            .cta-container
               +_accountCreation_form_generateFormInput("username", "Username")
               +_accountCreation_form_generateFormInputPassword("password", "Password")
               .row.m-t-1
