@@ -11,3 +11,15 @@
     top:20%;
     transform: translateY(-20%);
 }
+
+.dropdown-menu {
+    display:flex;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+    border-width: 0px;
+}
+
+.hidden {
+    display: none !important;
+}

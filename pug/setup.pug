@@ -2,9 +2,9 @@ html
   head
     include utility/_boilerplate.pug
     script(src="res/js/setup_app.js")
-  include utility/_modalWindow-mixins.pug
-  include utility/_mkacct_element_mixins.pug
-  include utility/_dropdown_element_mixins.pug
+    include utility/_modalWindow-mixins.pug
+    include utility/_mkacct_element_mixins.pug
+    include utility/_dropdown_element_mixins.pug
   body
     div.full-background
       div.primary-container-setup
@@ -22,25 +22,30 @@ html
               +_accountCreation_form_generateFormInput("username", "Username")
               +_accountCreation_form_generateFormInputPassword("password", "Password")
               .row.m-t-1
-                .col-xs-6.btn-cluster
-                  .row
-                    a(id="gender" class=["btn", "btn-gender", "required", "btn-setup-dropdown"]) Gender
-                  .row
-                    +generateBtnGroup("gender-selector", [["Female", "#", "dropdown-female"], ["Male", "#", "dropdown-male"]], "btn-setup-dropdown")
+                .col-xs-6
+                  select.btn-cluster(name='Gender', id='gender', subclasses="btn required btn-setup-dropdown")
+                    option Male
+                    option Female
+                  
+                  // .row
+                  //   a(id="gender" class=["btn", "btn-gender", "required", "btn-setup-dropdown"]) Gender
+                  // .row
+                  //   +generateBtnGroup("gender-selector", [["Female", "#", "dropdown-female"], ["Male", "#", "dropdown-male"]], "btn-setup-dropdown")
                 .col-xs-6.p-y-0.super-small.p-x-2
                   p.text-xs-left All users of Sagebow should consult a physician before following any dietary advice given on this website.
               .row.m-t-1
-                .col-xs-12.btn-cluster
-                  .row
-                    a(id="goal" class=["btn", "required", "btn-goal", "btn-setup-dropdown"]) Goal
-                  .row
-                    +generateBtnGroup("goal-selector", [["Weight Loss", "#", "dropdown-weight-loss"], ["Maintainence", "#", "dropdown-maintainence"], ["Bodybuilding", "#", "dropdown-bodybuilding"]], "btn-setup-dropdown")
+                .col-xs-12.btn-cluster.m-b-2
+                  select.btn-cluster(name='Goal', id='goal', subclasses="btn required btn-setup-dropdown")
+                    option Weight Loss
+                    option Toning
+                    option Bodybuilding
                   .row.m-t-1
-                .col-xs-12.btn-cluster
-                  .row
-                    a(id="activity-level" class=["btn", "required", "btn-activity", "btn-setup-dropdown"]) Activity Level
-                  .row
-                    +generateBtnGroup("activity-selector", [["Very Active", "#", "dropdown-very-active"], ["Moderately Active", "#", "dropdown-moderately-active"], ["Lightly Active", "#", "dropdown-lightly-active"], ["Sedentary", "#", "dropdown-sedentary"]], "btn-setup-dropdown")
+                .col-xs-12.btn-cluster.m-b-1
+                  select.btn-cluster(name='Activity Level', id='activity-level', subclasses="btn required btn-setup-dropdown")
+                    option Very Active
+                    option Moderately Active
+                    option Lightly Active
+                    option Sedentary 
               +_accountCreation_form_generateFormInput("weight", "Weight (in pounds)")
               +_accountCreation_form_generateFormInput("height", "Height (in feet)")
               +_accountCreation_form_generateFormInput("age", "Age")
