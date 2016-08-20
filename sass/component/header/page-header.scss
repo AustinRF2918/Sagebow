@@ -1,21 +1,26 @@
 .page-header {
     margin-top: 40px;
     padding: 30px;
-    background: #AED581;
     color: white;
-    
-    .row-bs {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 2 1px 1px rgba(0, 0, 0, 0.34);
-    }
-    
+    background: #AED581;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    border-radius: 0px;
+    border-top: 2px solid darken(saturate(#AED581, 20%), 30%);
+ 
     @media screen and (min-width: 768px) {
-        width: 450px !important;
+        width: 550px !important;
     }
     
     h1 {
+	text-transform: uppercase;
+	font-size: 38px;
+	font-weight: bold;
         @media screen and (max-width: 768px) {
-            text-align: center;
+	    font-size: 30px;
         }
         
+    }
+
+    p {
     }
 }

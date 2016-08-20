@@ -44,16 +44,12 @@ var FingModal = function(headerTxt, messageTxt, danger) {
     });
 };
 
-//Emulates static object.
-var FingUtilities = function() {};
-
 
 // Replace selects with dropdowns
 $(document).ready(function() {
     var currentZIndex = 9999;
     
     $('select').each(function(i, element) {
-        currentZIndex++;
         
         var $el = $(element);
 
@@ -64,23 +60,32 @@ $(document).ready(function() {
                 'set':false
             }).text($el.attr('name'));
             
-        var optionContainer = $('<div class="dropdown-menu hidden">');
+        var optionContainer = $('<div class="dropdown-menu-custom hidden">');
 
         anchor.click(function(e){
             optionContainer.toggleClass('hidden');
             e.stopPropagation();
         });
 
-        // generate options
+	var incrementer = 0;
+
         $el.children().each(function(i, optionElement) {
+	    if (incrementer === 0){
+		var extraAppendage = "btn-margin-fix";
+	    } else {
+		var extraAppendage = "";
+	    }
+
             optionContainer.append(
-                $('<a class="dropdown-item btn btn-setup-dropdown">').click(function(){
+                $('<a class="dropdown-item btn btn-setup-dropdown ' + extraAppendage + '">').click(function(){
                     anchor.text($(this).text())
                         .attr('set',true);
                 }).text(
                     optionElement.innerText    
                 )
             );
+
+	    incrementer++;
         });
 
         $el.parent().append(
@@ -95,5 +100,5 @@ $(document).ready(function() {
     });
 })
 $(document).click(function(){
-    $('.dropdown-menu').addClass('hidden');
+    $('.dropdown-menu-custom').addClass('hidden');
 });

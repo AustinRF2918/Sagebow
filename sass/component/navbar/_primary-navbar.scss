@@ -1,24 +1,3 @@
-@mixin navigationalItem($fontSize, $paddingOffset, $color) {
-    font-size: $fontSize;
-    
-    line-height: 80px;
-    
-    padding-top: 30px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 30px - $paddingOffset - 2px;
-    
-    &:hover {
-        cursor: pointer;
-        text-decoration: none;
-        border-bottom: 2px solid $color;
-        color: darken($color, 10%);
-    }
-    
-    transition: color .2s;
-    color: $color;
-}
-
 .navbar-sagebow {
     top: 0;
     width: 100vw !important;
@@ -38,11 +17,5 @@
         flex-direction: column;
     }
     
-    .brand-nav {
-        @include navigationalItem(28px, 5px, #4CAF50);
-    }
     
-    .page-nav {
-        @include navigationalItem(16px, -1.5px, #00695C);
-    }
 }

@@ -1,6 +1,8 @@
 
 <html>
   <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+    <script src="/res/js/plots.js"></script>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -23,18 +25,33 @@
     </div>
     <div class="container-bs page-header">
       <div class="row-bs">
-        <h1>Fat Person History:</h1>
+        <h1>Consumption Metrics</h1>
+      </div>
+      <div class="row-bs">
+        <p>Track your nutritional history to help make healthier, smarter decisions.</p>
       </div>
     </div>
-    <div class="center"> 
-      <div class="graph">
-        <div class="dot"></div>
+    <section class="container" id="graphical">
+      <div class="bs page text-xs-center" id="metrics-view">
+        <canvas id="data-plot" width="400" height="200"></canvas>
       </div>
-      <div id="resolutionSwitcher">
-        <button class="resolution" value="7">Week</button>
-        <button class="resolution" value="31">Month</button>
-        <button class="resolution" value="365">Year</button>
+      <div class="bs page text-xs-left" id="metrics-controls">
+        <div class="split-metric-selector">
+          <select class="btn-cluster" name="Date Range" id="date-range" subclasses="btn required btn-setup-dropdown">
+            <option>Weekly</option>
+            <option>Monthly</option>
+            <option>Yearly</option>
+          </select>
+        </div>
+        <div class="split-metric-selector">
+          <select class="btn-cluster" name="Metric" id="metric" subclasses="btn required btn-setup-dropdown">
+            <option>Calories</option>
+            <option>Protein</option>
+            <option>Fat</option>
+            <option>Carbs</option>
+          </select>
+        </div>
       </div>
-    </div>
+    </section>
   </body>
 </html>

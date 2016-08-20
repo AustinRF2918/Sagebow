@@ -22,13 +22,17 @@
     transform: translateY(-20%);
 }
 
-.dropdown-menu {
+.btn-group {
+}
+
+.dropdown-menu-custom {
     display:flex;
     flex-direction: column;
     padding: 0px;
     margin: 0px;
     border-width: 0px;
 }
+
 
 .hidden {
     display: none !important;

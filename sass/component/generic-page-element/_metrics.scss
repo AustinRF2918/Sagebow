@@ -1,0 +1,53 @@
+#metrics-view {
+    border-top: 2px solid darken(saturate(#AED581, 20%), 30%);
+
+    canvas {
+    padding-left: 30px;
+    padding-right: 30px;
+	margin-bottom: 40px;
+    }
+
+    padding: 20px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    background: lighten(grey, 45%);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+    @media screen and (min-width: 768px){
+	width: 77.5%;
+    }
+
+}
+
+#metrics-controls {
+
+    background: lighten(grey, 45%);
+    margin-top: 40px;
+    border-top: 2px solid darken(saturate(#AED581, 20%), 30%);
+
+    .split-metric-selector{
+      text-align: left;
+      padding-top: 20px;
+      padding-left: 20px;
+
+    }
+
+   .dropdown-menu-custom {
+	position: absolute;
+	z-index: 10000;
+	@media screen and (max-width: 767px){
+	    left: 50%;
+	    transform: translateX(-50%);
+	}
+    }
+
+    padding: 20px;
+    height: 200px;
+    margin-bottom: 10px;
+    @media screen and (min-width: 768px){
+	* {
+	}
+	width: 100% - 77.5%;
+	margin-left: 30px;
+    }
+}

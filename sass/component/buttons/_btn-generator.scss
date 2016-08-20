@@ -41,13 +41,21 @@
 			    $hover-text-color,
 			    $shadow-parameters)
 {
-  background: $background;
-  line-height: 15px;
-  padding: 10px 24px 10px 24px;
   position: relative;
+  background: $background;
+  padding: 10px 24px 10px 24px;
   top: $offset-top;
   margin: 0px;
-  min-width: 88px;
+
+  @media screen and (max-width: 767px){
+    min-height: 40px;
+  }
+
+  @media screen and (min-width: 768px){
+    line-height: 15px;
+    min-width: 68px;
+  }
+
   border-radius: $border-radius;
   color: $text-color;
   font-size: 14px;
@@ -66,3 +74,7 @@
   }
 }
 					     
+
+.btn-margin-fix {
+    margin-left: -1px !important;
+}

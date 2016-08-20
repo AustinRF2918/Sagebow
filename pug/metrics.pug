@@ -1,6 +1,8 @@
 include utility/_boilerplate.pug
 html
   head
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js")
+    script(src="/res/js/plots.js")
     +generateBoilerplate(false)
   body
     .navbar-sagebow
@@ -12,11 +14,21 @@ html
         a.page-nav Log-Off
     .container-bs.page-header
       .row-bs
-        h1 Fat Person History:
-    .center 
-      .graph
-        .dot
-      #resolutionSwitcher
-        button.resolution(value='7') Week
-        button.resolution(value='31') Month
-        button.resolution(value='365') Year
+        h1 Consumption Metrics
+      .row-bs
+        p Track your nutritional history to help make healthier, smarter decisions.
+    section#graphical.container
+        #metrics-view.bs.page.text-xs-center
+          canvas(id="data-plot", width=400, height=200)
+        #metrics-controls.bs.page.text-xs-left
+          .split-metric-selector
+            select.btn-cluster(name='Date Range', id='date-range', subclasses="btn required btn-setup-dropdown")
+              option Weekly
+              option Monthly
+              option Yearly
+          .split-metric-selector
+            select.btn-cluster(name='Metric', id='metric', subclasses="btn required btn-setup-dropdown")
+              option Calories
+              option Protein
+              option Fat
+              option Carbs

@@ -1,0 +1,35 @@
+@mixin navigationalItem($fontSize, $paddingOffset, $color) {
+    font-size: $fontSize;
+    
+    line-height: 80px;
+    
+    padding-top: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 30px - $paddingOffset - 2px;
+    border-bottom: 2px solid transparent;
+    transition: color .2s;
+    transition: border-bottom-color .2s;
+    
+    &:hover {
+        cursor: pointer;
+        text-decoration: none;
+        border-bottom: 2px solid $color;
+        color: darken($color, 10%);
+    }
+    
+    color: $color;
+}
+
+
+.brand-nav {
+    @include navigationalItem(28px, 5px, #4CAF50);
+
+    @media screen and (max-width: 767px) {
+	display: none;
+    }
+}
+
+.page-nav {
+    @include navigationalItem(16px, -1.5px, #00695C);
+}

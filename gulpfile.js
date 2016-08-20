@@ -30,6 +30,9 @@ var getNetworkInformation = function(){
 }
 
 function startServer(){
+    var express = require('express');
+    var app = express();
+    app.use(require('connect-livereload')());
     require('./server.js')(EXPRESS_PORT,EXPRESS_ROOT);
 }
 
@@ -37,17 +40,17 @@ var lr;
 
 function startLiveReload(){
     lr = require('tiny-lr')();
-    // lr.listen(LIVERELOAD_PORT);
+    lr.listen(LIVERELOAD_PORT);
 }
 
 function notifyLivereload(event){
     var fileName = require('path').relative(EXPRESS_ROOT, event.path);
     console.log("Change.");
 
-    lr.changed({
-        body: {
-        files: [fileName]
-    }
+        lr.changed({
+            body: {
+            files: [fileName]
+        }
     })
 }
 
@@ -91,5 +94,5 @@ gulp.task('default', function()
     console.log(getNetworkInformation());
     startServer();
     startLiveReload();
-    gulp.watch(['*.html', 'css/app.css', 'js/*'], notifyLivereload);
+    gulp.watch(['public/*.html', 'public/res/css/app.css', 'public/js/*'], notifyLivereload);
 });
