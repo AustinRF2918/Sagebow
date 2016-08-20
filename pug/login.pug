@@ -20,23 +20,23 @@ html
                 .col-lg-5.extend-full-height
                   div.email-address-container
                     .form-group
-                      input(type="email" class=["form-control", "materialize-form"], id="email-input", for="username", placeholder="Enter your username")
-                      label(for="emailAddress" class="label") Username:
+                      input#username.form-control.materialize-form(type="text", placeholder="Enter your username")
+                      label.label(for="username") Username:
                 .col-lg-5.extend-full-height
                   div.password-container
                     .form-group
-                      input(type="password", for="password", class=["form-control", "materialize-form"], id="password-input", placeholder="Enter your password")
-                      label(for="emailAddress" class="label") Password:
+                      input#password.form-control.materialize-form(type="password", placeholder="Enter your password")
+                      label.label(for="password") Password:
                 .col-lg-2
                   div.login-container
                     .form-group
-                      a(class=["btn", "btn-login"]) Login
+                      a.btn.btn-login Login
                       label(class=["consistency-hide"] for="btn") Password:
               .row
                 .col-lg-5.m.t-1.extend-full-height-absolute
                   div.email-address-container
                     .form-group
-                      a(class=["btn", "btn-make-account"] href="/setup") Create a new account.
+                      a.btn.btn-make-account(href="/setup") Create a new account.
                       
   +generateModalWindow("modal-incomplete-input", "Oh No!", "danger-text", "You entered incomplete data! Please fill out all the forms.", "Exit", "btn-modal-incomplete-input-reject")
   +generateModalWindow("modal-dne-input", "Oh No!", "danger-text", "Your username is not in our database! Maybe make an account?", "Exit", "btn-modal-dne-input-reject")
