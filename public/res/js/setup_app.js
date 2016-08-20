@@ -44,56 +44,18 @@ function calculateDailyCalories(bmr, activityLevel) {
 }
 
 $(document).ready(function() {
-	var displayModal = Modal("modal-incomplete-data", "btn-incomplete-data-close");
 
-	var goalDropdown = Dropdown("btn-goal", "goal-selector");
-	goalDropdown.setMode("replace");
-	goalDropdown.pushItem("dropdown-weight-loss");
-	goalDropdown.pushItem("dropdown-maintainence");
-	goalDropdown.pushItem("dropdown-bodybuilding");
-	goalDropdown.buildButton();
-
-	var genderDropdown = Dropdown("btn-gender", "gender-selector");
-	genderDropdown.setMode("replace");
-	genderDropdown.pushItem("dropdown-female");
-	genderDropdown.pushItem("dropdown-male");
-	genderDropdown.buildButton();
-
-	var activityDropdown = Dropdown("btn-activity", "activity-selector");
-	activityDropdown.setMode("replace");
-	activityDropdown.pushItem("dropdown-very-active");
-	activityDropdown.pushItem("dropdown-moderately-active");
-	activityDropdown.pushItem("dropdown-lightly-active");
-	activityDropdown.pushItem("dropdown-sedentary");
-	activityDropdown.buildButton();
-
-	$(".btn-modal-incomplete-input-reject").on('click', function() {
-		$(".modal-incomplete-input").addClass("modal-incomplete-input-hidden");
-	});
+	// var successfulCreationModal = (function() {new FingModal('Nice!', 'Your information has been saved to our database!', false)})();
+	var unsuccessfulHead = 'Oh no!';
+	var successfulHead = 'Nice!';
 	
-	$(".btn-user-exists-close").on('click', function() {
-		$(".modal-user-exists").addClass("modal-user-exists-hidden");
-	});
+	var successMsg = 'Your information has been saved to our database!',
+		errorMsg = 'We encountered an internal error, sorry :(.',
+		existsMsg = 'A user with this name already exists!',
+		malformedMsg = 'You entered malformed data! Your name/password must have 6 characters and a number, and all attribute fields must have decimal numbers!',
+		incompleteMsg = 'You entered incomplete information, please fill out all the forms.',
+		generalErrorMsg = 'A general error appeared.';
 	
-	$(".btn-modal-internal-error-reject").on('click', function() {
-		$(".modal-internal-error").addClass("modal-internal-error-hidden");
-	});
-
-	$(".btn-incomplete-data-close").on('click', function() {
-		$(".modal-incomplete-data").addClass("modal-incomplete-data-hidden");
-	});
-	
-	$(".btn-internal-error-close").on('click', function() {
-		$(".modal-internal-error").addClass("modal-internal-error-hidden");
-	});
-	
-	$(".btn-modal-success-close").on('click', function() {
-		window.location.pathname = '/login';
-	});
-	
-	$(".btn-malformed-data-close").on('click', function() {
-		$(".modal-malformed-data").addClass("modal-malformed-data-hidden");
-	});
 	
 	$(".btn-login").on('click', function() {
 		if (checkInputs()) {
@@ -118,11 +80,24 @@ $(document).ready(function() {
 				
 			}).done(function(msg) {
 				switch(msg){
-					case 'error': $(".modal-internal-error").removeClass("modal-internal-error-hidden"); break;
-					case 'exists': $(".modal-user-exists").removeClass("modal-user-exists-hidden"); break;
-					case 'malformed': $(".modal-malformed-data").removeClass("modal-malformed-data-hidden"); break;
-					case 'incomplete': $(".modal-incomplete-data").removeClass("modal-incomplete-data-hidden"); break;
-					case 'success': $(".modal-success").removeClass("modal-success-hidden"); break;
+					case 'error': 
+						new FingModal(unsuccessfulHead, errorMsg, true).show(); break;
+					case 'exists': 
+						new FingModal(unsuccessfulHead, existsMsg, true).show(); break;
+					case 'malformed': 
+						new FingModal(unsuccessfulHead, malformedMsg, true).show(); break;
+					case 'incomplete': 
+						new FingModal(unsuccessfulHead, incompleteMsg, true).show(); break;
+					case 'success': 
+						var modal = new FingModal(successfulHead, successMsg, false);
+						modal.button.click(function(){
+							window.location.pathname='/login';
+						});
+						modal.show();
+						break;
+					default:
+						modal = new FingModal(unsuccessfulHead, generalErrorMsg, true);
+						break;
 				}
 			});
 		} else {

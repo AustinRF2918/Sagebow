@@ -1,24 +1,11 @@
-/*globals $*/
-var checkInput = function(modalSelector, $emailSelector, $passwordSelector) {
-	return function() {
-		if ($emailSelector.val() == '' || $passwordSelector.val() == '') {
-			$("." + modalSelector).removeClass(modalSelector + "-hidden");
-			return false;
-		}
-		else {
-			return true;
-		}
-	};
-};
+/*globals $, validateRequired*/
 
 $(document).ready(function() {
 	$(".btn-login").on('click', function() {
-		var isGood = checkInput("modal-incomplete-input", $("#email-input"), $("#password-input"))();
-
-		if (isGood == true) {
+		if (validateRequired()) {
 			$.post("/login", {
-				'username': $("#email-input").val(),
-				'password': $("#password-input").val(),
+				'username': $("#username").val(),
+				'password': $("#password").val(),
 				'dataType': "json"
 			}).done(function(msg) {
 				switch (msg) {
@@ -30,9 +17,10 @@ $(document).ready(function() {
 						break;
 					case 'success':
 						window.location.pathname = '/metrics';
-
 				}
 			});
+		}else{
+			new FingModal('Oh No!','All fields are required',true).show();
 		}
 	});
 

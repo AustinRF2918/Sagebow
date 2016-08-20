@@ -1,7 +1,7 @@
 // returns whether all inputs have values set
 function validateRequired(){
-    var inputsSatisfied = $('input.required').filter(function(element) {
-		return !!element.value;
+    var inputsSatisfied = $('input.required').filter(function(i,element) {
+		return !element.value;
 	}).length === 0;
 	var selectionsSatisfied = $('.btn.required[set=false]').length === 0;
 	return inputsSatisfied && selectionsSatisfied;
@@ -9,10 +9,13 @@ function validateRequired(){
 
 /*globals $*/
 var FingModal = function(headerTxt, messageTxt, danger) {
-    var textClass = danger ? 'danger-text' : 'happy-text';
-    this.header = $('<h2>').addClass('m-b-1', 'danger-text').text(textClass);
+    var textClass = danger ? 'danger-text' : 'success-text';
+    var buttonClass = danger ? 'btn-reject' : 'btn-success';
+    
+    this.header = $('<h2>').addClass('m-b-1 ' +textClass).text(headerTxt);
     this.message = $('<p>').text(messageTxt);
-    this.button = $('<a>').addClass('btn').text('Close');
+    this.button = $('<a>').addClass('btn '+buttonClass).text('Close');
+    
     this.el = $('<div>').addClass('modal hidden').append(
         $('<div>').addClass('overlay').append(
             $('<div>').addClass('window').append(
@@ -26,12 +29,13 @@ var FingModal = function(headerTxt, messageTxt, danger) {
     );
 
     this.show = function() {
-        $(document).append(this.el);
+        $(document.body).append(this.el);
         this.el.removeClass('hidden');
     };
 
     this.hide = function() {
         this.el.addClass('hidden');
+        $(this.el).remove();
     };
 
     var self = this;
@@ -42,23 +46,6 @@ var FingModal = function(headerTxt, messageTxt, danger) {
 
 //Emulates static object.
 var FingUtilities = function() {};
-
-/*
-FingUtilities.inputToAnchor = function($el) {
-    return $('<a>')
-        .addClass($(el).attr(subclasses))
-        .attr('id', $el.attr('id'))
-        .text($el.attr('name'));
-}
-*/
-
-/*
-FingUtilities.initializeDropdowns = function() {
-    $('select').each(function(element){
-        var anchor = $('<a>').addClass 
-    })
-}
-*/
 
 
 // Replace selects with dropdowns

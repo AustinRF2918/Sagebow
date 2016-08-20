@@ -20,12 +20,12 @@ html
                 .col-lg-5.extend-full-height
                   div.email-address-container
                     .form-group
-                      input#username.form-control.materialize-form(type="text", placeholder="Enter your username")
+                      input#username.required.form-control.materialize-form(type="text", placeholder="Enter your username")
                       label.label(for="username") Username:
                 .col-lg-5.extend-full-height
                   div.password-container
                     .form-group
-                      input#password.form-control.materialize-form(type="password", placeholder="Enter your password")
+                      input#password.required.form-control.materialize-form(type="password", placeholder="Enter your password")
                       label.label(for="password") Password:
                 .col-lg-2
                   div.login-container
@@ -34,7 +34,7 @@ html
                       label(class=["consistency-hide"] for="btn") Password:
               .row
                 .col-lg-5.m.t-1.extend-full-height-absolute
-                  div.email-address-container
+                  div
                     .form-group
                       a.btn.btn-make-account(href="/setup") Create a new account.
                       
