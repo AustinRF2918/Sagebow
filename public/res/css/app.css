@@ -213,7 +213,7 @@ html, body {
 @media screen and (min-width: 992px) {
   .primary-container-login {
     width: 50vw;
-    height: -100vh;
+    min-height: -100vh;
     position: absolute;
     left: 50%;
     top: 35%;
@@ -229,7 +229,7 @@ html, body {
 @media screen and (min-width: 992px) {
   .primary-container-setup {
     width: 30vw;
-    height: 60vh;
+    min-height: 60vh;
     position: absolute;
     left: 50%;
     top: 10%;
@@ -267,7 +267,7 @@ html, body {
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.26); }
   @media screen and (min-width: 991px) {
     .cta-container {
-      height: 150px;
+      min-height: 150px;
       width: 100%; } }
   @media screen and (max-width: 992px) {
     .cta-container {
@@ -695,4 +695,16 @@ html, body {
   .goal-selector-hidden {
     display: none; }
     .goal-selector-hidden * {
+      display: none; }
+
+.activity-selector {
+  display: flex;
+  flex-direction: column;
+  background: #c2185b;
+  margin: 0px;
+  padding: 0px;
+  border-radius: 0px !important; }
+  .activity-selector-hidden {
+    display: none; }
+    .activity-selector-hidden * {
       display: none; }

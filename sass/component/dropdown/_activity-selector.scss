@@ -1,0 +1,12 @@
+.activity-selector {
+    @include generateDropdown();
+    display: flex;
+    flex-direction: column;
+    background: darken(#C2185B, 0%);
+    margin: 0px;
+    padding: 0px;
+    border-radius: 0px !important;
+
+    * {
+    }
+}

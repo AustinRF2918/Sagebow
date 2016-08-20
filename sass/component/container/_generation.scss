@@ -2,7 +2,7 @@
     #{$selector} {
 	@media screen and (min-width: 992px){
 	  width: $widthAsPercent;
-	  height: $heightAsPercent;
+	  min-height: $heightAsPercent;
 	  position: absolute;
 
 	  left: 50%;
@@ -33,7 +33,7 @@
 
 	@include _login_container_generateCTAClusterContainer
 	@media screen and (min-width: 991px) {
-	  height: $height;
+	  min-height: $height;
 	  width: $width;
 	}
 

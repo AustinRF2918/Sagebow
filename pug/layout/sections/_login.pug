@@ -17,8 +17,8 @@ body
               .col-lg-5.extend-full-height
                 +_login_container_generateVCenteredElementContainer("email-address-container")
                   .form-group
-                    input(type="email" class=["form-control", "materialize-form"], id="email-input", for="username", placeholder="Enter your email")
-                    label(for="emailAddress" class="label") Email Address:
+                    input(type="email" class=["form-control", "materialize-form"], id="email-input", for="username", placeholder="Enter your username")
+                    label(for="emailAddress" class="label") Username:
               .col-lg-5.extend-full-height
                 +_login_container_generateVCenteredElementContainer("password-container")
                   .form-group
@@ -34,6 +34,7 @@ body
                 +_login_container_generateVCenteredElementContainer("email-address-container")
                   .form-group
                     a(class=["btn", "btn-make-account"] href="/setup") Create a new account.
+                    
 +generateModalWindow("modal-incomplete-input", "Oh No!", "danger-text", "You entered incomplete data! Please fill out all the forms.", "Exit", "btn-modal-incomplete-input-reject")
 +generateModalWindow("modal-dne-input", "Oh No!", "danger-text", "Your username is not in our database! Maybe make an account?", "Exit", "btn-modal-dne-input-reject")
 +generateModalWindow("modal-ip-input", "Oh No!", "danger-text", "Your password is incorrect.", "Exit", "btn-modal-ip-input-reject")

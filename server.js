@@ -88,7 +88,6 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
             'password',
             'weight',
             'bmi',
-            'weightGoal',
             'dailyCalories'];
         var fieldsPresent = true;
         for(var field of neededFields){
@@ -98,6 +97,9 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
             }
         }
         if(fieldsPresent){
+            // verify integrity
+            // if(req.body.username.match(/.{6,}/) && req.body.password.match())
+            
             // Hash password
             var passwordHash = bcrypt.hashSync(req.body.password);
             // Construct user object
@@ -119,12 +121,12 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
                 // Verify user doesn't exist
                 redisConn.get(userObj.username,function(err,reply){
                     if(err){
-                        res.redirect('/setup#error');
+                        res.status(200).send('error');
                         reject(err);
                     }else{
                         if(reply){
                             console.log('username exists. Cant setup');
-                            res.redirect('/setup#exists');
+                            res.status(200).send('exists');
                         }else{
                             resolve();
                         }
@@ -136,11 +138,11 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
                     redisConn.set(userObj.username,JSON.stringify(userObj),function(err){
                         if(err){
                             // save failed
-                            res.redirect('/setup#error');
+                            res.status(200).send('error');
                             reject(err);
                         }else{
                             // save successful!
-                            res.redirect('/setup#success');
+                            res.status(200).send('success');
                             resolve();
                         }
                     });
@@ -150,7 +152,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT){
             });
         }else{
             // Missing fields
-            res.redirect('/setup#incomplete');
+            res.status(200).send('incomplete');
         }
     });
     

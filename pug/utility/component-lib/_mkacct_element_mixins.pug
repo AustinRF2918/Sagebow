@@ -2,4 +2,10 @@ mixin _accountCreation_form_generateFormInput(argid, placeholder)
   .row.m-t-1
     .col-lg-12.p-y-0
       .form-group
-        input(type="info" class=["form-control", "materialize-form"], id=argid, placeholder=placeholder)
+        input(type="info" class=["required", "form-control", "materialize-form"], id=argid, placeholder=placeholder)
+        
+mixin _accountCreation_form_generateFormInputPassword(argid, placeholder) 
+  .row.m-t-1
+    .col-lg-12.p-y-0
+      .form-group
+        input(type="password" class=["required", "form-control", "materialize-form"], id=argid, placeholder=placeholder)
