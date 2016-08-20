@@ -1,9 +1,9 @@
 include utility/_boilerplate.pug
 html
   head
+    +generateBoilerplate(false)
     script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js")
     script(src="/res/js/plots.js")
-    +generateBoilerplate(false)
   body
     .navbar-sagebow
       .left-side
