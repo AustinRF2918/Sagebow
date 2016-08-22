@@ -60,12 +60,28 @@ $(document).ready(function() {
     "6": "1900",
      "7": "2000"};
 
-    var days = [1, 2, 3, 4, 5, 6, 7];
-    var calories = [2000, 2200, 2300, 4000, 2300, 3000, 3000];
+    var daysWeek = [1, 2, 3, 4, 5, 6, 7];
+    var caloriesWeek = [2000, 2200, 2300, 4000, 2300, 3000, 3000];
+
+    var daysMonth = [1, 2, 3, 4, 5, 6, 7,
+   		     1, 2, 3, 4, 5, 6, 7,
+   		     1, 2, 3, 4, 5, 6, 7,
+   		     1, 2, 3, 4, 5, 6, 7];
+
+    var caloriesMonth = [2000, 2200, 2300, 4000, 2300, 3000, 3000,
+			 2000, 2200, 2300, 4000, 2300, 3000, 3000,
+			 2000, 2200, 2300, 4000, 2300, 3000, 3000,
+			 2000, 2200, 2300, 4000, 2300, 0, 0];
+
+    //Years... obvious.
 
     var DailyCalorieCount = new NutrientRatio(200, 100, 90);
 
     var startBarGraph = FingBarGraph($("#data-plot"), "Weekly Caloric Intake", days, calories);
+
+    //If we click something else, delete $("#data-plot") and remake
+    //start bar graph..
+
     var startPieGraph = FingPieGraph($("#consumption-plot"), "Weekly Caloric Intake", DailyCalorieCount);
 });
 

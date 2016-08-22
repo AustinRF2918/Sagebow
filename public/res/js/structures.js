@@ -9,3 +9,14 @@ var NutrientRatio = function(protein, carbs, fat) {
     this.calories = _computeCalories(protein, carbs, fat);
 };
 
+
+
+
+
+
+
+
+
+
+
+
