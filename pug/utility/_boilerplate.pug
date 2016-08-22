@@ -18,3 +18,12 @@ mixin generateBoilerplate(includeBootstrap)
     script(src="res/js/dropdown-generator.js")
     script(src="res/js/modal-generator.js")
     script(src="/res/js/common.js")
+    
+mixin navbar()
+    .navbar-sagebow
+      .left-side
+        a.brand-nav Sagebow
+      .right-side
+        a(href='metrics') Metrics
+        a(href='entry') Entry
+        a(href='#logout') Log Out

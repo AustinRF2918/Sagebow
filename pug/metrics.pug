@@ -7,15 +7,7 @@ html
     script(src="/res/js/plots.js")
     script(src="/res/js/navbar.js")
   body
-    .navbar-sagebow
-      .left-side
-        a.brand-nav Sagebow
-      .right-side
-        a.page-nav Log
-        a.page-nav Metrics
-        a.page-nav Entry
-        a.page-nav Settings
-        a.page-nav Log-Off
+    +navbar()
     section#header.container
       .page-header
         .row-bs
