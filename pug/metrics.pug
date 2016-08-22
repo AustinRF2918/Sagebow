@@ -3,24 +3,33 @@ html
   head
     +generateBoilerplate(false)
     script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js")
+    script(src="/res/js/structures.js")
     script(src="/res/js/plots.js")
+    script(src="/res/js/navbar.js")
   body
     .navbar-sagebow
       .left-side
         a.brand-nav Sagebow
       .right-side
+        a.page-nav Log
         a.page-nav Metrics
         a.page-nav Entry
+        a.page-nav Settings
         a.page-nav Log-Off
-    .container-bs.page-header
-      .row-bs
-        h1 Consumption Metrics
-      .row-bs
-        p Track your nutritional history to help make healthier, smarter decisions.
+    section#header.container
+      .page-header
+        .row-bs
+          h1 Consumption Metrics
+        .row-bs
+          p Track your nutritional history to help make healthier, smarter decisions.
     section#graphical.container
         #metrics-view.bs.page.text-xs-center
+          .metric-displayer.text-xs-center
+            h4 Metrics View
           canvas(id="data-plot", width=400, height=200)
         #metrics-controls.bs.page.text-xs-left
+          .metric-displayer.text-xs-center
+            h4 Selectors
           .split-metric-selector
             select.btn-cluster(name='Date Range', id='date-range', subclasses="btn required btn-setup-dropdown")
               option Weekly
@@ -32,3 +41,8 @@ html
               option Protein
               option Fat
               option Carbs
+    section#statistics.container
+        #statistics-view.bs.page.text-xs-center
+          .metric-displayer.text-xs-center
+            h4 Daily Consumption
+          canvas(id="consumption-plot", width=400, height=200)

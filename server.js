@@ -53,6 +53,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         // Attempt user lookup
         redisConn.get(username, function(err, userObj) {
             userObj = JSON.parse(userObj);
+
             if (err)
                 res.send('error');
             else if (!userObj)
@@ -67,6 +68,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
             }
         });
     });
+
 
     // Post setup
     app.post(/^\/setup$/, function(req, res) {
@@ -174,9 +176,13 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
             res.redirect('/login#noAccess');
         }
     });
+
+    
+
     app.get('/metrics', function(req, res) {
         serveFile('metrics.html', res);
     });
+
     app.get('/entry', function(req, res) {
         serveFile('entry.html', res);
     });

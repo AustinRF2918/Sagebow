@@ -16,26 +16,36 @@
     <script src="res/js/modal-generator.js"></script>
     <script src="/res/js/common.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+    <script src="/res/js/structures.js"></script>
     <script src="/res/js/plots.js"></script>
+    <script src="/res/js/navbar.js"></script>
   </head>
   <body>
     <div class="navbar-sagebow">
       <div class="left-side"><a class="brand-nav">Sagebow</a></div>
-      <div class="right-side"><a class="page-nav">Metrics</a><a class="page-nav">Entry</a><a class="page-nav">Log-Off</a></div>
+      <div class="right-side"><a class="page-nav">Log</a><a class="page-nav">Metrics</a><a class="page-nav">Entry</a><a class="page-nav">Settings</a><a class="page-nav">Log-Off</a></div>
     </div>
-    <div class="container-bs page-header">
-      <div class="row-bs">
-        <h1>Consumption Metrics</h1>
+    <section class="container" id="header">
+      <div class="page-header">
+        <div class="row-bs">
+          <h1>Consumption Metrics</h1>
+        </div>
+        <div class="row-bs">
+          <p>Track your nutritional history to help make healthier, smarter decisions.</p>
+        </div>
       </div>
-      <div class="row-bs">
-        <p>Track your nutritional history to help make healthier, smarter decisions.</p>
-      </div>
-    </div>
+    </section>
     <section class="container" id="graphical">
       <div class="bs page text-xs-center" id="metrics-view">
+        <div class="metric-displayer text-xs-center">
+          <h4>Metrics View</h4>
+        </div>
         <canvas id="data-plot" width="400" height="200"></canvas>
       </div>
       <div class="bs page text-xs-left" id="metrics-controls">
+        <div class="metric-displayer text-xs-center">
+          <h4>Selectors</h4>
+        </div>
         <div class="split-metric-selector">
           <select class="btn-cluster" name="Date Range" id="date-range" subclasses="btn required btn-setup-dropdown">
             <option>Weekly</option>
@@ -51,6 +61,14 @@
             <option>Carbs</option>
           </select>
         </div>
+      </div>
+    </section>
+    <section class="container" id="statistics">
+      <div class="bs page text-xs-center" id="statistics-view">
+        <div class="metric-displayer text-xs-center">
+          <h4>Daily Consumption</h4>
+        </div>
+        <canvas id="consumption-plot" width="400" height="200"></canvas>
       </div>
     </section>
   </body>
