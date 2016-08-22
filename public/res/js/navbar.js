@@ -1,9 +1,12 @@
-$(document).ready(function() {
-    $(".page-nav").each(function( index, element ){
-	if ($(this)[0].text  === "Log-Off") {
-	    $(this).click(function(){
-		//Send logout stuff here.
-	    });
-	};
-    });
-});
+window.onhashchange = function(){
+	if(window.location.hash === '#logout'){
+		console.log('bye');
+		$.get('/logout',function(){
+			var bye = new FingModal('Bye!', 'You are Logged Out. Redirecting you to the login page.',false);
+			bye.button.click(function(){
+				window.location = '/login';
+			});
+			bye.show();
+		});
+	}
+};

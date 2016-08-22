@@ -69,7 +69,6 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         });
     });
 
-
     // Post setup
     app.post(/^\/setup$/, function(req, res) {
         // Check fields are present
@@ -177,7 +176,10 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         }
     });
 
-    
+    app.get(/^\/log(out|off)$/,function(req,res){
+        delete req.session.userObj;
+        res.status(200).end();
+    });
 
     app.get('/metrics', function(req, res) {
         serveFile('metrics.html', res);
