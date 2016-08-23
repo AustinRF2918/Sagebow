@@ -7,7 +7,8 @@
     border-right: 0px;
     border-top: 0px;
     transition-duration: 0.2s;
-
+    border: 2px solid rgba(98, 142, 47, 0.2);
+    
     &+label {
       transition-duration: 0.2s;
     }

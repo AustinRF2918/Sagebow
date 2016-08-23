@@ -6,3 +6,26 @@
 @import 'btn-success';
 @import 'btn-interactive';
 
+.btn-query {
+    @include generateMediumButton(#6A1B9A,
+				  0px,
+				  white,
+				  uppercase,
+				  0px,
+				  .2s,
+				  #4A148C,
+				  white,
+				  0 6px 15px 0 rgba(0, 0, 0, 0.4));
+}
+
+.btn-send {
+    @include generateMediumButton(#AD1457,
+				  0px,
+				  white,
+				  uppercase,
+				  0px,
+				  .2s,
+				  #880E4F,
+				  white,
+				  0 6px 15px 0 rgba(0, 0, 0, 0.4));
+}

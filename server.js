@@ -1,8 +1,9 @@
 module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     // Used modules
-    var app = require('express')();
-    var bodyParser = require('body-parser');
-    var session = require('express-session');
+    var app = require('express')(),
+        bodyParser = require('body-parser'),
+        session = require('express-session'),
+        request = require('request');
 
     // var fs = require('fs');
     var redisConn = require('redis').createClient();
@@ -105,7 +106,10 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
                 var userObj = {
                     username: req.body.username,
                     passwordHash: passwordHash,
-                    weightHistory: [],
+                    weightHistory: [{
+                        weight: req.body.weight,
+                        timestamp: new Date()
+                    }],
                     weight: req.body.weight,
                     lastUpdated: new Date(),
                     bmi: req.body.bmi,
@@ -205,9 +209,12 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
             var oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
 
             // Add entry
-            req.session.userObj.weightHistory.push({
-                weight: weight,
-                timestamp: timestamp
+            var i = 0, weightHistory = req.session.userObj.weightHistory;
+            while(i < weightHistory && weightHistory.timeStamp <= timeStamp)
+                i++;
+            req.session.userObj.weightHistory.splice(i,0,{
+                weight:weight,
+                timestamp:timestamp
             });
 
             // Update modify date if needed
@@ -216,7 +223,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
             }
 
             // Attempt to save...
-            attemptSave(req, res, oldUserObj);
+            attemptSave(req, res, redisConn, oldUserObj);
         }
     });
     // Get weight events
@@ -245,14 +252,24 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
         res.status(200).send(results);
     });
+    
+    app.get('/api/lastUpdated',function(req,res){
+        res.status(200).send(req.session.userObj.lastUpdated);
+    });
+    
+    app.get('/api/lastUpdated/:date',function(req,res){
+        req.session.userObj.lastUpdated = new Date(decodeURI(req.params.date));
+        attemptSave(req,res,redisConn,req.session.userObj);
+    });
 
     // Add consumption event
     app.post('/api/consumption', function(req, res) {
-        var carb = req.body.carb,
-            fat = req.body.fat,
-            protein = req.body.protein,
-            name = req.body.name,
-            timestamp = req.body.timestamp || new Date();
+        var carb = req.query.carbs,
+            fat = req.query.fats,
+            protein = req.query.proteins,
+            name = req.query.name,
+            timestamp = req.query.timestamp || new Date();
+        console.log(req.query);
 
         // Validate fields
         if (!carb || !fat || !protein) {
@@ -269,8 +286,8 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
             var oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
 
             // Add entry
-            req.session.userObj.nutrientHistory.push({
-                calories: carb + fat + protein,
+            req.session.userObj.nutrientHistory.unshift({
+                calories: 4 * carb + 9 * fat + 4 * protein,
                 carb: carb,
                 fat: fat,
                 protein: protein,
@@ -278,7 +295,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
                 timestamp: timestamp
             });
 
-            attemptSave(req, res, oldUserObj);
+            attemptSave(req, res, redisConn, oldUserObj);
         }
     });
     app.get('/api/consumption', function(req, res) {
@@ -309,27 +326,82 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
     // Get food name history
     app.get('/api/foods', function(req, res) {
-        var results = [];
+        var foodDict = {};
         for (var foodEvent of req.session.userObj.nutrientHistory) {
-            if (foodEvent.name) {
-                results.push(foodEvent.name);
+            if (foodEvent.name && !foodDict[foodEvent.name]) {
+                foodDict[foodEvent.name] = true;
             }
         }
-        res.status(200).send(results);
+        res.status(200).send(Object.keys(foodDict).slice(0,5));
     });
     app.get('/api/foods/*', function(req, res) {
-        var foodName = req.path.split('/')[3];
+        var foodName = decodeURI(req.path.split('/')[3]);
         if (!foodName) {
             res.status(400).send('need a food name');
         }
         else {
+            var found = false;
             for (var foodEvent of req.session.userObj.nutrientHistory) {
                 if (foodEvent.name === foodName) {
                     res.status(200).send(foodEvent);
+                    found = true;
                     break;
                 }
             }
+            if(!found){
+                res.status(404).end('Could not find food: '+foodName);
+            }
         }
+    });
+    
+    // Query NDB
+    app.get('/api/query/:name',function(req,res){
+        var apiKey = 'DJJzSXqqAhl30URUOtKfmsZJkEZESNEqiKg58CxC';
+        // Find food dbnum
+        new Promise(function(resolve,reject){
+            var url = 'http://api.nal.usda.gov/ndb/search/?format=json&q='+req.params.name+'&max=1&api_key=' + apiKey;
+            request(url,function(err,response,body){
+                if(err || response.statusCode !== 200){
+                    console.error(err);
+                    console.error(response);
+                    reject();
+                }else{
+                    resolve(JSON.parse(body).list.item[0].ndbno);
+                }
+            });
+        }).then(function(dbnum){
+            return new Promise(function(resolve,reject){
+                var url = 'http://api.nal.usda.gov/ndb/reports/?ndbno='+dbnum+'&type=s&format=json&api_key='+apiKey;
+                request(url,function(err,response,body){
+                    if(err || response.statusCode !== 200){
+                        console.error(response);
+                        reject(err);
+                    }else{
+                        var foodData = {},
+                            nutrients = JSON.parse(body).report.food.nutrients;
+                        // Find the nutrients we are interested in
+                        for(var nutrient of nutrients){
+                            if(nutrient.nutrient_id == 203){
+                                foodData.proteins = nutrient.value;
+                            }
+                            if(nutrient.nutrient_id == 204){
+                                foodData.fats = nutrient.value;
+                            }
+                            if(nutrient.nutrient_id == 205){
+                                foodData.carbs = nutrient.value;
+                            }
+                        }
+                        resolve(foodData);
+                    }
+                });
+            });
+        }).then(function(foodData){
+            res.send(foodData);
+        }).catch(function(err){
+            console.error('query failure');
+            console.error(err);
+            res.status(400).end('Unable to perform request');
+        });
     });
 
     app.listen(appPort);

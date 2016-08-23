@@ -49,7 +49,7 @@ module.exports = function( EXPRESS_PORT, EXPRESS_ROOT ) {
 	* @param {User object} - some describable fallback
 	* object.
 	*/
-	attemptSave: function ( req, res, fallback ) {
+	attemptSave: function ( req, res, redisConn, fallback ) {
 	    redisConn.set(
 		req.session.userObj.username,
 		JSON.stringify(req.session.userObj),

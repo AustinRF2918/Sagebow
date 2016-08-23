@@ -1,0 +1,76 @@
+include utility/_boilerplate.pug
+html
+  head
+    +generateBoilerplate(true)
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js")
+    script(src="/res/js/structures.js")
+    script(src="/res/js/navbar.js")
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.js')
+    script(src='/res/js/entry_app.js')
+    script(src='/res/js/suggested.js')
+  body
+    +navbar()
+    section#header.container
+      .page-header
+        .row-bs
+          h1 Data Entry
+        .row-bs
+          p Place your consumption events into your account.
+    .container
+      section#statistics.container.col-md-8
+        #statistics-view.bs.page.text-xs-center
+          .metric-displayer.text-xs-center
+            h4 Food Entry
+          .col-lg-12
+            .col-md-6.m-y-2
+              .row.m-y-1.display-flex
+                .col-md-3
+                  label.m-b-0 Food Name
+                .col-md-9
+                  input(type="text" id="name" class="form-control materialize-form" placeholder="")
+              .row.m-b-1.display-flex
+                .col-md-3
+                  label.m-b-0 Carbs
+                .col-md-9
+                  input(type="number" id="carbs" class="form-control materialize-form required" placeholder="grams")
+              .row.m-y-1.display-flex.m-b-0
+                .col-md-3
+                  label.m-b-0 Fats
+                .col-md-9
+                  input(type="number" id="fats" class="form-control materialize-form required" placeholder="grams")
+              .row.m-y-1.display-flex.m-b-0
+                .col-md-3
+                  label.m-b-0 Proteins
+                .col-md-9
+                  input(type="number" id="proteins" class="form-control materialize-form required" placeholder="grams")
+              .row.m-t-1.display-flex.m-b-0
+                .col-md-3
+                  label.m-b-0 Date of entry
+                .col-md-9
+                  input(type="date" id="timestamp" class="form-control materialize-form")
+            .col-md-6.m-t-2.flex-me
+              .row
+                button#auto-fill.btn.btn-query.m-y-1(type="button") Auto-Fill
+              .row
+                button#submit-entry.btn.btn-send.m-y-1(type="button", disabled) Submit
+      section#suggestion.container.col-md-4
+        #statistics-view.bs.page.text-xs-center
+          .metric-displayer.text-xs-center
+            h4 Suggested Entries
+          #recent-entries
+            #entry-holder.row.entry.m-y-1.m-x-1
+              .col-md-12.text-md-left.m-y-1
+                No entries to show
+      section#statistics.container.col-md-12
+        #statistics-view.bs.page.text-xs-center
+          .metric-displayer.text-xs-center
+            h4 Weight Entry
+          .row.m-t-2
+            .col-lg-12
+              .row.m-t-1.m-x-3.text-xs-center
+                input#weight(type="number" class="form-control materialize-form" placeholder="Current Weight")
+                input#weightDate(type="date" class="m-t-1 form-control materialize-form")
+          .row.m-t-1
+            .col-lg-12
+              .row.m-x-3.text-xs-center
+                button#submit-weight.btn.btn-send.m-y-1(type="button") Submit

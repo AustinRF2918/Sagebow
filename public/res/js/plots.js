@@ -51,33 +51,21 @@ var FingPieGraph = function($ctx, headerTxt, rationalNutrient) {
 };
 
 $(document).ready(function() {
-    var userCaloricObject = 
-    {"1": "1600",
-    "2": "2000",
-    "3": "1800",
-    "4": "2300",
-    "5": "1400",
-    "6": "1900",
-     "7": "2000"};
-
-    var daysWeek = [1, 2, 3, 4, 5, 6, 7];
-    var caloriesWeek = [2000, 2200, 2300, 4000, 2300, 3000, 3000];
-
-    var daysMonth = [1, 2, 3, 4, 5, 6, 7,
-   		     1, 2, 3, 4, 5, 6, 7,
-   		     1, 2, 3, 4, 5, 6, 7,
-   		     1, 2, 3, 4, 5, 6, 7];
-
-    var caloriesMonth = [2000, 2200, 2300, 4000, 2300, 3000, 3000,
-			 2000, 2200, 2300, 4000, 2300, 3000, 3000,
-			 2000, 2200, 2300, 4000, 2300, 3000, 3000,
-			 2000, 2200, 2300, 4000, 2300, 0, 0];
-
-    //Years... obvious.
-
-    var DailyCalorieCount = new NutrientRatio(200, 100, 90);
-
-    var startBarGraph = FingBarGraph($("#data-plot"), "Weekly Caloric Intake", days, calories);
+    var max = moment();
+    
+    var min = max.clone().subtract(1,'week');
+    
+    $.get('/api/consumption',function(consumptionEvents){
+    	var days = [],
+    		calories = [];
+    	
+    	for(var consumptionEvent of consumptionEvents){
+    		days.push(consumptionEvent.timestamp);
+    		calories.push(consumptionEvent.calories);
+    	}
+    	
+    	var startBarGraph = FingBarGraph($("#data-plot"), "Weekly Caloric Intake", days, calories);
+    });
 
     //If we click something else, delete $("#data-plot") and remake
     //start bar graph..
