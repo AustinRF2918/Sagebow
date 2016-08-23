@@ -67,10 +67,25 @@ $(document).ready(function() {
     	var startBarGraph = FingBarGraph($("#data-plot"), "Weekly Caloric Intake", days, calories);
     });
 
-    //If we click something else, delete $("#data-plot") and remake
-    //start bar graph..
+    
+    //Probably split this into "Desired ratio" and "current ratio", where the decision a user makes
+    //at the setup is what is shown on suggested. You could even compute said ratio and put in a 
+    //little danger icon if person is going over fatwise or carbswise.
+    
+    $.get('/api/consumption?min='+moment().format('MMM D YYYY')).done(function(consumptionArray){
+    	var fats = 0,
+    		proteins = 0,
+    		carbs = 0;
+    	for(var c of consumptionArray){
+    		fats += c.fat;
+    		proteins += c.protein;
+    		carbs += c.carb;
+    	}
+	    var count = new NutrientRatio(proteins, carbs, fats);
+	    var startPieGraph = FingPieGraph($("#consumption-plot"), "Weekly Caloric Intake", count);
+    })
+    
 
-    var startPieGraph = FingPieGraph($("#consumption-plot"), "Weekly Caloric Intake", DailyCalorieCount);
 });
 
 
