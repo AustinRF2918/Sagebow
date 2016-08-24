@@ -182,7 +182,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
     app.get(/^\/log(out|off)$/,function(req,res){
         delete req.session.userObj;
-        res.status(200).end();
+        res.redirect('/login');
     });
 
     app.get('/metrics', function(req, res) {
