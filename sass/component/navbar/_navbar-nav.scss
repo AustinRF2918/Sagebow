@@ -26,7 +26,9 @@
     @include navigationalItem(28px, 5px, #4CAF50);
 
     @media screen and (max-width: 767px) {
-	display: none;
+	    span{
+	        display: none;
+	    }
     }
 }
 

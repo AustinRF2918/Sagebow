@@ -31,6 +31,11 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     var serveFile = require('./server/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
     var attemptSave = require('./server/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
     var responseGenerator = require('./server/ajResponse.js');
+    
+    app.all('*',function(req,res,next){
+        console.log(req.url);
+        next();
+    });
 
     // PUBLIC ROUTES:
     // Public

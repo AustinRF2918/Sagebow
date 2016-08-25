@@ -6,7 +6,7 @@
 @mixin _login_sizing_generateFullScreenPage {
     html, body{
     width: 100vw;
-    height: 100vh;
+    // height: 100vh;
     overflow-x: hidden;
     }
 }
