@@ -84,7 +84,7 @@
     }
 }
 
-@media screen and (min-width: 767px) {
+@media screen and (min-width: 768px) {
     .display-flex {
         display: flex;
         align-items: center;
@@ -92,6 +92,13 @@
     }
 }
 
+@media screen and (max-width: 767px) {
+    .display-flex {
+        display: block;
+        align-items: center;
+        justify-content: center;
+    }
+}
 input.danger{
     border-color: #E53935;
 }

@@ -3,7 +3,7 @@
 $(document).ready(function() {
 	$(".btn-login").on('click', function() {
 		if (validateRequired()) {
-			$.post("/login", {
+			$.post("/delete", {
 				'username': $("#username").val(),
 				'password': $("#password").val(),
 				'dataType': "json"
@@ -16,7 +16,7 @@ $(document).ready(function() {
 						new FingModal('Oops...', 'We experienced an error and couldn\'t log you in. Try again in a minute.', true).show();
 						break;
 					case 'success':
-						window.location.pathname = '/entry';
+						window.location.pathname = '/setup';
 				}
 			});
 		}else{

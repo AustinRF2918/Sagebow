@@ -8,3 +8,64 @@
 @import 'navbar/index';
 @import 'header/index';
 @import 'generic-page-element/index';
+
+#footer {
+    background: rgb(243, 243, 243);
+    padding-top: 15px;
+    padding-bottom: 8.5px;
+    
+    p {
+        margin-bottom: 0px;
+    } 
+    
+    a {
+        text-decoration: none;
+        color: rgb(0, 105, 92);
+    }
+}
+
+canvas {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.split-metric-selector {
+    @media screen and (max-width: 767px) {
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+}
+
+metric {
+    margin-bottom: 15px;
+}
+
+.btn-required {
+    margin-bottom: 0px;
+}
+
+meter::-webkit-meter-bar {
+    background: #EEE;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2) insert;
+    border-radius: 0px;
+}
+
+meter.not-even-close::-webkit-meter-optimum-value {
+    background: #86CC00;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2) insert;
+    border-radius: 0px;
+}
+
+meter.middle-close::-webkit-meter-optimum-value {
+    background: #FFDB1A;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2) insert;
+    border-radius: 0px;
+}
+
+meter.getting-close::-webkit-meter-optimum-value {
+    background: #CC4600;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2) insert;
+    border-radius: 0px;
+}

@@ -1,7 +1,7 @@
 include utility/_boilerplate.pug
 html
   head
-    +generateBoilerplate(false)
+    +generateBoilerplate(true)
     script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js")
     script(src="/res/js/structures.js")
     script(src="/res/js/plots.js")
@@ -15,11 +15,30 @@ html
           h1 Consumption Metrics
         .row-bs
           p Track your nutritional history to help make healthier, smarter decisions.
+    section#graphical-container.container
+        .container.bs.page.text-xs-center.m-t-2(style="padding-left: 0px !important; padding-right: 0px !important; background: rgb(248, 251, 244); box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);")
+          .metric-displayer
+            h4 Current Goals
+          .progress-displayer.text-xs-center.container.m-t-2
+            .row
+              .col-md-12
+                h4 Calorie Goal
+                  <meter id="calories-goal" style="border-radius: 0px;" class="progress m-t-1" value="0" max="100" aria-describedby="example-caption-2"></progress>
+            .row.m-t-1
+              .col-md-4
+                h4 Protein Goal
+                <meter id="proteins-goal" style="border-radius: 0px;" class="progress m-t-1" value="0" max="100" aria-describedby="example-caption-2"></progress>
+              .col-md-4
+                h4 Fat Goal
+                <meter id="fats-goal" style="border-radius: 0px;"class="progress m-t-1" value="0" max="100" aria-describedby="example-caption-2"></progress>
+              .col-md-4
+                h4 Carb Goal
+                <meter id="carbs-goal" style="border-radius: 0px;"class="progress m-t-1" value="0" max="100" aria-describedby="example-caption-2"></progress>
     section#graphical.container
         #metrics-view.bs.page.text-xs-center
           .metric-displayer.text-xs-center
             h4 Metrics View
-          canvas(id="data-plot", width=400, height=200)
+          div#data-plot
         #metrics-controls.bs.page.text-xs-left
           .metric-displayer.text-xs-center
             h4 Selectors
@@ -28,14 +47,18 @@ html
               option Weekly
               option Monthly
               option Yearly
-          .split-metric-selector
+          .split-metric-selector.m-b-2
             select.btn-cluster(name='Metric', id='metric', subclasses="btn required btn-setup-dropdown")
               option Calories
               option Protein
               option Fat
               option Carbs
+              option Weight
     section#statistics.container
         #statistics-view.bs.page.text-xs-center
           .metric-displayer.text-xs-center
             h4 Daily Consumption
           canvas(id="consumption-plot", width=400, height=200)
+    section#footer.m-t-2
+      .text-xs-center
+        p Done using our software? <a href="delete"> Delete Your Account </a>

@@ -1,4 +1,5 @@
 /*globals $, Dropdown, Modal*/
+
 function checkInputs() {
 
 	var inputsSatisfied = $('input.required').filter(function(element) {
@@ -29,14 +30,21 @@ function calculateBmr(weight, height, gender, age) {
 	// multiply your BMR by an activity factor to determine your caloric needs. Each activity category listed below has a range. Choose a number based on where you fall in that range.
 }
 
-function calculateDailyCalories(bmr, activityLevel) {
+function calculateDailyCalories(bmr, activityLevel, goal) {
 	var activityMap = {
 		'sedentary': bmr * 1.39,
 		'lightly': bmr * 1.59,
 		'moderately': bmr * 1.89,
 		'very': bmr * 2.5
 	};
-	return activityMap[activityLevel.split(' ')[0].toLowerCase()];
+	var goalAdj = 1;
+	if(goal === "Weight Loss"){
+		goalAdj = 0.8;
+	}
+	if(goal === "Bodybuilding"){
+		goalAdj = 1.2;
+	}
+	return activityMap[activityLevel.split(' ')[0].toLowerCase()] * goalAdj;
 	// If you are sedentary or mostly sedentary multiply your BMR by 1.0-1.39 
 	// If you are lightly active (you do 30-60 minutes of easy physical activity each day), multiply your BMR by 1.4-1.59
 	// If you are moderately active (you do 60 minutes of moderate physical activity each day) multiply your BMR by 1.6-1.89
@@ -67,13 +75,15 @@ $(document).ready(function() {
 				gender = $('#gender').text(),
 				age = Number($('#age').val()),
 				bmr = calculateBmr(weight, height, gender, age),
-				dailyCalories = calculateDailyCalories(bmr, activityLevel);
+				goal = $('#goal').text(),
+				dailyCalories = calculateDailyCalories(bmr, activityLevel, goal);
 			
 			$.post("/setup", {
 				username: username,
 				password: password,
 				weight: weight,
 				bmi: bmi,
+				goal: goal,
 				dailyCalories: dailyCalories,
 				'dataType': "text"
 				

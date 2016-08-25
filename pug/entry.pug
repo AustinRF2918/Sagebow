@@ -7,7 +7,6 @@ html
     script(src="/res/js/navbar.js")
     script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.js')
     script(src='/res/js/entry_app.js')
-    script(src='/res/js/suggested.js')
   body
     +navbar()
     section#header.container
@@ -74,3 +73,6 @@ html
             .col-lg-12
               .row.m-x-3.text-xs-center
                 button#submit-weight.btn.btn-send.m-y-1(type="button") Submit
+    section#footer.m-t-2
+      .text-xs-center
+        p Done using our software? <a href="delete"> Delete Your Account </a>

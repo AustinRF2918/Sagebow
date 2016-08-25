@@ -56,9 +56,9 @@ var suggestionPromise = new Promise(function(resolve){
 function queryUserNutrientData(foodName){
     $.get('/api/foods/'+foodName).done(function(foodData){
         // Fill in inputs with data
-        $('#carbs').val(foodData.carb);
-        $('#fats').val(foodData.fat);
-        $('#proteins').val(foodData.protein);
+        $('#carbs').val(foodData.carbs);
+        $('#fats').val(foodData.fats);
+        $('#proteins').val(foodData.proteins);
         $('#name').val(foodData.name);
         validateForm();
     });

@@ -1,0 +1,36 @@
+include utility/_boilerplate.pug
+html
+  head
+    +generateBoilerplate(true)
+    script(src="res/js/delete_app.js")
+    
+  include utility/_modalWindow-mixins.pug
+  body
+    .full-background
+    .full-container
+      .primary-container-login
+        .row.no-margin-mobile
+          .col-lg-12
+            i(class=["fa", "fa-tree fa-2x"] aria-hidden="true")
+        .row.m-t-1.no-margin-mobile
+          .col-lg-6
+            h1.light-text Are you sure? We'll miss you!
+        .row.m-t-1.no-margin-mobile
+          .col-lg-12.p-y-1
+            div.cta-container
+              .row
+                .col-lg-6.extend-full-height
+                  .email-address-container
+                    .form-group
+                      input#username.required.form-control.materialize-form(type="text", placeholder="Confirm delete with your username")
+                      label.label(for="username") Username:
+                .col-lg-6.extend-full-height
+                  div.password-container
+                    .form-group
+                      input#password.required.form-control.materialize-form(type="password", placeholder="Confirm delete with your password")
+                      label.label(for="password") Password:
+                .col-lg-4
+                  div.login-container
+                    .form-group
+                      a.btn.btn-login.danger Delete account
+                      label(class=["consistency-hide"] for="btn") Password:

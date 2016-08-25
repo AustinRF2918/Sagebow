@@ -78,6 +78,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
             'password',
             'weight',
             'bmi',
+            'goal',
             'dailyCalories'
         ];
         var fieldsPresent = true;
@@ -113,9 +114,9 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
                     weight: req.body.weight,
                     lastUpdated: new Date(),
                     bmi: req.body.bmi,
-                    dietPlan: {
-                        weightGoal: req.body.weightGoal,
-                        dailyCalories: req.body.dailyCalories
+                    diet:{
+                        goal:req.body.goal,
+                        dailyCalories:req.body.dailyCalories
                     },
                     nutrientHistory: []
                 };
@@ -184,6 +185,33 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         delete req.session.userObj;
         res.redirect('/login');
     });
+    
+    app.get('/delete',function(req,res){
+        serveFile('delete.html',res);
+    });
+    
+    // Post Delete
+    app.post('/delete', function(req, res) {
+        var username = req.body.username.trim();
+        var password = req.body.password.trim();
+
+        // Attempt user lookup
+        redisConn.get(username, function(err, userObj) {
+            userObj = JSON.parse(userObj);
+
+            if (err)
+                res.send('error');
+            else if (!userObj)
+                res.send('invalid');
+            else if (!bcrypt.compareSync(password, userObj.passwordHash))
+                res.send('invalid');
+            else {
+                redisConn.del(username);
+                console.log('delete account');
+                res.send('success');
+            }
+        });
+    });
 
     app.get('/metrics', function(req, res) {
         serveFile('metrics.html', res);
@@ -194,6 +222,11 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     });
 
     // PRIVATE API
+    // gets the users weight goal
+    app.get('/api/diet',function(req,res){
+        res.status(200).send(req.session.userObj.diet);
+    });
+    
     // Add weight event
     app.post('/api/weight', function(req, res) {
         var weight = req.body.value;
@@ -264,33 +297,33 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
     // Add consumption event
     app.post('/api/consumption', function(req, res) {
-        var carb = req.query.carbs,
-            fat = req.query.fats,
-            protein = req.query.proteins,
+        var carbs = req.query.carbs,
+            fats = req.query.fats,
+            proteins = req.query.proteins,
             name = req.query.name,
             timestamp = req.query.timestamp || new Date();
         console.log(req.query);
 
         // Validate fields
-        if (!carb || !fat || !protein) {
-            res.status(400).send('Missing required calorie params');
+        if (!carbs || !fats || !proteins) {
+            res.status(400).send('Missing required params');
         }
         else {
             // Formatting
             timestamp = new Date(timestamp);
-            carb = parseFloat(carb);
-            fat = parseFloat(fat);
-            protein = parseFloat(protein);
+            carbs = parseFloat(carbs);
+            fats = parseFloat(fats);
+            proteins = parseFloat(proteins);
 
             // Used in case of failure. Deep copy
             var oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
 
             // Add entry
             req.session.userObj.nutrientHistory.unshift({
-                calories: 4 * carb + 9 * fat + 4 * protein,
-                carb: carb,
-                fat: fat,
-                protein: protein,
+                calories: 4 * carbs + 9 * fats + 4 * proteins,
+                carbs: carbs,
+                fats: fats,
+                proteins: proteins,
                 name: name,
                 timestamp: timestamp
             });
