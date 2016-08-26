@@ -67,17 +67,20 @@ var FingPieGraph = function($ctx, headerTxt, rationalNutrient) {
 
 function extractMetric(key, unit){
 	var min = moment().subtract(1, unit);
-	return consumptionData.map(function(el){
+	return consumptionData.reduce(function(previous, el){
 		var time = new Date(el.timestamp);
 		if(time >  min._d){
-			return el[key];
+			if(el[key]){
+				previous.push(el[key]);
+			}
 		}else{
 			console.log('DATE ESCAPE!');
 			console.log(range.min);
 			console.log(time);
 			console.log(range.max);
 		}
-	});
+		return previous;
+	},[]);
 };
 
 function _classFromValue(num) {
@@ -140,9 +143,9 @@ $(document).ready(function() {
     			fats = extractMetric('fats','day');
     			
 	    	var counts = new NutrientRatio(
-	    		reduce(proteins,summation,0),
-	    		reduce(carbs,summation,0),
-	    		reduce(fats,summation,0));
+	    		proteins.reduce(summation,0),
+	    		carbs.reduce(summation,0),
+	    		fats.reduce(summation,0));
 	    	FingPieGraph($("#consumption-plot"), "Daily Caloric intake", counts);
 	    	$.get('/api/diet').done(function(diet){
 		    	var nutrients = new NutrientRatio(diet.dailyCalories, diet.goal);
