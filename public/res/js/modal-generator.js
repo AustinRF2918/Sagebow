@@ -40,9 +40,31 @@ var FingModal = function(headerTxt, messageTxt, danger) {
 $(document).ready(function() {
     var ModalView = Backbone.View.extend({
 	el: $('body'),
+
 	header: undefined,
 	message: undefined,
 	isDangerous: undefined,
+
+	textClass: this.isDangerous  ? 'danger-text' : 'success-text',
+	buttonClass: this.isDangerous ? 'btn-reject' : 'btn-success',
+
+	template: _.template(function() {
+	    tag = "";
+	    tag += '<div class="modal">';
+	    tag +=   '<div class="overlay">';
+	    tag +=     '<div class="window">';
+	    tag +=       '<div class="top-text">';
+	    tag +=         '<h2 class="m-b-1 <%= this.textClass %>"><%= this.header %></h2>';
+	    tag +=         '<p><%= this.message %></p>';
+	    tag +=       '</div>';
+	    tag +=       '<div class="bottom-text text-xs-right">';
+	    tag +=         '<a class="btn <%= this.buttonClass %>">Close</a>';
+	    tag +=       '</div>';
+	    tag +=     '</div>';
+	    tag +=   '</div>';
+	    tag += '</div>';
+	    return tag;
+	}()),
 
 	initialize: function(attrs) {
 	    // Pull parameters of object passed to ModalView
@@ -62,7 +84,7 @@ $(document).ready(function() {
 	},
 
 	render: function() {
-	    $(this.el).append("<a>A Modal.</a>");
+	    $(this.el).append(this.template());
 	}
     });
 
