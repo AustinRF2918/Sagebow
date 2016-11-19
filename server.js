@@ -10,7 +10,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     var bcrypt = require('bcryptjs');
 
     // Application Configuration
-    var appPort = EXPRESS_PORT;
+    var appPort = 4001;
 
     // Express modules
     // app.use(require('connect-livereload')({

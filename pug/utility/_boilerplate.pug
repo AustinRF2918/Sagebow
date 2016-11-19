@@ -10,15 +10,19 @@ mixin generateBoilerplate(includeBootstrap)
     link(rel="stylesheet", href="/res/css/fing_modals.css")
     link(href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700' rel='stylesheet' type='text/css')
     
+
     if (includeBootstrap)
         link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel='stylesheet' type='text/css')
     
-    script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
-    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js", integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7", crossorigin="anonymous")
-    script(src="res/js/dropdown-generator.js")
-    script(src="res/js/modal-generator.js")
-    script(src="/res/js/common.js")
-    
+
+script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js")
+script(type="text/javascript", src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js")
+script(type="text/javascript", src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js")
+script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js", integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7", crossorigin="anonymous")
+script(src="res/js/dropdown-generator.js")
+script(src="res/js/modal-generator.js")
+script(src="/res/js/common.js")
+ 
 mixin navbar()
     .navbar-sagebow
       .left-side
@@ -29,6 +33,3 @@ mixin navbar()
         a(href='metrics') Metrics
         a(href='entry') Entry
         a(href='#logout') Log Out
-    //- AUSTIN AND JOHN DID EVERYTHING!!!!!!!!!!
-    //- (Austin) I dare you to leave it on there 
-    //- (John) ... CHALLENGE ACCEPTED
