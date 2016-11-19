@@ -37,84 +37,62 @@ var FingModal = function(headerTxt, messageTxt, danger) {
 
 
 
-$(document).ready(function() {
-    var ModalView = Backbone.View.extend({
-	header: undefined,
-	message: undefined,
-	isDangerous: undefined,
+var ModalView = Backbone.View.extend({
+    header: undefined,
+    message: undefined,
+    isDangerous: undefined,
 
-	textClass: this.isDangerous  ? 'danger-text' : 'success-text',
-	buttonClass: this.isDangerous ? 'btn-reject' : 'btn-success',
+    textClass: this.isDangerous  ? 'danger-text' : 'success-text',
+    buttonClass: this.isDangerous ? 'btn-reject' : 'btn-success',
 
-	template: _.template(function() {
-	    tag = "";
-	    tag += '<div class="modal">';
-	    tag +=   '<div class="overlay">';
-	    tag +=     '<div class="window">';
-	    tag +=       '<div class="top-text">';
-	    tag +=         '<h2 class="m-b-1 <%= this.textClass %>"><%= this.header %></h2>';
-	    tag +=         '<p><%= this.message %></p>';
-	    tag +=       '</div>';
-	    tag +=       '<div class="bottom-text text-xs-right">';
-	    tag +=         '<a class="btn <%= this.buttonClass %>">Close</a>';
-	    tag +=       '</div>';
-	    tag +=     '</div>';
-	    tag +=   '</div>';
-	    tag += '</div>';
-	    return tag;
-	}()),
+    template: _.template(function() {
+	tag = "";
+	tag += '<div class="modal">';
+	tag +=   '<div class="overlay">';
+	tag +=     '<div class="window">';
+	tag +=       '<div class="top-text">';
+	tag +=         '<h2 class="m-b-1 <%= this.textClass %>"><%= this.header %></h2>';
+	tag +=         '<p><%= this.message %></p>';
+	tag +=       '</div>';
+	tag +=       '<div class="bottom-text text-xs-right">';
+	tag +=         '<a class="btn <%= this.buttonClass %>">Close</a>';
+	tag +=       '</div>';
+	tag +=     '</div>';
+	tag +=   '</div>';
+	tag += '</div>';
+	return tag;
+    }()),
 
-	initialize: function(attrs) {
-	    // Pull parameters of object passed to ModalView
-	    this.options = attrs;
+    initialize: function(attrs) {
+	// Pull parameters of object passed to ModalView
+	this.options = attrs;
 
-	    // Set all possibilities equal to internal objects:
-	    // note that the user of this view may not pass certain
-	    // objects: This is okay, because at the end of the day,
-	    // they are undefined anyways.
-	    this.header = this.options.header;
-	    this.message = this.options.message;
-	    this.isDangerous = this.options.isDangerous;
+	// Set all possibilities equal to internal objects:
+	// note that the user of this view may not pass certain
+	// objects: This is okay, because at the end of the day,
+	// they are undefined anyways.
+	this.header = this.options.header;
+	this.message = this.options.message;
+	this.isDangerous = this.options.isDangerous;
 
-	    // Simple Backbone binding schema.
-	    _.bindAll(this, 'render');
-	    this.render();
-	},
+	// Simple Backbone binding schema.
+	_.bindAll(this, 'render');
+	this.render();
+    },
 
-	render: function() {
-	    this.el.innerHTML = this.template();
-	    return this;
-	},
+    render: function() {
+	this.el.innerHTML = this.template();
+	return this;
+    },
 
-	events: {
-	    "click .btn": "removeModal"
-	},
+    events: {
+	"click .btn": "removeModal"
+    },
 
-	removeModal: function() {
-	    this.undelegateEvents();
-	    this.$el.removeData().unbind(); 
-	    this.remove();  
-	    Backbone.View.prototype.remove.call(this);
-	}
-    });
-
-    var TestApp = Backbone.View.extend({
-	el: $("body"),
-
-	initialize: function() {
-	    _.bindAll(this, 'render');
-	    this.render();
-	},
-
-	render: function() {
-	    var modalView = new ModalView({
-		header: "Nice",
-		message: "You made an account!",
-	    });
-
-	    $(this.el).append(modalView.render().el);
-	}
-    });
-
-    var testApp = new TestApp();
+    removeModal: function() {
+	this.undelegateEvents();
+	this.$el.removeData().unbind(); 
+	this.remove();  
+	Backbone.View.prototype.remove.call(this);
+    }
 });
