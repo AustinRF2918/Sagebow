@@ -39,8 +39,6 @@ var FingModal = function(headerTxt, messageTxt, danger) {
 
 $(document).ready(function() {
     var ModalView = Backbone.View.extend({
-	el: $('body'),
-
 	header: undefined,
 	message: undefined,
 	isDangerous: undefined,
@@ -84,12 +82,39 @@ $(document).ready(function() {
 	},
 
 	render: function() {
-	    $(this.el).append(this.template());
+	    this.el.innerHTML = this.template();
+	    return this;
+	},
+
+	events: {
+	    "click .btn": "removeModal"
+	},
+
+	removeModal: function() {
+	    this.undelegateEvents();
+	    this.$el.removeData().unbind(); 
+	    this.remove();  
+	    Backbone.View.prototype.remove.call(this);
 	}
     });
 
-    var modalView = new ModalView({
-	header: "Nice",
-	message: "You made an account!",
+    var TestApp = Backbone.View.extend({
+	el: $("body"),
+
+	initialize: function() {
+	    _.bindAll(this, 'render');
+	    this.render();
+	},
+
+	render: function() {
+	    var modalView = new ModalView({
+		header: "Nice",
+		message: "You made an account!",
+	    });
+
+	    $(this.el).append(modalView.render().el);
+	}
     });
+
+    var testApp = new TestApp();
 });
