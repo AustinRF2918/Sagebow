@@ -1,0 +1,9 @@
+* Notes On Login Application
+** Antipattern
+   Code structures is extremely nested.
+
+** Nested Component Issue
+   Modal window generator ("FingModal") must be reimplemented as Backbone component.
+   
+** Future Change On login_app.js 
+   This should be reimplemented as a controller that has a model for user data.
