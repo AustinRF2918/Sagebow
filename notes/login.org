@@ -7,3 +7,62 @@
    
 ** Future Change On login_app.js 
    This should be reimplemented as a controller that has a model for user data.
+   
+** Possible Errors In The Future
+*** Querying of button class instead of ID.
+    #+BEGIN_SRC javascript
+	$(document).ready(function() {
+	    $(".btn-login").on('click', function() { //here
+		if (validateRequired()) {
+    #+END_SRC
+    
+    This code snippet could be prone to bugs because we are selecting based on
+    a class for button login, why? Just use an ID and we will get guarenteed 
+    expandability.
+
+*** Coupled Validation
+    #+BEGIN_SRC javascript
+	$(document).ready(function() {
+	    $(".btn-login").on('click', function() { //here
+		if (validateRequired()) {
+    #+END_SRC
+    
+    Observe how the validateRequired global function is called: It is a global
+    function called from elsewhere that we have no knowlege of implementation
+    of and also relies on the state of the global DOM. It may be smarter to
+    reimplement unique functions (validateUsername($el)) ... that would allow 
+    us to PASS IN JQuery selectors, thus making the function much more reusable
+    and modular.
+
+*** No Default Case On Switch
+    #+BEGIN_SRC javascript
+	switch (msg) {
+	    case 'invalid':
+		    new FingModal('Oh No!', 'The information you have entered is invalid. Check your username and password and try again!', true).show();
+		    break;
+	    case 'error':
+		    new FingModal('Oops...', 'We experienced an error and couldn\'t log you in. Try again in a minute.', true).show();
+		    break;
+	    case 'success':
+		    window.location.pathname = '/entry';
+	}
+    #+END_SRC
+    
+    Note how we do not handle a default case: This could lead to dangerous bugs.
+
+*** Unexplained Code Snippet
+    #+BEGIN_SRC javascript
+	$("input").keydown(function(event) {
+	    if (event.keyCode === 13) {
+		event.preventDefault();
+	    }
+	});
+    #+END_SRC
+    
+    What exactly does this do?
+
+** Possible Tests
+*** It logs in to existing account.
+*** It doesn't log in to non existing account.
+*** It doesn't log in when all fields are not filled out.
+*** It logs in with enter key as well.
