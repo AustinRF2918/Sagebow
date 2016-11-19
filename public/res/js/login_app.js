@@ -29,43 +29,39 @@ $(document).ready(function() {
 	    this.render();
 	},
 
-	displayWindow: function(modal) {
-	    $(this.el).append(modal.render().el);
+	events: {
+	    "click .btn-login": "attemptLogin"
 	},
 
-	render: function() {
-	},
+	attemptLogin: function() {
+	    var that = this;
+
+	    var displayWindow = function(modal) {
+		$(that.el).append(modal.render().el);
+	    };
+
+	    if (validateRequired()) {
+		$.post("/login", {
+		    'username': $("#username").val(),
+		    'password': $("#password").val(),
+		    'dataType': "json"
+		}).done( function(msg) {
+		    switch (msg) {
+			case 'invalid':
+			    displayWindow(InvalidInformationModal);
+			    break;
+			case 'error':
+			    displayWindow(InternalErrorModal);
+			    break;
+			case 'success':
+			    window.location.pathname = '/entry';
+		    }
+		});
+	    } else {
+		displayWindow(IncompleteFieldsModal);
+	    }
+	}
     });
 
     app = new LoginApplication();
-    app.displayWindow(InvalidInformationModal);
-
-	$(".btn-login").on('click', function() {
-		if (validateRequired()) {
-			$.post("/login", {
-				'username': $("#username").val(),
-				'password': $("#password").val(),
-				'dataType': "json"
-			}).done(function(msg) {
-				switch (msg) {
-					case 'invalid':
-						new FingModal('Oh No!', 'The information you have entered is invalid. Check your username and password and try again!', true).show();
-						break;
-					case 'error':
-						new FingModal('Oops...', 'We experienced an error and couldn\'t log you in. Try again in a minute.', true).show();
-						break;
-					case 'success':
-						window.location.pathname = '/entry';
-				}
-			});
-		}else{
-			new FingModal('Oh No!','All fields are required',true).show();
-		}
-	});
-
-	$("input").keydown(function(event) {
-		if (event.keyCode === 13) {
-			event.preventDefault();
-		}
-	});
 });

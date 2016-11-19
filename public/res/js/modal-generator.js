@@ -42,8 +42,8 @@ var ModalView = Backbone.View.extend({
     message: undefined,
     isDangerous: undefined,
 
-    textClass: this.isDangerous  ? 'danger-text' : 'success-text',
-    buttonClass: this.isDangerous ? 'btn-reject' : 'btn-success',
+    textClass: this.isDangerous  ? 'success-text' : 'danger-text',
+    buttonClass: this.isDangerous ? 'btn-success' : 'btn-reject',
 
     template: _.template(function() {
 	tag = "";
