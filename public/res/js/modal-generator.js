@@ -34,3 +34,40 @@ var FingModal = function(headerTxt, messageTxt, danger) {
         self.hide();
     });
 };
+
+
+
+$(document).ready(function() {
+    var ModalView = Backbone.View.extend({
+	el: $('body'),
+	header: undefined,
+	message: undefined,
+	isDangerous: undefined,
+
+	initialize: function(attrs) {
+	    // Pull parameters of object passed to ModalView
+	    this.options = attrs;
+
+	    // Set all possibilities equal to internal objects:
+	    // note that the user of this view may not pass certain
+	    // objects: This is okay, because at the end of the day,
+	    // they are undefined anyways.
+	    this.header = this.options.header;
+	    this.message = this.options.message;
+	    this.isDangerous = this.options.isDangerous;
+
+	    // Simple Backbone binding schema.
+	    _.bindAll(this, 'render');
+	    this.render();
+	},
+
+	render: function() {
+	    $(this.el).append("<a>A Modal.</a>");
+	}
+    });
+
+    var modalView = new ModalView({
+	header: "Nice",
+	message: "You made an account!",
+    });
+});
