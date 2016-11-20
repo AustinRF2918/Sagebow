@@ -4,7 +4,7 @@
     border-radius: 0px;
     font-size: 14px;
 
-    &:hover {
+    &:hover, &:active, &:focus {
 	background: rgba(0, 0, 0, 0.5);
 	color: white;
 	box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.31);

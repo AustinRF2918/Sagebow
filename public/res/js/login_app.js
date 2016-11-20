@@ -43,7 +43,8 @@ $(document).ready(function() {
 	},
 
 	events: {
-	    "click .btn-login": "attemptLogin"
+	    "click .btn-login": "attemptLogin",
+	    "keyup .form-control": "attemptLogin"
 	},
 
 	getFields: function() {
@@ -53,14 +54,20 @@ $(document).ready(function() {
 	    }
 	},
 
-	attemptLogin: function() {
+	attemptLogin: function(event) {
+	    if (event.keyCode && event.keyCode !== 13 ) {
+		return;
+	    } else {
+		$(this.el).find(".form-control").blur();
+	    }
+
 	    var that = this;
 
 	    var displayWindow = function(modal) {
 		$.when($(that.el).append(modal.render().el)).then(function() {
 		    setTimeout(function(){
 			$(that.el).find(".begin-transparent").removeClass('begin-transparent');
-		    }, 10);
+		    }, 50);
 		});
 	    };
 

@@ -16,7 +16,7 @@ var ModalView = Backbone.View.extend({
 	tag +=         '<p><%= this.message %></p>';
 	tag +=       '</div>';
 	tag +=       '<div class="bottom-text text-xs-right">';
-	tag +=         '<a class="btn <%= this.buttonClass %>">Close</a>';
+	tag +=         '<a class="btn btn-exit <%= this.buttonClass %>">Close</a>';
 	tag +=       '</div>';
 	tag +=     '</div>';
 	tag +=   '</div>';
@@ -49,11 +49,13 @@ var ModalView = Backbone.View.extend({
     events: {
 	"click .btn": "removeModal",
 	"click .overlay": "removeModal",
+	"keyup .btn-exit": "removeModal",
     },
 
     removeModal: function(event) {
+	console.log("Hi.");
 	// Quite coupled: Watch out here.
-	if ($(event.target).hasClass("btn-reject") || $(event.target).hasClass("overlay")) {
+	if ($(event.target).hasClass("btn-reject") || $(event.target).hasClass("overlay") || event.keyCode === 13) {
 	    this.undelegateEvents();
 	    this.$el.removeData().unbind(); 
 	    this.remove();  
