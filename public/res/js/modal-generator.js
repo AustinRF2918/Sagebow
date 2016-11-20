@@ -47,14 +47,18 @@ var ModalView = Backbone.View.extend({
     },
 
     events: {
-	"click .btn": "removeModal"
+	"click .btn": "removeModal",
+	"click .overlay": "removeModal",
     },
 
-    removeModal: function() {
-	this.undelegateEvents();
-	this.$el.removeData().unbind(); 
-	this.remove();  
-	Backbone.View.prototype.remove.call(this);
+    removeModal: function(event) {
+	// Quite coupled: Watch out here.
+	if ($(event.target).hasClass("btn-reject") || $(event.target).hasClass("overlay")) {
+	    this.undelegateEvents();
+	    this.$el.removeData().unbind(); 
+	    this.remove();  
+	    Backbone.View.prototype.remove.call(this);
+	}
     }
 });
 
