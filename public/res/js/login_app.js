@@ -33,8 +33,8 @@ $(document).ready(function() {
 	validateRequired: function() {
 	    var inputsSatisfied = $(this.el)
 		.find('.required')
-		.filter(function(element) {
-		    return !element.val;
+		.filter(function(element, item) {
+		    return item.value === '';
 	    }).length === 0;
 
 	    var selectionsSatisfied = $(this.el).children('.btn.required[set=false]').length === 0;
@@ -79,7 +79,6 @@ $(document).ready(function() {
 		    },
 		});
 	    } else {
-		console.log("It functions.");
 		var incompleteFieldsModal = produceModal("Oops", "All fields are required.", true);
 		displayWindow(incompleteFieldsModal);
 	    }
