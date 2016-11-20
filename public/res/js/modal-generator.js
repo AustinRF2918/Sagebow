@@ -9,7 +9,7 @@ var ModalView = Backbone.View.extend({
     template: _.template(function() {
 	tag = "";
 	tag += '<div class="modal">';
-	tag +=   '<div class="overlay">';
+	tag +=   '<div class="overlay fadein begin-transparent">';
 	tag +=     '<div class="window">';
 	tag +=       '<div class="top-text">';
 	tag +=         '<h2 class="m-b-1 <%= this.textClass %>"><%= this.header %></h2>';

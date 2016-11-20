@@ -22,7 +22,6 @@
     }
 }
 .extend-full-width {
-
     height: 100%;
 }
 
@@ -54,7 +53,28 @@
     }
 }
 
-@include _login_container_generateCenteredContainer(".primary-container-login", 50vw, -100vh, 20%, 35%);
+.primary-container-login {
+    position: absolute;
+
+    @media screen and (min-width: 768px) {
+	left: 50%;
+	width: 50%;
+	top: 40%;
+	transform: translateX(-50%) translateY(-50%);
+    }
+    
+    @media screen and (max-width: 767px) {
+	left: 5%;
+	width: 90%;
+	top: 25%;
+	transform: translateY(-25%);
+    }
+}
+
+.cta-container {
+    padding-top: 20px;
+}
+
 @include _login_container_generateCenteredContainer(".primary-container-setup", 30vw, 60vh, 20%, 10%);
 
 @mixin _login_container_generateCTAClusterContainer {

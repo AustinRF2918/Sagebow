@@ -60,3 +60,12 @@
 	}
     }
 }
+
+.fadein {
+    transition-duration: 1s;
+}
+
+.begin-transparent {
+    background: transparent !important;
+    color: transparent !important;
+}

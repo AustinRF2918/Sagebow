@@ -57,7 +57,11 @@ $(document).ready(function() {
 	    var that = this;
 
 	    var displayWindow = function(modal) {
-		$(that.el).append(modal.render().el);
+		$.when($(that.el).append(modal.render().el)).then(function() {
+		    setTimeout(function(){
+			$(that.el).find(".begin-transparent").removeClass('begin-transparent');
+		    }, 10);
+		});
 	    };
 
 	    if (this.validateRequired()) {
@@ -70,7 +74,7 @@ $(document).ready(function() {
 
 		    error: function(model, response) {
 			if (response.responseText === "Not Found") {
-			    var notFoundModal = produceModal("Opps", "The information you have entered is invalid. Check your username and password and try again!", true);
+			    var notFoundModal = produceModal("Oops", "The information you have entered is invalid. Check your username and password and try again!", true);
 			    displayWindow(notFoundModal);
 			} else {
 			    var internalErrorModal = produceModal("Oops", "We experienced an error and couldn\'t log you in. Try again in a minute.", true);
