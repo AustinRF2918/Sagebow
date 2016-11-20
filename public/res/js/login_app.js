@@ -1,24 +1,6 @@
 /*globals $, validateRequired*/
 
 $(document).ready(function() {
-    var InvalidInformationModal = new ModalView({
-	header: "Opps",
-	message: "The information you have entered is invalid. Check your username and password and try again!",
-	isDangerous: true
-    });
-
-    var InternalErrorModal = new ModalView({
-	header: "Oops",
-	message: "We experienced an error and couldn\'t log you in. Try again in a minute.",
-	isDangerous: true
-    });
-
-    var IncompleteFieldsModal = new ModalView({
-	header: "Oops",
-	message: "All fields are required.",
-	isDangerous: true
-    });
-
     var LoginModel = Backbone.Model.extend({
 	defaults: {
 	    username: '',
@@ -78,25 +60,25 @@ $(document).ready(function() {
 
 	    if (this.validateRequired()) {
 		loginFields.save(this.getFields(), {
-		    error: function(model, response) {
-			if (response.responseText === "OK") {
-			    // FOR SOME REASON EVEN WHEN RESPONSE IS OK
-			    // BACKBONE SEEMS TO THINK THAT AN ERROR TYPE
-			    // IS THE RESPONSE!!
-			    window.location.pathname = '/entry';
-			} else if (response.responseText === "Not Found") {
-			    displayWindow(InvalidInformationModal);
-			} else {
-			    displayWindow(InternalErrorModal);
-			}
-		    },
+		    dataType: 'text',
 
 		    success: function(model, response) {
 			window.location.pathname = '/entry';
-		    }
+		    },
+
+		    error: function(model, response) {
+			if (response.responseText === "Not Found") {
+			    var notFoundModal = produceModal("Opps", "The information you have entered is invalid. Check your username and password and try again!", true);
+			    displayWindow(notFoundModal);
+			} else {
+			    var internalErrorModal = produceModal("Oops", "We experienced an error and couldn\'t log you in. Try again in a minute.", true);
+			    displayWindow(internalErrorModal);
+			}
+		    },
 		});
 	    } else {
-		displayWindow(IncompleteFieldsModal);
+		var incompleteFieldsModal = produceModal("Oops", "All fields are required.", true);
+		displayWindow(incompleteFieldsModal);
 	    }
 	}
     });
