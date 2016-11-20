@@ -60,17 +60,15 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         redisConn.get(username, function(err, userObj) {
             userObj = JSON.parse(userObj);
 
-            if (err)
-                res.send('error');
-            else if (!userObj)
-                res.send('invalid');
-            else if (!bcrypt.compareSync(password, userObj.passwordHash))
-                res.send('invalid');
-            else {
-                // Grant access!
-                console.log('granting access');
+            if (err) {
+                res.sendStatus(500);
+	    } else if (!userObj) {
+                res.sendStatus(404);
+	    } else if (!bcrypt.compareSync(password, userObj.passwordHash)) {
+                res.sendStatus(422);
+	    } else {
                 req.session.userObj = userObj;
-                res.send('success');
+                res.sendStatus(200);
             }
         });
     });

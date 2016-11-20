@@ -1,12 +1,3 @@
-// returns whether all inputs have values set
-function validateRequired(){
-    var inputsSatisfied = $('input.required').filter(function(i,element) {
-		return !element.value;
-	}).length === 0;
-	var selectionsSatisfied = $('.btn.required[set=false]').length === 0;
-	return inputsSatisfied && selectionsSatisfied;
-}
-
 // Replace selects with dropdowns
 $(document).ready(function() {
     var currentZIndex = 9999;

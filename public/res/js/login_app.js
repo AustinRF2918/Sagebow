@@ -19,18 +19,54 @@ $(document).ready(function() {
 	isDangerous: true
     });
 
+    var LoginModel = Backbone.Model.extend({
+	defaults: {
+	    username: '',
+	    password: ''
+	},
+
+	url: function() {
+	    return '/login';
+	}
+    })
+
+    loginFields = new LoginModel();
 
     // Can be thought of as our application controller.
-    var LoginApplication = Backbone.View.extend({
+    var LoginView = Backbone.View.extend({
 	el: $("body"),
+	$username: undefined,
+	$password: undefined,
 
-	initialize: function() {
+	initialize: function(attrs) {
+	    this.options = attrs;
+
+	    this.$username = this.options.$username;
+	    this.$password = this.options.$password;
+
 	    _.bindAll(this, 'render');
 	    this.render();
 	},
 
+	validateRequired: function() {
+	    var inputsSatisfied = $(this.el).children('input.required').filter(function(i, element) {
+		    return !password.value;
+	    }).length === 0;
+
+	    var selectionsSatisfied = $(this.el).children('.btn.required[set=false]').length === 0;
+
+	    return inputsSatisfied && selectionsSatisfied;
+	},
+
 	events: {
 	    "click .btn-login": "attemptLogin"
+	},
+
+	getFields: function() {
+	    return {
+		username: this.$username.val(),
+		password: this.$password.val()
+	    }
 	},
 
 	attemptLogin: function() {
@@ -40,21 +76,23 @@ $(document).ready(function() {
 		$(that.el).append(modal.render().el);
 	    };
 
-	    if (validateRequired()) {
-		$.post("/login", {
-		    'username': $("#username").val(),
-		    'password': $("#password").val(),
-		    'dataType': "json"
-		}).done( function(msg) {
-		    switch (msg) {
-			case 'invalid':
-			    displayWindow(InvalidInformationModal);
-			    break;
-			case 'error':
-			    displayWindow(InternalErrorModal);
-			    break;
-			case 'success':
+	    if (this.validateRequired()) {
+		loginFields.save(this.getFields(), {
+		    error: function(model, response) {
+			if (response.responseText === "OK") {
+			    // FOR SOME REASON EVEN WHEN RESPONSE IS OK
+			    // BACKBONE SEEMS TO THINK THAT AN ERROR TYPE
+			    // IS THE RESPONSE!!
 			    window.location.pathname = '/entry';
+			} else if (response.responseText === "Not Found") {
+			    displayWindow(InvalidInformationModal);
+			} else {
+			    displayWindow(InternalErrorModal);
+			}
+		    },
+
+		    success: function(model, response) {
+			window.location.pathname = '/entry';
 		    }
 		});
 	    } else {
@@ -63,5 +101,8 @@ $(document).ready(function() {
 	}
     });
 
-    app = new LoginApplication();
+    app = new LoginView({
+	$username: $("#username"),
+	$password: $("#password")
+    });
 });
