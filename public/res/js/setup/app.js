@@ -1,11 +1,7 @@
 /*globals $, Dropdown, Modal*/
 
 function checkInputs() {
-	var inputsSatisfied = $('input.required').filter(function(element) {
-		return !!element.value;
-	}).length === 0;
-
-	return inputsSatisfied && !$('.btn-gender').text().match(/gender/i) && !$('.btn-goal').text().match(/goal/i);
+	
 }
 
 // Create a general business logic library.
@@ -108,9 +104,12 @@ $(document).ready(function() {
 		    return item.value === '';
 	    }).length === 0;
 
-	    var selectionsSatisfied = $(this.el).children('.btn.required[set=false]').length === 0;
+	    console.log($('#gender').attr('set'));
 
-	    return inputsSatisfied && selectionsSatisfied;
+	    return inputsSatisfied &&
+		   $('#gender').attr('set') === "true" &&
+		   $('#goal').attr('set') === "true" &&
+		   $('#activity-level').attr('set') === "true";
 	},
 
 	events: {
@@ -163,15 +162,13 @@ $(document).ready(function() {
 		    dataType: 'text',
 
 		    success: function(model, response) {
-			var goodModal = produceModal("Nice", "You made an account! Press okay to go to the login page.");
+			displayWindow(produceModal("Nice", "You made an account! Press okay to go to the login page."));
 			displayWindow(goodModal);
 		    },
 
 		    error: function(model, response) {
 			if (response.responseText === "Error") {
 			    displayWindow(produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true));
-			} else if (response.responseText === "Success") {
-			    displayWindow(produceModal("Nice", "Your account has been created!", false));
 			} else if (response.responseText === "Conflict") {
 			    displayWindow(produceModal("Oops", "A user with this account name already exists!", true));
 			} else if (response.responseText === "Malformed") {

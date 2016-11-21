@@ -116,6 +116,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	console.log(req.body.username.toString().match(/[0-9a-z]{3,}/i));
 	console.log(req.body.password.toString().match(/.{6,}/));
 
+	// POTENTIAL CANIDATE FOR METHOD EXTRACTION.
 	try {
 	    if (
 		req.body.username.toString().match(/[0-9a-z]{3,}/i) !== null &&
@@ -148,10 +149,11 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	    nutrientHistory: []
 	};
 
+	// POTENTIAL CANIDATE FOR METHOD EXTRACTION.
 	// Here we create a promise object that will first attempt
 	// a connection on our Redis cache, and following this will
 	// attempt to save the user object.
-	new Promise(function(resolve, reject) {
+	new Promise((resolve, reject) => {
 	    // First, we must vertify that a user does not exist in
 	    // our database.
 	    redisConn.get(userObj.username, (err, reply) => {
@@ -169,8 +171,9 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 		    resolve();
 		}
 	    })
-	}).then(function() {
-	    return new Promise((resolve, reject) => {
+	}).then(() => {
+	    // POTENTIAL CANIDATE FOR METHOD EXTRACTION.
+	    new Promise((resolve, reject) => {
 		// Now that all our preconditions are fullfilled, let's try to
 		// save our user object into the Redis cache.
 		redisConn.set(userObj.username, JSON.stringify(userObj), (err) => {
