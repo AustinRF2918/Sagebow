@@ -2,7 +2,7 @@ include utility/_boilerplate.pug
 html
   head
     +generateBoilerplate(true)
-    script(src="res/js/setup_app.js")
+    script(src="res/js/setup/app.js")
     include utility/_modalWindow-mixins.pug
     include utility/_mkacct_element_mixins.pug
     include utility/_dropdown_element_mixins.pug
@@ -28,11 +28,6 @@ html
                   select.btn-cluster(name='Gender', id='gender', subclasses="btn required btn-setup-dropdown")
                     option Male
                     option Female
-                  
-                  // .row
-                  //   a(id="gender" class=["btn", "btn-gender", "required", "btn-setup-dropdown"]) Gender
-                  // .row
-                  //   +generateBtnGroup("gender-selector", [["Female", "#", "dropdown-female"], ["Male", "#", "dropdown-male"]], "btn-setup-dropdown")
                 .col-xs-6.p-y-0.super-small.p-x-2
                   p.text-xs-left All users of Sagebow should consult a physician before following any dietary advice given on this website.
               .row.m-t-1
@@ -54,6 +49,4 @@ html
               .row.m-t-1.text-xs-center
                 .col-xs-12
                   a(class=["btn", "btn-login"]) Create a new account.
-              //+_accountCreation_form_generateDropdownForm("dropdown-gender", "Dropdown", ["Female", "Male"])
-              //+_accountCreation_form_generateDropdownForm("dropdown-goal", "Goal", ["Bodybuilding", "Weight Loss", "Maintainence"])
   
