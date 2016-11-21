@@ -3,8 +3,8 @@ var ModalView = Backbone.View.extend({
     message: undefined,
     isDangerous: undefined,
 
-    textClass: this.isDangerous  ? 'success-text' : 'danger-text',
-    buttonClass: this.isDangerous ? 'btn-success' : 'btn-reject',
+    textClass: this.isDangerous  ? 'danger-text' : 'success-text',
+    buttonClass: this.isDangerous ? 'btn-reject' : 'btn-success',
 
     template: _.template(function() {
 	tag = "";
@@ -35,6 +35,8 @@ var ModalView = Backbone.View.extend({
 	this.header = this.options.header;
 	this.message = this.options.message;
 	this.isDangerous = this.options.isDangerous;
+	this.textClass = this.isDangerous  ? 'danger-text' : 'success-text';
+	this.buttonClass = this.isDangerous ? 'btn-reject' : 'btn-success';
 
 	// Simple Backbone binding schema.
 	_.bindAll(this, 'render');
@@ -53,9 +55,8 @@ var ModalView = Backbone.View.extend({
     },
 
     removeModal: function(event) {
-	console.log("Hi.");
 	// Quite coupled: Watch out here.
-	if ($(event.target).hasClass("btn-reject") || $(event.target).hasClass("overlay") || event.keyCode === 13) {
+	if ($(event.target).hasClass("btn-exit") || $(event.target).hasClass("overlay") || event.keyCode === 13) {
 	    this.undelegateEvents();
 	    this.$el.removeData().unbind(); 
 	    this.remove();  

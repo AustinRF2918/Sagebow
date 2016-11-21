@@ -91,7 +91,6 @@ $(document).ready(function() {
 	},
 
 	attemptCreation: function(event) {
-	    console.log("Hi.");
 	    if (event.keyCode && event.keyCode !== 13 ) {
 		return;
 	    } else {
@@ -115,7 +114,6 @@ $(document).ready(function() {
 
 		    success: function(model, response) {
 			displayWindow(produceModal("Nice", "You made an account! Press okay to go to the login page."));
-			displayWindow(goodModal);
 		    },
 
 		    error: function(model, response) {
@@ -131,8 +129,7 @@ $(document).ready(function() {
 		    },
 		});
 	    } else {
-		var incompleteFieldsModal = produceModal("Oops", "All fields are required.", true);
-		displayWindow(incompleteFieldsModal);
+		displayWindow(produceModal("Oops", "All fields are required.", true));
 	    }
 	}
     })
