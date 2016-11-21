@@ -75,101 +75,121 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
     // Post setup
     app.post(/^\/setup$/, function(req, res) {
-        // Check fields are present
-        var neededFields = [
-            'username',
+	// Set of needed fields that must be sent to the endpoint
+	// by Sagebow's front-end. These roughly coorespond to
+	// a user model that we may create later on for more
+	// robust handling of user objects.
+	let neededFields = new Set([
+	    'username',
             'password',
             'weight',
+            'height',
+            'age',
             'bmi',
-            'goal',
+            'bmr',
+            'activitySelector',
+            'goalSelector',
+            'genderSelector',
             'dailyCalories'
-        ];
-        var fieldsPresent = true;
-        for (var field of neededFields) {
-            if (!req.body[field]) {
-                fieldsPresent = false;
-                break;
-            }
-        }
-        if (fieldsPresent) {
-            // verify integrity
-            if (
-                req.body.username.match(/[0-9a-z]{3,}/i) &&
-                req.body.password.match(/.{6,}/) &&
-                req.body.weight.match(/[0-9]+/) &&
-                parseFloat(req.body.weight) > 0 &&
-                req.body.bmi.match(/[0-9]+/) &&
-                parseFloat(req.body.bmi) > 0 &&
-                req.body.dailyCalories.match(/[0-9]*/) &&
-                parseFloat(req.body.dailyCalories) > 0
-            ) {
+	]);
 
-                // Hash password
-                var passwordHash = bcrypt.hashSync(req.body.password);
-                // Construct user object
-                var userObj = {
-                    username: req.body.username,
-                    passwordHash: passwordHash,
-                    weightHistory: [{
-                        weight: req.body.weight,
-                        timestamp: new Date()
-                    }],
-                    weight: req.body.weight,
-                    lastUpdated: new Date(),
-                    bmi: req.body.bmi,
-                    diet:{
-                        goal:req.body.goal,
-                        dailyCalories:req.body.dailyCalories
-                    },
-                    nutrientHistory: []
-                };
-                // Save and redirect to login
-                new Promise(function(resolve, reject) {
-                    // Verify user doesn't exist
-                    redisConn.get(userObj.username, function(err, reply) {
-                        if (err) {
-                            res.status(200).send('error');
-                            reject(err);
-                        }
-                        else {
-                            if (reply) {
-                                console.log('username exists. Cant setup');
-                                res.status(200).send('exists');
-                            }
-                            else {
-                                resolve();
-                            }
-                        }
-                    });
-                }).then(function() {
-                    return new Promise(function(resolve, reject) {
-                        // attempt to save
-                        redisConn.set(userObj.username, JSON.stringify(userObj), function(err) {
-                            if (err) {
-                                // save failed
-                                res.status(200).send('error');
-                                reject(err);
-                            }
-                            else {
-                                // save successful!
-                                res.status(200).send('success');
-                                resolve();
-                            }
-                        });
-                    });
-                }).catch(function(err) {
-                    console.error(err);
-                });
-            }
-            else {
-                res.status(200).send('malformed');
-                console.log('malformed data');
-            }
-        }
-        else {
-            // Missing fields
-            res.status(200).send('incomplete');
-        }
+	// A mapping of all required fields onto the request body:
+	// in the case that all objects are mapped, the filter
+	// later on will create an array of length zero, indicating
+	// that all of our data was on the body of the request, otherwise,
+	// an error will be indicated.
+	let fields = Array.from(neededFields.values())
+	    .map((item) => req.body[item])
+	    .filter((item) => item === null || item === undefined);
+
+	console.log(fields);
+
+        if (fields.length !== 0) {
+	    res.status(422).send('Malformed');
+	    return;
+	}
+
+
+	// A fairly sophisticated check upon all of the data that
+	// is required in our request body. In the case that a
+	// regex doesn't pass, we will send a malformed code.
+	console.log(req.body.username.toString().match(/[0-9a-z]{3,}/i));
+	console.log(req.body.password.toString().match(/.{6,}/));
+
+	try {
+	    if (
+		req.body.username.toString().match(/[0-9a-z]{3,}/i) !== null &&
+		req.body.password.toString().match(/.{6,}/) !== null &&
+		parseFloat(req.body.weight) > 0 &&
+		parseFloat(req.body.bmi) > 0 &&
+		parseFloat(req.body.dailyCalories > 0)) {
+		    res.status(422).send('Malformed');
+		    return;
+	    }
+	} catch(e) {
+	    res.status(422).send('Malformed');
+	    return;
+	}
+
+	var userObj = {
+	    username: req.body.username,
+	    passwordHash: bcrypt.hashSync(req.body.password),
+	    weightHistory: [{
+		weight: req.body.weight,
+		timestamp: new Date()
+	    }],
+	    weight: req.body.weight,
+	    lastUpdated: new Date(),
+	    bmi: req.body.bmi,
+	    diet:{
+		goal:req.body.goal,
+		dailyCalories:req.body.dailyCalories
+	    },
+	    nutrientHistory: []
+	};
+
+	// Here we create a promise object that will first attempt
+	// a connection on our Redis cache, and following this will
+	// attempt to save the user object.
+	new Promise(function(resolve, reject) {
+	    // First, we must vertify that a user does not exist in
+	    // our database.
+	    redisConn.get(userObj.username, (err, reply) => {
+		if (err) {
+		    // Some error happened while we where querying the
+		    // cache.
+		    res.status(500).send('Error');
+		    reject(err);
+		} else if (reply) {
+		    // A reply was found, meaning that a user object
+		    // already exists with this primary key.
+		    console.log('A user attempted to place a username that already exists.');
+		    res.status(409).send('Conflict');
+		} else {
+		    resolve();
+		}
+	    })
+	}).then(function() {
+	    return new Promise((resolve, reject) => {
+		// Now that all our preconditions are fullfilled, let's try to
+		// save our user object into the Redis cache.
+		redisConn.set(userObj.username, JSON.stringify(userObj), (err) => {
+		    if (err) {
+			// Our Redis connection returned an error.
+			res.status(500).send('Error');
+			reject(err);
+		    } else {
+			// Our Redis connection indicated that our save was successful.
+			res.status(200).send('Success');
+			resolve();
+		    }
+		});
+	    }).catch(function(err) {
+		// Some generic error went wrong in our connection too the Redis cache.
+		res.status(500).send('Error');
+		reject(err);
+	    });
+	});
     });
 
     // PRIVATE ROUTES

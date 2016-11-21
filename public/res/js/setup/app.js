@@ -55,12 +55,15 @@ $(document).ready(function() {
 	defaults: {
 	    username: '',
 	    password: '',
-	    gender: '',
-	    goal: '',
-	    activityLevel: '',
-	    weight: '',
-	    height: '',
-	    age: ''
+	    weight: 0,
+	    height: 0,
+	    age: 0 ,
+	    bmi: 0,
+	    bmr: 0,
+	    activitySelector: 0,
+	    goalSelector: 0,
+	    genderSelector: 0,
+	    dailyCalories: 0,
 	},
 
 	url: function() {
@@ -154,6 +157,7 @@ $(document).ready(function() {
 	    };
 
 	    if (this.validateRequired()) {
+		console.log(this.getFields());
 		userFields.save(this.getFields(), {
 		    dataType: 'text',
 
