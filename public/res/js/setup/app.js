@@ -8,6 +8,7 @@ function checkInputs() {
 	return inputsSatisfied && !$('.btn-gender').text().match(/gender/i) && !$('.btn-goal').text().match(/goal/i);
 }
 
+// Create a general business logic library.
 function toInches(feet) {
 	return feet * 12;
 }
@@ -167,12 +168,16 @@ $(document).ready(function() {
 		    },
 
 		    error: function(model, response) {
-			if (response.responseText === "Not Found") {
-			    var notFoundModal = produceModal("Oops", "The information you have entered is invalid. Check your username and password and try again!", true);
-			    displayWindow(notFoundModal);
+			if (response.responseText === "Error") {
+			    displayWindow(produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true));
+			} else if (response.responseText === "Success") {
+			    displayWindow(produceModal("Nice", "Your account has been created!", false));
+			} else if (response.responseText === "Conflict") {
+			    displayWindow(produceModal("Oops", "A user with this account name already exists!", true));
+			} else if (response.responseText === "Malformed") {
+			    displayWindow(produceModal("Oops", "The data you sent us was malformed!", true));
 			} else {
-			    var internalErrorModal = produceModal("Oops", "We experienced an error and couldn\'t log you in. Try again in a minute.", true);
-			    displayWindow(internalErrorModal);
+			    displayWindow(produceModal("Oops", "An unknown error occured on our server, maybe you want to try again later?", true));
 			}
 		    },
 		});
