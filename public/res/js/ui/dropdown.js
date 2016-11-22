@@ -1,4 +1,5 @@
 // TODO: WRITE UP DOCS.
+// RELIES QUITE A BIT ON GLOBAL STATE :-/
 var DropdownReplacer = (function () {
     function _generateAnchor($el) {
 	var newAnchor = $('<a>')
@@ -60,6 +61,12 @@ var DropdownReplacer = (function () {
 	    );
 
 	    $el.remove();
+
+	    // If any portion of the page is clicked while our dropdown
+	    // is expanded, we will want to collapse our dropdown.
+	    $(document).click(function(){
+		$('.dropdown-menu-custom').addClass('hidden');
+	    });
 	});
 
 	return {
