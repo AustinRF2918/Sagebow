@@ -36,9 +36,9 @@ var DropdownReplacer = (function () {
 	    // not add a btn-margin fix. This is a hack, but I am
 	    // refactoring the server logic code, not the markup
 	    // (for now.)
-	    var extraAppendage = "";
 
 	    $el.children().each(function(item, element) {
+		var extraAppendage = "";
 		if (item === 0) {
 		    extraAppendage += "btn-margin-fix";
 		} 
@@ -48,8 +48,8 @@ var DropdownReplacer = (function () {
 			.click(function(){
 			    anchor.text($(this).text())
 			    .attr('set', true);
-			}).text(element.innerText);
-		)
+			}).text(element.innerText)
+		);
 	    });
 
 	    $el.parent().append(
@@ -68,9 +68,9 @@ var DropdownReplacer = (function () {
 		$('.dropdown-menu-custom').addClass('hidden');
 	    });
 	});
-
-	return {
-	    replaceDropdowns: _replaceDropdowns
-	}
     };
+
+    return {
+	replaceDropdowns: _replaceDropdowns
+    }
 })();
