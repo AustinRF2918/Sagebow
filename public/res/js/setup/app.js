@@ -113,7 +113,18 @@ $(document).ready(function() {
 		    dataType: 'text',
 
 		    success: function(model, response) {
-			displayWindow(produceModal("Nice", "You made an account! Press okay to go to the login page."));
+			var modalItem = new ModalView({
+			    header: "Nice",
+			    message: "You made an account! Press okay to go to the login page.",
+			    isDangerous: false,
+			    closeFn: function() {
+				console.log("Hello");
+				window.location.href = '/login';
+			    }
+			});
+
+
+			displayWindow(modalItem);
 		    },
 
 		    error: function(model, response) {

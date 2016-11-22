@@ -1,19 +1,6 @@
+// This must be redone as a model.
 var NutrientRatio = function(proteins, carbs, fats) {
-    //So we get our calories ONLY (which is computed
-    //via the BMI or whatever, pass taht into this.
     if(arguments.length === 2){
-        //So at this point we should say "Is the
-        //person bodybuilding? or is he/she trying
-        //to lose weight? or trying to mantain: depending
-        //on this we then use the multiplication formula
-        //(found on Google) and modify it slightly: more
-        //protein and fat for body builders, less fat 
-        //and carbohydrates for people trying to lose weight:
-        //that means that we'd have to question the actual
-        //condition of the persons diet type and choose 
-        //our multipliers accordingly. From this we
-        //can can protein, carbs, and fat and then use
-        //them however we wish.
         this.calories = arguments[0];
         console.log(this.calories);
         switch(arguments[1]){
