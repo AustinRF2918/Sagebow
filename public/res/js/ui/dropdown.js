@@ -1,17 +1,21 @@
-// RELIES QUITE A BIT ON GLOBAL STATE :-/
+/*
+  Notes:
+  This replacer takes all selection nodes
+  and replaces them with styled anchor tags.
+  It is required that each of these selection
+  tags has an id.
+*/
 var DropdownReplacer = (function () {
     // Generates an anchor that represents a button.
     // This will replace the "select" nodes on the
     // DOM, globally, when we call replace dropdowns.
     function _generateAnchor($el) {
-	var newAnchor = $('<a>')
+	return $('<a>')
 	    .addClass($el.attr('subclasses'))
 	    .attr({
 		'id': $el.attr('id'),
-		'set':false
+		'set': false
 	    }).text($el.attr('name'));
-
-	return newAnchor;
     }
 
     function _replaceDropdowns($parent) {
@@ -38,13 +42,15 @@ var DropdownReplacer = (function () {
 	    // not add a btn-margin fix. This is a hack, but I am
 	    // refactoring the server logic code, not the markup
 	    // (for now.)
-
 	    $el.children().each(function(item, element) {
 		var extraAppendage = "";
 		if (item === 0) {
 		    extraAppendage += "btn-margin-fix";
 		} 
 
+		// Append each of the dropdown items as a
+		// new anchor tag which is a child to the original
+		// select (now anchor) element.
 		optionContainer.append(
 		    $('<a class="dropdown-item btn btn-setup-dropdown ' + extraAppendage + '">')
 			.click(function(){
@@ -54,6 +60,8 @@ var DropdownReplacer = (function () {
 		);
 	    });
 
+	    // Make rows and sub-rows and append the generated
+	    // anchor element and optionContainer element.
 	    $el.parent().append(
 		$('<div class="row">').append(anchor)
 	    ).append(
@@ -62,6 +70,7 @@ var DropdownReplacer = (function () {
 		)
 	    );
 
+	    // Remove the old dropdown.
 	    $el.remove();
 
 	    // If any portion of the page is clicked while our dropdown
