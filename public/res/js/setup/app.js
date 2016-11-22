@@ -47,7 +47,7 @@ $(document).ready(function() {
 	    this.$age = this.options.$age;
 
 	    _.bindAll(this, 'render');
-	    DropdownReplacer.replaceDropdowns();
+	    DropdownReplacer.replaceDropdowns($(".cta-container"));
 	    this.render();
 	},
 

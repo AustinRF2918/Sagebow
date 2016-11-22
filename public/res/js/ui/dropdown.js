@@ -1,6 +1,8 @@
-// TODO: WRITE UP DOCS.
 // RELIES QUITE A BIT ON GLOBAL STATE :-/
 var DropdownReplacer = (function () {
+    // Generates an anchor that represents a button.
+    // This will replace the "select" nodes on the
+    // DOM, globally, when we call replace dropdowns.
     function _generateAnchor($el) {
 	var newAnchor = $('<a>')
 	    .addClass($el.attr('subclasses'))
@@ -12,11 +14,11 @@ var DropdownReplacer = (function () {
 	return newAnchor;
     }
 
-    function _replaceDropdowns() {
+    function _replaceDropdowns($parent) {
 	// Iterate through each selection document
 	// node: these selection objects are usually
 	// fairly ugly, we make our own version here.
-	$('select').each(function(i, element) {
+	$parent.find('select').each(function(i, element) {
 	    var $el = $(element);
 	    var anchor = _generateAnchor($el);
 	    var optionContainer = $('<div class="dropdown-menu-custom hidden">')
