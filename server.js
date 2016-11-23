@@ -33,53 +33,108 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     var responseGenerator = require('./server/ajResponse.js');
     
     app.all('*',function(req,res,next){
-        console.log(req.url);
         next();
     });
 
-    // PUBLIC ROUTES:
-    // Public
+    // Public Routes
+    // 
+    // All of the following routes are public. This means
+    // that they do not require a user object to be created
+    // and authenticated to view.
     app.get(/^\/res\/.+/, function(req, res) {
         serveFile(req.url.match('[^?#]+')[0], res);
     });
+
+    // Login Static Serve
+    //
+    // Serves the static markup for the login page.
 
     app.get('/login', function(req, res) {
         serveFile('/login.html', res);
     });
 
-    app.get('/setup', function(req, res) {
-        serveFile('/setup.html', res);
-    });
-
-    // Post Login
+    // Setup Endpoint
+    //
+    // The simple login to our page. Just attempts to create a user
+    // object in the case that a hashed password was found.
     app.post(/^\/login$/, function(req, res) {
-        var username = req.body.username.trim();
-        var password = req.body.password.trim();
+	const neededFields = new Set([
+	    'username',
+            'password'
+	]);
 
-        // Attempt user lookup
+	// A mapping of all required fields onto the request body:
+	// in the case that all objects are mapped, the filter
+	// later on will create an array of length zero, indicating
+	// that all of our data was on the body of the request, otherwise,
+	// an error will be indicated.
+	const fields = Array.from(neededFields.values())
+	    .map((item) => req.body[item])
+	    .filter((item) => item === null || item === undefined);
+
+	// Make sure all of our fields were filtered out.
+	// Otherwise send a malformed error code.
+	if (fields.length !== 0) {
+	    res.status(422).send('Malformed');
+	    return;
+	}
+
+	// Trim the the now known to be filled
+	// username and passwords portions of
+	// the body and set it equal to the
+	// respective variables
+        const username = req.body.username.trim();
+        const password = req.body.password.trim();
+
+	// Attempt to retrieve a username from the redis
+	// cache: this may have multiple outcomes.
         redisConn.get(username, function(err, userObj) {
             userObj = JSON.parse(userObj);
 
             if (err) {
-                res.sendStatus(500);
+		// Send a 500 internal server error in the
+		// case that some error was thrown on trying
+		// to connect to the Redis database.
+		res.status(500).send('Error');
 	    } else if (!userObj) {
-                res.sendStatus(404);
+		// Send a not found in the case that no user
+		// object is found for the cooresponding username.
+		res.status(500).send('Not Found');
 	    } else if (!bcrypt.compareSync(password, userObj.passwordHash)) {
-                res.sendStatus(422);
+		// Send a malformed in the case that the password
+		// doesn't quite match up.
+		res.status(500).send('Malformed');
 	    } else {
+		// If none of these cases have happened, create a user object
+		// of the specific client that is attempting to log in and
+		// send a 200 status code.
                 req.session.userObj = userObj;
                 res.sendStatus(200);
             }
         });
     });
 
-    // Post setup
+    // Setup Static Serve
+    //
+    // Serves the static markup for the Setup page.
+
+    app.get('/setup', function(req, res) {
+        serveFile('/setup.html', res);
+    });
+
+
+    // Setup Endpoint
+    //
+    // This is served client side by the setup.html file. It handles
+    // the general creation of user accounts from the server side,
+    // making sure all the data is sanitized and other good stuff.
+
     app.post(/^\/setup$/, function(req, res) {
 	// Set of needed fields that must be sent to the endpoint
 	// by Sagebow's front-end. These roughly coorespond to
 	// a user model that we may create later on for more
 	// robust handling of user objects.
-	let neededFields = new Set([
+	const neededFields = new Set([
 	    'username',
             'password',
             'weight',
@@ -98,12 +153,12 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	// later on will create an array of length zero, indicating
 	// that all of our data was on the body of the request, otherwise,
 	// an error will be indicated.
-	let fields = Array.from(neededFields.values())
+	const fields = Array.from(neededFields.values())
 	    .map((item) => req.body[item])
 	    .filter((item) => item === null || item === undefined);
 
-	console.log(fields);
-
+	// Make sure all of our fields were filtered out.
+	// Otherwise send a malformed error code.
         if (fields.length !== 0) {
 	    res.status(422).send('Malformed');
 	    return;
@@ -113,8 +168,6 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	// A fairly sophisticated check upon all of the data that
 	// is required in our request body. In the case that a
 	// regex doesn't pass, we will send a malformed code.
-	console.log(req.body.username.toString().match(/[0-9a-z]{3,}/i));
-	console.log(req.body.password.toString().match(/.{6,}/));
 
 	// POTENTIAL CANIDATE FOR METHOD EXTRACTION.
 	try {
@@ -132,7 +185,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	    return;
 	}
 
-	var userObj = {
+	const userObj = {
 	    username: req.body.username,
 	    passwordHash: bcrypt.hashSync(req.body.password),
 	    weightHistory: [{
@@ -194,6 +247,8 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	    });
 	});
     });
+
+    // End of public routes.
 
     // PRIVATE ROUTES
     app.get('*', function(req, res, next) {
