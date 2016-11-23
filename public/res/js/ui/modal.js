@@ -6,6 +6,7 @@ var ModalView = Backbone.View.extend({
     textClass: this.isDangerous  ? 'danger-text' : 'success-text',
     buttonClass: this.isDangerous ? 'btn-reject' : 'btn-success',
 
+
     btnText: 'Close',
     closeFn: function(){},
 
@@ -76,6 +77,14 @@ var ModalView = Backbone.View.extend({
 	    this.remove();  
 	    Backbone.View.prototype.remove.call(this);
 	}
+    },
+
+    display: function($el) {
+	$.when($el.append(this.render().el)).then(function() {
+	    setTimeout(function(){
+		$el.find(".begin-transparent").removeClass('begin-transparent');
+	    }, 50);
+	});
     }
 });
 

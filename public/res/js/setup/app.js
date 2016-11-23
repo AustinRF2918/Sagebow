@@ -111,6 +111,10 @@ var SetupView = Backbone.View.extend({
 	    console.log(`[setup/app.js::SetupView::attemptCreation]: Potential creation event...`);
 	}
 
+	// Here we check to see if the user has pressed the enter key, or some other.
+	// In the case that an enter key is pressed, the creation function is promptly
+	// returned, otherwise we take the focus off of the form control to prepare
+	// focus to be on the modal.
 	if (event.keyCode && event.keyCode !== 13 ) {
 	    return;
 	} else {
@@ -123,14 +127,6 @@ var SetupView = Backbone.View.extend({
 	}
 
 	var that = this;
-
-	var displayWindow = function(modal) {
-	    $.when($(that.el).append(modal.render().el)).then(function() {
-		setTimeout(function(){
-		    $(that.el).find(".begin-transparent").removeClass('begin-transparent');
-		}, 50);
-	    });
-	};
 
 	if (this.validateRequired()) {
 	    if (DEBUG) {
@@ -168,18 +164,18 @@ var SetupView = Backbone.View.extend({
 
 		error: function(model, response) {
 		    if (response.responseText === "Error") {
-			displayWindow(produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true));
+			produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true).display($(that.el));
 		    } else if (response.responseText === "Conflict") {
-			displayWindow(produceModal("Oops", "A user with this account name already exists!", true));
+			produceModal("Oops", "A user with this account name already exists!", true).display($(that.el));
 		    } else if (response.responseText === "Malformed") {
-			displayWindow(produceModal("Oops", "The data you sent us was malformed!", true));
+			produceModal("Oops", "The data you sent us was malformed!", true).display($(that.el));
 		    } else {
-			displayWindow(produceModal("Oops", "An unknown error occured on our server, maybe you want to try again later?", true));
+			produceModal("Oops", "An unknown error occured on our server, maybe you want to try again later?", true).display($(that.el));
 		    }
 		},
 	    });
 	} else {
-	    displayWindow(produceModal("Oops", "All fields are required.", true));
+	    produceModal("Oops", "All fields are required.", true).display($(this.el));
 	}
     }
 });
