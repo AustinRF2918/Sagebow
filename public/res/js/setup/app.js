@@ -106,60 +106,55 @@ var SetupView = Backbone.View.extend({
 	}
     },
 
-    attemptCreation: function(event) {
-	if (DEBUG) {
-	    console.log(`[setup/app.js::SetupView::attemptCreation]: Potential creation event...`);
-	}
-
-	// Here we check to see if the user has pressed the enter key, or some other.
-	// In the case that an enter key is pressed, the creation function is promptly
-	// returned, otherwise we take the focus off of the form control to prepare
-	// focus to be on the modal.
-	if (event.keyCode && event.keyCode !== 13 ) {
-	    return;
-	} else {
-	    $(this.el).find(".form-control").blur();
-	}
-
-	if (DEBUG) {
-	    console.log(`[setup/app.js::SetupView::attemptCreation]: Attempting creation of user object.`);
-	    console.log(`[setup/app.js::SetupView::attemptCreation]: User object: ${this.userFields.genderSelector}`);
-	}
-
+    createUser: function() {
+	// Unfourtunately, JavaScript does not allow lexical scoping of
+	// variables (at least in ES5, if we were using ES6, we could
+	// use let in conjunction with arrow functions to fix this,
+	// but here we must do the relatively hacky solution of defining
+	// a "that", which is relatively idiomatic.
 	var that = this;
 
 	if (this.validateRequired()) {
+
+	    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
 	    if (DEBUG) {
 		console.log(`[setup/app.js::SetupView::attemptCreation]: Validation passed.`);
 	    }
+	    // !DEBUG DISPLAY
 
 	    try {
 		var userFields = this.getFields();
 	    } catch(e) {
-		displayWindow(produceModal("Oops", "All fields are required.", true));
+		produceModal("Oops", "All fields are required.", true).display($(this.el));
 		return;
 	    }
 
+	    // Save the model using this.getFields(): We could actually automatically
+	    // update our model on form changes and we wouldn't even have to use
+	    // the "this.getFields() functionality, and in fact we could fully delete
+	    // it.
 	    this.userFields.save(this.getFields(), {
 		dataType: 'text',
 
 		success: function(model, response) {
+
+		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
 		    if (DEBUG) {
+			console.log(`[setup/app.js::SetupView::attemptCreation]: Successful creation of user object.`);
 			console.log(`[setup/app.js::SetupView::attemptCreation]: ${this.userFields}.`);
 		    }
+		    // !DEBUG DISPLAY
 
-		    var modalItem = new ModalView({
+		    var successModal = new ModalView({
 			header: "Nice",
 			message: "You made an account! Press okay to go to the login page.",
 			isDangerous: false,
 			closeFn: function() {
-			    console.log("Hello");
 			    window.location.href = '/login';
 			}
 		    });
 
-
-		    displayWindow(modalItem);
+		    successModal.display($(that.el));
 		},
 
 		error: function(model, response) {
@@ -177,20 +172,46 @@ var SetupView = Backbone.View.extend({
 	} else {
 	    produceModal("Oops", "All fields are required.", true).display($(this.el));
 	}
+    },
+
+    attemptCreation: function(event) {
+	// DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
+	if (DEBUG) {
+	    console.log(`[setup/app.js::SetupView::attemptCreation]: Potential creation event...`);
+	}
+	// !DEBUG DISPLAY
+
+	// Here we check to see if the user has pressed the enter key, or some other.
+	// In the case that an enter key is pressed, the creation function is promptly
+	// returned, otherwise we take the focus off of the form control to prepare
+	// focus to be on the modal.
+	if (event.keyCode && event.keyCode !== 13 ) {
+	    return;
+	} else {
+	    $(this.el).find(".form-control").blur();
+	}
+
+	// DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
+	if (DEBUG) {
+	    console.log(`[setup/app.js::SetupView::attemptCreation]: Attempting creation of user object.`);
+	    console.log(`[setup/app.js::SetupView::attemptCreation]: User object: ${this.userFields}`);
+	}
+	// !DEBUG DISPLAY
+
+	// Create a user object.
+	this.createUser();
     }
 });
 
-console.log("setup/app.js: Loading page...");
 $(document).ready(function() {
-    if (DEBUG) {
-	console.log("setup/app.js: Loaded page.");
-    }
-
+    // Replace all the dropdowns on our application before we
+    // actually create the app view.
     DropdownReplacer.replaceDropdowns($(".cta-container"));
 
-    userFields = new UserSetupModel();
-    console.log(userFields.genderSelector);
+    // Create user object.
+    userObject = new UserSetupModel();
 
+    // Create actual page of application.
     app = new SetupView({
 	applicationContainer: $("body"),
 	$username: $("#username"),
@@ -201,6 +222,6 @@ $(document).ready(function() {
 	$weight: $("#weight"),
 	$height: $("#height"),
 	$age: $("#age"),
-	user: userFields
+	user: userObject
     });
 });
