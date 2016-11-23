@@ -1,152 +1,175 @@
 /*globals $, Dropdown, Modal*/
+var DEBUG = true;
+console.log(`Setting DEBUG to ${DEBUG} in setup/app.js.`);
 
-$(document).ready(function() {
-    var UserModel = Backbone.Model.extend({
-	defaults: {
-	    username: '',
-	    password: '',
-	    weight: 0,
-	    height: 0,
-	    age: 0 ,
-	    bmi: 0,
-	    bmr: 0,
-	    activitySelector: 0,
-	    goalSelector: 0,
-	    genderSelector: 0,
-	    dailyCalories: 0,
-	},
+var SetupView = Backbone.View.extend({
+    // The tag that represents the
+    // hook that this view is associated
+    // with.
+    // UI Components.
+    $username: undefined,
+    $password: undefined,
+    $genderSelector: undefined,
+    $goalSelector: undefined,
+    $activitySelector: undefined,
+    $weight: undefined,
+    $height: undefined,
+    $age: undefined,
 
-	url: function() {
-	    return '/setup';
+    // Models.
+    userFields: undefined,
+
+    initialize: function(attrs) {
+	if (DEBUG) {
+	    console.log("[setup/app.js::SetupView::initialize]: Initializing object...");
 	}
-    });
 
-    userFields = new UserModel();
+	this.el = this.options.applicationContainer;
+	this.options = attrs;
 
-    var SetupView = Backbone.View.extend({
-	el: $("body"),
-	$username: undefined,
-	$password: undefined,
-	$genderSelector: undefined,
-	$goalSelector: undefined,
-	$activitySelector: undefined,
-	$weight: undefined,
-	$height: undefined,
-	$age: undefined,
+	// The user model that will be passed back and
+	// fourth between the server.
+	this.userFields = this.options.userFields;
 
-	initialize: function(attrs) {
-	    this.options = attrs;
+	// The actual user interface fields (as JQuery
+	// selectors). We can use these to synchronize
+	// the user model introduced after this and
+	// send it to the server for analysis and
+	// creation.
+	this.$username = this.options.$username;
+	this.$password = this.options.$password;
+	this.$genderSelector = this.options.$genderSelector;
+	this.$goalSelector = this.options.$goalSelector;
+	this.$activitySelector = this.options.$activitySelector;
+	this.$weight = this.options.$weight;
+	this.$height = this.options.$height;
+	this.$age = this.options.$age;
 
-	    this.$username = this.options.$username;
-	    this.$password = this.options.$password;
-	    this.$genderSelector = this.options.$genderSelector;
-	    this.$goalSelector = this.options.$goalSelector;
-	    this.$activitySelector = this.options.$activitySelector;
-	    this.$weight = this.options.$weight;
-	    this.$height = this.options.$height;
-	    this.$age = this.options.$age;
+	_.bindAll(this, 'render');
+	DropdownReplacer.replaceDropdowns($(".cta-container"));
+	this.render();
+    },
 
-	    _.bindAll(this, 'render');
-	    DropdownReplacer.replaceDropdowns($(".cta-container"));
-	    this.render();
-	},
+    // validateRequired() takes the global DOM and checks for all DOM
+    // nodes with the required class, following this it filters the
+    // nodes for ANY item that is not equal to ''. If any nodes are
+    // in the resultant list, our inputs will not be satisfied.
+    validateRequired: function() {
+	if (DEBUG) {
+	    console.log("[setup/app.js::validateRequired]: Validating fields...");
+	}
 
-	validateRequired: function() {
-	    var inputsSatisfied = $(this.el)
-		.find('.required')
-		.filter(function(element, item) {
-		    return item.value === '';
+	var fieldsFilled = $(this.el)
+	    .find('.required')
+	    .filter(function(element, item) {
+		return item.value === '';
+	    })
+	    .filter(function(element, item) {
+		return item.attr('set') && (item.attr('set') === 'true');
 	    }).length === 0;
 
-	    return inputsSatisfied &&
-		   $('#gender').attr('set') === "true" &&
-		   $('#goal').attr('set') === "true" &&
-		   $('#activity-level').attr('set') === "true";
-	},
-
-	events: {
-	    "click .btn-create": "attemptCreation",
-	    "keyup .form-control": "attemptCreation"
-	},
-
-	getFields: function() {
-	    return {
-		username: this.$username.val(),
-		password: this.$password.val(),
-		weight: Number(this.$weight.val()),
-		height: Number(this.$height.val()),
-		age: Number(this.$age.val()),
-		bmi: calculateBmi(Number(this.$weight.val()), Number(this.$height.val())),
-		bmr: calculateBmr(Number(this.$weight.val()), Number(this.$height.val()), this.$genderSelector.text(), Number(this.$age.val())),
-		activitySelector: this.$activitySelector.text(),
-		genderSelector: this.$genderSelector.text(),
-		goalSelector: this.$goalSelector.text(),
-		dailyCalories: calculateDailyCalories(
-		    calculateBmr(Number(this.$weight.val()),
-				 Number(this.$height.val()),
-				 this.$genderSelector.text(),
-				 Number(this.$age.val())),
-		    this.$activitySelector.text(),
-		    this.$goalSelector.text())
-	    }
-	},
-
-	attemptCreation: function(event) {
-	    if (event.keyCode && event.keyCode !== 13 ) {
-		return;
-	    } else {
-		$(this.el).find(".form-control").blur();
-	    }
-
-	    var that = this;
-
-	    var displayWindow = function(modal) {
-		$.when($(that.el).append(modal.render().el)).then(function() {
-		    setTimeout(function(){
-			$(that.el).find(".begin-transparent").removeClass('begin-transparent');
-		    }, 50);
-		});
-	    };
-
-	    if (this.validateRequired()) {
-		console.log(this.getFields());
-		userFields.save(this.getFields(), {
-		    dataType: 'text',
-
-		    success: function(model, response) {
-			var modalItem = new ModalView({
-			    header: "Nice",
-			    message: "You made an account! Press okay to go to the login page.",
-			    isDangerous: false,
-			    closeFn: function() {
-				console.log("Hello");
-				window.location.href = '/login';
-			    }
-			});
-
-
-			displayWindow(modalItem);
-		    },
-
-		    error: function(model, response) {
-			if (response.responseText === "Error") {
-			    displayWindow(produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true));
-			} else if (response.responseText === "Conflict") {
-			    displayWindow(produceModal("Oops", "A user with this account name already exists!", true));
-			} else if (response.responseText === "Malformed") {
-			    displayWindow(produceModal("Oops", "The data you sent us was malformed!", true));
-			} else {
-			    displayWindow(produceModal("Oops", "An unknown error occured on our server, maybe you want to try again later?", true));
-			}
-		    },
-		});
-	    } else {
-		displayWindow(produceModal("Oops", "All fields are required.", true));
-	    }
+	if (DEBUG) {
+	    console.log(`[setup/app.js::validateRequired]: value: ${fieldsFilled}`);
 	}
-    })
+
+	return fieldsFilled;
+    },
+
+    events: {
+	"click .btn-create": "attemptCreation",
+	"keyup .form-control": "attemptCreation"
+    },
+
+    getFields: function() {
+	return {
+	    username: this.$username.val(),
+	    password: this.$password.val(),
+	    weight: Number(this.$weight.val()),
+	    height: Number(this.$height.val()),
+	    age: Number(this.$age.val()),
+	    bmi: calculateBmi(Number(this.$weight.val()), Number(this.$height.val())),
+	    bmr: calculateBmr(Number(this.$weight.val()), Number(this.$height.val()), this.$genderSelector.text(), Number(this.$age.val())),
+	    activitySelector: this.$activitySelector.text(),
+	    genderSelector: this.$genderSelector.text(),
+	    goalSelector: this.$goalSelector.text(),
+	    dailyCalories: calculateDailyCalories(
+		calculateBmr(Number(this.$weight.val()),
+				Number(this.$height.val()),
+				this.$genderSelector.text(),
+				Number(this.$age.val())),
+		this.$activitySelector.text(),
+		this.$goalSelector.text())
+	}
+    },
+
+    attemptCreation: function(event) {
+	if (DEBUG) {
+	    console.log(`[setup/app.js::SetupView::attemptCreation]: Potential creation event...`);
+	}
+
+	if (event.keyCode && event.keyCode !== 13 ) {
+	    return;
+	} else {
+	    $(this.el).find(".form-control").blur();
+	}
+
+	if (DEBUG) {
+	    console.log(`[setup/app.js::SetupView::attemptCreation]: Attempting creation of user object.`);
+	}
+
+	var that = this;
+
+	var displayWindow = function(modal) {
+	    $.when($(that.el).append(modal.render().el)).then(function() {
+		setTimeout(function(){
+		    $(that.el).find(".begin-transparent").removeClass('begin-transparent');
+		}, 50);
+	    });
+	};
+
+	if (this.validateRequired()) {
+	    console.log(this.getFields());
+	    this.userFields.save(this.getFields(), {
+		dataType: 'text',
+
+		success: function(model, response) {
+		    var modalItem = new ModalView({
+			header: "Nice",
+			message: "You made an account! Press okay to go to the login page.",
+			isDangerous: false,
+			closeFn: function() {
+			    console.log("Hello");
+			    window.location.href = '/login';
+			}
+		    });
+
+
+		    displayWindow(modalItem);
+		},
+
+		error: function(model, response) {
+		    if (response.responseText === "Error") {
+			displayWindow(produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true));
+		    } else if (response.responseText === "Conflict") {
+			displayWindow(produceModal("Oops", "A user with this account name already exists!", true));
+		    } else if (response.responseText === "Malformed") {
+			displayWindow(produceModal("Oops", "The data you sent us was malformed!", true));
+		    } else {
+			displayWindow(produceModal("Oops", "An unknown error occured on our server, maybe you want to try again later?", true));
+		    }
+		},
+	    });
+	} else {
+	    displayWindow(produceModal("Oops", "All fields are required.", true));
+	}
+    }
+});
+
+$(document).ready(function() {
+    userFields = new UserSetupModel();
 
     app = new SetupView({
+	applicationContainer: $("body"),
 	$username: $("#username"),
 	$password: $("#password"),
 	$genderSelector: $("#gender"),
@@ -154,6 +177,7 @@ $(document).ready(function() {
 	$activitySelector: $("#activity-level"),
 	$weight: $("#weight"),
 	$height: $("#height"),
-	$age: $("#age")
+	$age: $("#age"),
+	user: userFields
     });
 });

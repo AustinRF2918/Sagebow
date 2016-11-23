@@ -16,7 +16,12 @@ $(document).ready(function() {
 
     // Can be thought of as our application controller.
     var LoginView = Backbone.View.extend({
+	// The tag that represents the
+	// hook that this view is associated
+	// with.
 	el: $("body"),
+
+	// UI Components.
 	$username: undefined,
 	$password: undefined,
 
