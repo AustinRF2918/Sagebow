@@ -1,17 +1,18 @@
 /*globals $, validateRequired*/
 
+var LoginModel = Backbone.Model.extend({
+    defaults: {
+	username: '',
+	password: ''
+    },
+
+    url: function() {
+	return '/login';
+    }
+})
+
+
 $(document).ready(function() {
-    var LoginModel = Backbone.Model.extend({
-	defaults: {
-	    username: '',
-	    password: ''
-	},
-
-	url: function() {
-	    return '/login';
-	}
-    })
-
     loginFields = new LoginModel();
 
     // Can be thought of as our application controller.
@@ -68,14 +69,6 @@ $(document).ready(function() {
 
 	    var that = this;
 
-	    var displayWindow = function(modal) {
-		$.when($(that.el).append(modal.render().el)).then(function() {
-		    setTimeout(function(){
-			$(that.el).find(".begin-transparent").removeClass('begin-transparent');
-		    }, 50);
-		});
-	    };
-
 	    if (this.validateRequired()) {
 		loginFields.save(this.getFields(), {
 		    dataType: 'text',
@@ -86,17 +79,14 @@ $(document).ready(function() {
 
 		    error: function(model, response) {
 			if (response.responseText === "Not Found") {
-			    var notFoundModal = produceModal("Oops", "The information you have entered is invalid. Check your username and password and try again!", true);
-			    displayWindow(notFoundModal);
+			    produceModal("Oops", "The information you have entered is invalid. Check your username and password and try again!", true).display($(this.el));
 			} else {
-			    var internalErrorModal = produceModal("Oops", "We experienced an error and couldn\'t log you in. Try again in a minute.", true);
-			    displayWindow(internalErrorModal);
+			    produceModal("Oops", "We experienced an error and couldn\'t log you in. Try again in a minute.", true).display($(this.el));
 			}
 		    },
 		});
 	    } else {
-		var incompleteFieldsModal = produceModal("Oops", "All fields are required.", true);
-		displayWindow(incompleteFieldsModal);
+		produceModal("Oops", "All fields are required.", true).display($(this.el));
 	    }
 	}
     });
