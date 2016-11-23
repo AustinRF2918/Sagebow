@@ -6,6 +6,7 @@ var SetupView = Backbone.View.extend({
     // The tag that represents the
     // hook that this view is associated
     // with.
+
     // UI Components.
     $username: undefined,
     $password: undefined,
@@ -48,8 +49,24 @@ var SetupView = Backbone.View.extend({
 	_.bindAll(this, 'render');
 	this.render();
 	var that = this;
+
 	$(this.el).find(".btn-create").click(function(event) {
 	    that.attemptCreation(event);
+	});
+
+	$(this.el).keypress(function(event) {
+	    console.log($('body').has('.window'));
+	    if (event.which === 13 ) {
+		if (($('body').has('.window').length == 0)) {
+		    that.attemptCreation(event);
+		} else {
+		    if (($(".top-text").has('.success-text').length === 0)) {
+			$(".modal").parent().remove();
+		    } else {
+			window.location.href = '/login';
+		    }
+		}
+	    } 
 	});
     },
 
@@ -172,6 +189,7 @@ var SetupView = Backbone.View.extend({
 	} else {
 	    produceModal("Oops", "All fields are required.", true).display($(this.el));
 	}
+
     },
 
     attemptCreation: function(event) {
