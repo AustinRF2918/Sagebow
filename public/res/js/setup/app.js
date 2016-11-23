@@ -29,7 +29,7 @@ var SetupView = Backbone.View.extend({
 
 	// The user model that will be passed back and
 	// fourth between the server.
-	this.userFields = this.options.userFields;
+	this.userFields = this.options.user;
 
 	// The actual user interface fields (as JQuery
 	// selectors). We can use these to synchronize
@@ -46,8 +46,11 @@ var SetupView = Backbone.View.extend({
 	this.$age = this.options.$age;
 
 	_.bindAll(this, 'render');
-	DropdownReplacer.replaceDropdowns($(".cta-container"));
 	this.render();
+	var that = this;
+	$(this.el).find(".btn-create").click(function(event) {
+	    that.attemptCreation(event);
+	});
     },
 
     // validateRequired() takes the global DOM and checks for all DOM
@@ -62,17 +65,18 @@ var SetupView = Backbone.View.extend({
 	var fieldsFilled = $(this.el)
 	    .find('.required')
 	    .filter(function(element, item) {
-		return item.value === '';
+		return ($(item).attr('set') === 'false')|| item.value === '';
 	    })
-	    .filter(function(element, item) {
-		return item.attr('set') && (item.attr('set') === 'true');
-	    }).length === 0;
 
 	if (DEBUG) {
-	    console.log(`[setup/app.js::validateRequired]: value: ${fieldsFilled}`);
+	    console.log(`[setup/app.js::validateRequired]: value: ${fieldsFilled.toString()}`);
+	    console.log(`[setup/app.js::validateRequired]: length: ${fieldsFilled.length}`);
+	    for (var i = 0; i < fieldsFilled.length; i++) {
+		console.log(`    [setup/app.js::validateRequired]: ${fieldsFilled[i.text]}`);
+	    }
 	}
 
-	return fieldsFilled;
+	return fieldsFilled.length === 0;
     },
 
     events: {
@@ -115,6 +119,7 @@ var SetupView = Backbone.View.extend({
 
 	if (DEBUG) {
 	    console.log(`[setup/app.js::SetupView::attemptCreation]: Attempting creation of user object.`);
+	    console.log(`[setup/app.js::SetupView::attemptCreation]: User object: ${this.userFields.genderSelector}`);
 	}
 
 	var that = this;
@@ -128,11 +133,25 @@ var SetupView = Backbone.View.extend({
 	};
 
 	if (this.validateRequired()) {
-	    console.log(this.getFields());
+	    if (DEBUG) {
+		console.log(`[setup/app.js::SetupView::attemptCreation]: Validation passed.`);
+	    }
+
+	    try {
+		var userFields = this.getFields();
+	    } catch(e) {
+		displayWindow(produceModal("Oops", "All fields are required.", true));
+		return;
+	    }
+
 	    this.userFields.save(this.getFields(), {
 		dataType: 'text',
 
 		success: function(model, response) {
+		    if (DEBUG) {
+			console.log(`[setup/app.js::SetupView::attemptCreation]: ${this.userFields}.`);
+		    }
+
 		    var modalItem = new ModalView({
 			header: "Nice",
 			message: "You made an account! Press okay to go to the login page.",
@@ -165,8 +184,16 @@ var SetupView = Backbone.View.extend({
     }
 });
 
+console.log("setup/app.js: Loading page...");
 $(document).ready(function() {
+    if (DEBUG) {
+	console.log("setup/app.js: Loaded page.");
+    }
+
+    DropdownReplacer.replaceDropdowns($(".cta-container"));
+
     userFields = new UserSetupModel();
+    console.log(userFields.genderSelector);
 
     app = new SetupView({
 	applicationContainer: $("body"),
