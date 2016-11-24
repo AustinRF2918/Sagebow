@@ -5,7 +5,7 @@ console.log(`Setting DEBUG to ${DEBUG} in models/user.js.`);
 // object that is currently being set-up. It is then passed to
 // the setup end-point for construction of a slightly more
 // complicated version that allows a user session to be constructed.
-var UserSetupModel = Backbone.Model.extend({
+var UserModelSetup = Backbone.Model.extend({
     username: '',
     password: '',
     weight: 0,
@@ -38,5 +38,27 @@ var UserSetupModel = Backbone.Model.extend({
 
     url: function() {
 	return '/setup';
+    }
+});
+
+// User login model: This is a model that cooresponds to a user
+// object that is currently being set-up. It is then passed to
+// the setup end-point for construction of a slightly more
+// complicated version that allows a user session to be constructed.
+var UserModelLogin = Backbone.Model.extend({
+    username: '',
+    password: '',
+
+    initialize: function() {
+	if (DEBUG) {
+	    console.log("[models/user.js::UserSetupModel::initialize]: Initializing object...");
+	    console.log(`Fields:
+			 username: ${this.username},
+			 password: ${this.password}`)
+	}
+    },
+
+    url: function() {
+	return '/login';
     }
 });

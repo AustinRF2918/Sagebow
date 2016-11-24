@@ -72,6 +72,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	    .map((item) => req.body[item])
 	    .filter((item) => item === null || item === undefined);
 
+
 	// Make sure all of our fields were filtered out.
 	// Otherwise send a malformed error code.
 	if (fields.length !== 0) {
@@ -86,6 +87,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         const username = req.body.username.trim();
         const password = req.body.password.trim();
 
+
 	// Attempt to retrieve a username from the redis
 	// cache: this may have multiple outcomes.
         redisConn.get(username, function(err, userObj) {
@@ -99,11 +101,11 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	    } else if (!userObj) {
 		// Send a not found in the case that no user
 		// object is found for the cooresponding username.
-		res.status(500).send('Not Found');
+		res.status(404).send('Not Found');
 	    } else if (!bcrypt.compareSync(password, userObj.passwordHash)) {
 		// Send a malformed in the case that the password
 		// doesn't quite match up.
-		res.status(500).send('Malformed');
+		res.status(422).send('Malformed');
 	    } else {
 		// If none of these cases have happened, create a user object
 		// of the specific client that is attempting to log in and

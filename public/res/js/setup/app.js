@@ -48,6 +48,7 @@ var SetupView = Backbone.View.extend({
 
 	_.bindAll(this, 'render');
 	this.render();
+
 	var that = this;
 
 	$(this.el).find(".btn-create").click(function(event) {
@@ -227,7 +228,7 @@ $(document).ready(function() {
     DropdownReplacer.replaceDropdowns($(".cta-container"));
 
     // Create user object.
-    userObject = new UserSetupModel();
+    userObject = new UserModelSetup();
 
     // Create actual page of application.
     app = new SetupView({

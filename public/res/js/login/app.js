@@ -1,98 +1,134 @@
 /*globals $, validateRequired*/
+var DEBUG = true;
+console.log(`Setting DEBUG to ${DEBUG} in login/app.js.`);
 
-var LoginModel = Backbone.Model.extend({
-    defaults: {
-	username: '',
-	password: ''
+var LoginView = Backbone.View.extend({
+    // The tag that represents the
+    // hook that this view is associated
+    // with.
+    el: $("body"),
+
+    // UI Components.
+    $username: undefined,
+    $password: undefined,
+
+    // Models.
+    userFields: undefined,
+
+    initialize: function(attrs) {
+	if (DEBUG) {
+	    console.log("[login/app.js::LoginView::initialize]: Initializing object...");
+	}
+
+	this.el = this.options.applicationContainer;
+	this.options = attrs;
+
+	// The user model that will be passed back and
+	// fourth between the server.
+	this.userFields = this.options.user;
+
+	this.$username = this.options.$username;
+	this.$password = this.options.$password;
+
+	_.bindAll(this, 'render');
+	this.render();
+	
+	var that = this;
+
+	$(this.el).find(".btn-login").click(function(event) {
+	    that.attemptLogin(event);
+	});
+
+	$(this.el).keypress(function(event) {
+	    console.log($('body').has('.window'));
+	    if (event.which === 13 ) {
+		if (($('body').has('.window').length == 0)) {
+		    that.attemptLogin(event);
+		} else {
+		    if (($(".top-text").has('.success-text').length === 0)) {
+			$(".modal").parent().remove();
+		    } 
+		}
+	    } 
+	});
     },
 
-    url: function() {
-	return '/login';
-    }
-})
+    validateRequired: function() {
+	var inputsSatisfied = $(this.el)
+	    .find('.required')
+	    .filter(function(element, item) {
+		return item.value === '';
+	}).length === 0;
 
+	var selectionsSatisfied = $(this.el).children('.btn.required[set=false]').length === 0;
+
+	return inputsSatisfied && selectionsSatisfied;
+    },
+
+    events: {
+	"click .btn-login": "attemptLogin",
+	"keyup .form-control": "attemptLogin"
+    },
+
+    getFields: function() {
+	return {
+	    username: this.$username.val(),
+	    password: this.$password.val()
+	}
+    },
+
+    attemptLogin: function(event) {
+	// DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
+	if (DEBUG) {
+	    console.log(`[setup/app.js::SetupView::attemptCreation]: Potential login event...`);
+	}
+	// !DEBUG DISPLAY
+
+
+	if (event.keyCode && event.keyCode !== 13 ) {
+	    return;
+	} else {
+	    $(this.el).find(".form-control").blur();
+	}
+
+	var that = this;
+
+	if (this.validateRequired()) {
+	    this.userFields.save(this.getFields(), {
+		dataType: 'text',
+
+		success: function(model, response) {
+		    window.location.pathname = '/entry';
+		},
+
+		error: function(model, response) {
+		    if (response.responseText === "Not Found") {
+			produceModal("Oops", "This username does not exist.", true).display($(that.el));
+		    } else if (response.responseText === "Malformed") {
+			produceModal("Oops", "The password you entered is incorrect.", true).display($(that.el));
+
+		    } else if (response.responseText === "Error") {
+			produceModal("Oops", "We experienced an error and couldn\'t log you in. Try again in a minute.", true).display($(that.el));
+		    } else {
+			produceModal("Oops", "An unknown error occured, maybe you should try again later.", true).display($(that.el));
+		    }
+		},
+	    });
+	} else {
+	    produceModal("Oops", "All fields are required.", true).display($(this.el));
+	}
+    }
+});
 
 $(document).ready(function() {
-    loginFields = new LoginModel();
+    // Create a user object.
+    userObject = new UserModelLogin();
 
-    // Can be thought of as our application controller.
-    var LoginView = Backbone.View.extend({
-	// The tag that represents the
-	// hook that this view is associated
-	// with.
-	el: $("body"),
-
-	// UI Components.
-	$username: undefined,
-	$password: undefined,
-
-	initialize: function(attrs) {
-	    this.options = attrs;
-
-	    this.$username = this.options.$username;
-	    this.$password = this.options.$password;
-
-	    _.bindAll(this, 'render');
-	    this.render();
-	},
-
-	validateRequired: function() {
-	    var inputsSatisfied = $(this.el)
-		.find('.required')
-		.filter(function(element, item) {
-		    return item.value === '';
-	    }).length === 0;
-
-	    var selectionsSatisfied = $(this.el).children('.btn.required[set=false]').length === 0;
-
-	    return inputsSatisfied && selectionsSatisfied;
-	},
-
-	events: {
-	    "click .btn-login": "attemptLogin",
-	    "keyup .form-control": "attemptLogin"
-	},
-
-	getFields: function() {
-	    return {
-		username: this.$username.val(),
-		password: this.$password.val()
-	    }
-	},
-
-	attemptLogin: function(event) {
-	    if (event.keyCode && event.keyCode !== 13 ) {
-		return;
-	    } else {
-		$(this.el).find(".form-control").blur();
-	    }
-
-	    var that = this;
-
-	    if (this.validateRequired()) {
-		loginFields.save(this.getFields(), {
-		    dataType: 'text',
-
-		    success: function(model, response) {
-			window.location.pathname = '/entry';
-		    },
-
-		    error: function(model, response) {
-			if (response.responseText === "Not Found") {
-			    produceModal("Oops", "The information you have entered is invalid. Check your username and password and try again!", true).display($(this.el));
-			} else {
-			    produceModal("Oops", "We experienced an error and couldn\'t log you in. Try again in a minute.", true).display($(this.el));
-			}
-		    },
-		});
-	    } else {
-		produceModal("Oops", "All fields are required.", true).display($(this.el));
-	    }
-	}
-    });
-
+    // Instantiate this page of the application.
     app = new LoginView({
+	applicationContainer: $("body"),
 	$username: $("#username"),
-	$password: $("#password")
+	$password: $("#password"),
+	user: userObject
     });
 });
