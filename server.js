@@ -267,7 +267,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         } else {
 	    // Otherwise, signify that the user must login by redirecting
 	    // to the login page.
-	    to the login page.
+	    // to the login page.
             res.redirect('/login');
         }
     });
@@ -689,7 +689,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
 	// If foodname is in the map of all nutrientHistorys names, send a
 	// found status, otherwise it wasn't found.
-	if ( foodName in req.session.userObj.nutrientHistory.map( (item) => item.name || undefined ) {
+	if ( foodName in req.session.userObj.nutrientHistory.map( (item) => item.name || undefined )) {
 	    res.status(200).send(foodEvent);
 	    return;
 	} else {
