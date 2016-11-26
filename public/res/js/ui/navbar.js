@@ -1,13 +1,22 @@
+// Set a function on the event that a
+// windows hash is changed. This basically
+// guarantees a user is forcefully logged
+// out after pressing logout.
+
 window.onhashchange = function(){
-    if (window.location.hash === '#logout'){
-	$.get('/logout',function(){
+    if (window.location.hash === '#logout') {
+	$.get('/logout', function(){
 
-	    var notFoundModal = produceModal("Bye!", "You are logged out. Redirecting you to the login page.", true);
-	    notFoundModal.click = function() {
-		window.location = '/login';
-	    }
+	    var logoutModal = new ModalView({
+		header: "Good Bye!",
+		message: "We are logging you our right now!",
+		isDangerous: false,
+		closeFn: function() {
+		    window.location = '/login';
+		}
+	    });
 
-	    displayWindow(notFoundModal);
+	    logoutModal.display($("body"));
 	});
     }
 };
