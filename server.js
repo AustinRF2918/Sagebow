@@ -599,59 +599,103 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     });
 
     app.get('/api/consumption', function(req, res) {
-        var minTime = req.query.min,
-            maxTime = req.query.max;
+	let timeRange = [req.query.min, req.query.max]
+	    .map((item) => {
+		if (item) {
+		    return new Date(item)
+		} else {
+		    return undefined
+		}
+	    });
 
-        // Format as dates
-        if (minTime) {
-            minTime = new Date(minTime);
-        }
-        if (maxTime) {
-            maxTime = new Date(maxTime);
-        }
+	const [minTime, maxTime] = [timeRange[0], timeRange[1]];
 
-        var results = req.session.userObj.nutrientHistory.filter(function(consumptionEvent) {
-            if (!minTime || minTime <= new Date(consumptionEvent.timestamp)) {
-                // no min time or within range
-                if (!maxTime || maxTime >= new Date(consumptionEvent.timestamp)) {
-                    // no max time or within range
-                    return true;
-                }
-            }
-            return false;
+        const results = req.session.userObj.nutrientHistory
+	      .filter((weightEvent) => {
+		if (!minTime || minTime <= new Date(weightEvent.timestamp)) {
+		    // If we do not have a minimum time entered OR the weight
+		    // event is in range of the weight event time stamp, check
+		    // the upperbound
+		    if (!maxTime || maxTime >= new Date(weightEvent.timestamp)) {
+			// If we do not have a maximum time entered OR the weight
+			// event is in range of the weight event time stamp, return
+			// true.
+			return true;
+		    } else {
+			// The time wasn't in range of the maximum.
+			return false;
+		    }
+		} else {
+		    // The time wasn't in range of the minimum.
+		    return false;
+		}
         });
 
+	// Allows us to filter out client side objects.
         res.status(200).send(results);
     });
 
     // Get food name history
     app.get('/api/foods', function(req, res) {
-        var foodDict = {};
-        for (var foodEvent of req.session.userObj.nutrientHistory) {
-            if (foodEvent.name && !foodDict[foodEvent.name]) {
-                foodDict[foodEvent.name] = true;
+
+	// Here is a food list in which we will maintain
+	// all of the nutrients we have entered..
+        let foodList = [];
+
+	// Loop through each one, check if a name exists AND
+	// if it is in our food list already, if the condition
+	// is right, add to the list.
+        for (const foodEvent of req.session.userObj.nutrientHistory) {
+            if (foodEvent.name && !(foodEvent.name in foodList)) {
+		foodList.push(foodEvent.name);
             }
         }
-        res.status(200).send(Object.keys(foodDict).slice(0,5));
+
+	// Send the first five items.
+        res.status(200).send(foodItems.slice(0, 5));
     });
+
     app.get('/api/foods/*', function(req, res) {
-        var foodName = decodeURI(req.path.split('/')[3]);
+	const neededFields = new Set([
+	    'foodName'
+	]);
+
+	// A mapping of all required fields onto the request body:
+	// in the case that all objects are mapped, the filter
+	// later on will create an array of length zero, indicating
+	// that all of our data was on the body of the request, otherwise,
+	// an error will be indicated.
+	const fields = Array.from(neededFields.values())
+	    .map((item) => req.body[item])
+	    .filter((item) => item === null || item === undefined);
+
+
+	// Make sure all of our fields were filtered out.
+	// Otherwise send a malformed error code.
+	if (fields.length !== 0) {
+	    res.status(422).send('Malformed');
+	    return;
+	}
+
+	// Extract the food name from the URI passed.
+        let foodName = decodeURI(req.path.split('/')[3]);
+
+	// If the food name could not be parsed, the
+	// request was malformed.
         if (!foodName) {
-            res.status(400).send('need a food name');
+	    res.status(422).send('Malformed');
+	    return;
         }
-        else {
-            var found = false;
-            for (var foodEvent of req.session.userObj.nutrientHistory) {
-                if (foodEvent.name === foodName) {
-                    res.status(200).send(foodEvent);
-                    found = true;
-                    break;
-                }
-            }
-            if(!found){
-                res.status(404).end('Could not find food: '+foodName);
-            }
-        }
+
+	// If foodname is in the map of all nutrientHistorys names, send a
+	// found status, otherwise it wasn't found.
+	if ( foodName in req.session.userObj.nutrientHistory.map( (item) => item.name || undefined ) {
+	    res.status(200).send(foodEvent);
+	    return;
+	} else {
+	    res.status(404).end('Not Found');
+	    return;
+	}
     });
     
     // Query NDB
