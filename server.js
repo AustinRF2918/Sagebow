@@ -652,7 +652,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         }
 
 	// Send the first five items.
-        res.status(200).send(foodItems.slice(0, 5));
+        res.status(200).send(foodList.slice(0, 5));
     });
 
     app.get('/api/foods/*', function(req, res) {

@@ -2,7 +2,6 @@
 // windows hash is changed. This basically
 // guarantees a user is forcefully logged
 // out after pressing logout.
-
 window.onhashchange = function(){
     if (window.location.hash === '#logout') {
 	$.get('/logout', function(){
