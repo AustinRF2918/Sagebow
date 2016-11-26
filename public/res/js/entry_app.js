@@ -122,8 +122,8 @@ $(document).ready(function(){
         }else{
             console.log(weightDate);
             var postData = {
-                value:weight,
-                timestamp:weightDate
+                value: weight,
+                timestamp: weightDate
             };
             
             $.post('/api/weight',postData).done(function(){

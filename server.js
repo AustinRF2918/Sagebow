@@ -362,115 +362,242 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     });
 
     // PRIVATE API
-    // gets the users weight goal
-    app.get('/api/diet',function(req,res){
+
+    // Diet endpoint
+    //
+    // This is an endpoint for sending over diet information
+    // from the client side.
+    app.get('/api/diet',function(req, res) {
         res.status(200).send(req.session.userObj.diet);
     });
     
-    // Add weight event
+    // Weight endpoint [POST]
+    //
+    // This is an endpoint for sending over weight updates
+    // from the client side.
     app.post('/api/weight', function(req, res) {
-        var weight = req.body.value;
-        if (!weight) {
-            res.status(400).send('Value param expected');
-        }
-        else {
-            var timestamp = req.body.timestamp || new Date();
-            // Convert to date
-            timestamp = new Date(timestamp);
+	const neededFields = new Set([
+	    'value'
+	]);
 
-            // Used in case of failure. Deep copy
-            var oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
+	// A mapping of all required fields onto the request body:
+	// in the case that all objects are mapped, the filter
+	// later on will create an array of length zero, indicating
+	// that all of our data was on the body of the request, otherwise,
+	// an error will be indicated.
+	const fields = Array.from(neededFields.values())
+	    .map((item) => req.body[item])
+	    .filter((item) => item === null || item === undefined);
 
-            // Add entry
-            var i = 0, weightHistory = req.session.userObj.weightHistory;
-            while(i < weightHistory && weightHistory.timeStamp <= timeStamp)
-                i++;
-            req.session.userObj.weightHistory.splice(i,0,{
-                weight:weight,
-                timestamp:timestamp
-            });
 
-            // Update modify date if needed
-            if (new Date(req.session.userObj.lastUpdated) < timestamp) {
-                req.session.userObj.lastUpdated = timestamp;
-            }
+	// Make sure all of our fields were filtered out.
+	// Otherwise send a malformed error code.
+	if (fields.length !== 0) {
+	    res.status(422).send('Malformed');
+	    return;
+	}
 
-            // Attempt to save...
-            attemptSave(req, res, redisConn, oldUserObj);
-        }
+        const weight = req.body.value;
+	let timestamp = req.body.timestamp || new Date();
+
+	// Convert the timestamp object to a date in
+	// the case that it is not already one.
+	timestamp = new Date(timestamp);
+
+	// This will be used in the case that the following
+	// operations fail.
+	let oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
+
+	let position = 0;
+	const weightHistory = req.session.userObj.weightHistory;
+
+	while (position < weightHistory && weightHistory.timeStamp <= timeStamp) {
+	    position++;
+	}
+
+	req.session.userObj.weightHistory.splice(position, 0,{
+	    weight: weight,
+	    timestamp: timestamp
+	});
+
+	// In the case that our last updated data was
+	// before this new one, update the last entered.
+	if (new Date(req.session.userObj.lastUpdated) < timestamp) {
+	    req.session.userObj.lastUpdated = timestamp;
+	}
+
+	// Attempt save into our redisConn.
+	attemptSave(req, res, redisConn, oldUserObj);
     });
-    // Get weight events
+
+    // Weight endpoint [GET]
+    //
+    // This is an endpoint for getting weight events
+    // from the server side to the client. Does so based
+    // on a range schema: We want all events between
+    // min and max.
     app.get('/api/weight', function(req, res) {
-        var minTime = req.query.min,
-            maxTime = req.query.max;
+        let timeRange = [req.query.min, req.query.max]
+	    .map((item) => {
+		if (item) {
+		    return new Date(item)
+		} else {
+		    return undefined
+		}
+	    });
 
-        // Format as dates
-        if (minTime) {
-            minTime = new Date(minTime);
-        }
-        if (maxTime) {
-            maxTime = new Date(maxTime);
-        }
+	const [minTime, maxTime] = [timeRange[0], timeRange[1]];
 
-        var results = req.session.userObj.weightHistory.filter(function(weightEvent) {
-            if (!minTime || minTime <= new Date(weightEvent.timestamp)) {
-                // no min time or within range
-                if (!maxTime || maxTime >= new Date(weightEvent.timestamp)) {
-                    // no max time or within range
-                    return true;
-                }
-            }
-            return false;
+        const results = req.session.userObj.weightHistory
+	      .filter((weightEvent) => {
+		if (!minTime || minTime <= new Date(weightEvent.timestamp)) {
+		    // If we do not have a minimum time entered OR the weight
+		    // event is in range of the weight event time stamp, check
+		    // the upperbound
+		    if (!maxTime || maxTime >= new Date(weightEvent.timestamp)) {
+			// If we do not have a maximum time entered OR the weight
+			// event is in range of the weight event time stamp, return
+			// true.
+			return true;
+		    } else {
+			// The time wasn't in range of the maximum.
+			return false;
+		    }
+		} else {
+		    // The time wasn't in range of the minimum.
+		    return false;
+		}
         });
 
+	// Allows us to filter out client side objects.
         res.status(200).send(results);
     });
-    
-    app.get('/api/lastUpdated',function(req,res){
+
+    // Last Updated Endpoint [GET]
+    //
+    // This is an endpoint for getting the last update
+    // on our client object.
+    app.get('/api/lastUpdated',function(req, res) {
         res.status(200).send(req.session.userObj.lastUpdated);
     });
     
+    // Last Updated At Date Endpoint [GET]
+    //
+    // Gets the last update at a date.
+    // on our client object.
+    // May not be used?
+    // DEAD CODE.
     app.get('/api/lastUpdated/:date',function(req,res){
-        req.session.userObj.lastUpdated = new Date(decodeURI(req.params.date));
-        attemptSave(req,res,redisConn,req.session.userObj);
+	const neededFields = new Set([
+	    'date'
+	]);
+
+	// A mapping of all required fields onto the request body:
+	// in the case that all objects are mapped, the filter
+	// later on will create an array of length zero, indicating
+	// that all of our data was on the body of the request, otherwise,
+	// an error will be indicated.
+	const fields = Array.from(neededFields.values())
+	    .map((item) => req.body[item])
+	    .filter((item) => item === null || item === undefined);
+
+
+	// Make sure all of our fields were filtered out.
+	// Otherwise send a malformed error code.
+	if (fields.length !== 0) {
+	    res.status(422).send('Malformed');
+	    return;
+	}
+
+	// Attempt to create a date object from the URI passed into req.params.date.
+	// In the case that it is not possible, the data is malformed.
+	try {
+	    req.session.userObj.lastUpdated = new Date(decodeURI(req.params.date));
+	} catch(error) {
+	    res.status(422).send('Malformed');
+	    return;
+	}
+
+	// Attempt to save into the database.
+	try {
+	    attemptSave(req, res, redisConn, req.session.userObj);
+	    res.sendStatus(200);
+	    return;
+	} catch(error) {
+	    res.status(500).send('Error');
+	    return;
+	}
     });
 
     // Add consumption event
     app.post('/api/consumption', function(req, res) {
-        var carbs = req.query.carbs,
-            fats = req.query.fats,
-            proteins = req.query.proteins,
-            name = req.query.name,
-            timestamp = req.query.timestamp || new Date();
-        console.log(req.query);
+	const neededFields = new Set([
+	    'fats',
+	    'proteins',
+	    'carbs',
+	    'name'
+	]);
 
-        // Validate fields
-        if (!carbs || !fats || !proteins) {
-            res.status(400).send('Missing required params');
-        }
-        else {
-            // Formatting
-            timestamp = new Date(timestamp);
-            carbs = parseFloat(carbs);
-            fats = parseFloat(fats);
-            proteins = parseFloat(proteins);
+	// A mapping of all required fields onto the request body:
+	// in the case that all objects are mapped, the filter
+	// later on will create an array of length zero, indicating
+	// that all of our data was on the body of the request, otherwise,
+	// an error will be indicated.
+	const fields = Array.from(neededFields.values())
+	    .map((item) => req.body[item])
+	    .filter((item) => item === null || item === undefined);
 
-            // Used in case of failure. Deep copy
-            var oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
 
-            // Add entry
-            req.session.userObj.nutrientHistory.unshift({
-                calories: 4 * carbs + 9 * fats + 4 * proteins,
-                carbs: carbs,
-                fats: fats,
-                proteins: proteins,
-                name: name,
-                timestamp: timestamp
-            });
+	// Make sure all of our fields were filtered out.
+	// Otherwise send a malformed error code.
+	if (fields.length !== 0) {
+	    res.status(422).send('Malformed');
+	    return;
+	}
 
-            attemptSave(req, res, redisConn, oldUserObj);
-        }
+	// Set our data equal to the request body which we have
+	// ensured exists.
+        let carbs = req.query.carbs,
+	      fats = req.query.fats,
+	      proteins = req.query.proteins,
+	      name = req.query.name,
+              timestamp = req.query.timestamp || new Date();
+
+	// Attempt to parse all of the data: It is possible
+	// that we got sent bad data.
+	try {
+	    timestamp = new Date(timestamp);
+	    carbs = parseFloat(carbs);
+	    fats = parseFloat(fats);
+	    proteins = parseFloat(proteins);
+	} catch(error) {
+	    // The data was in some way unparseable. Therefore,
+	    // it was malformed.
+	    res.status(422).send('Malformed');
+	}
+
+	// Used in case of failure. Deep copy
+	const oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
+
+	// Add entry
+	req.session.userObj.nutrientHistory.unshift({
+	    calories: 4 * carbs + 9 * fats + 4 * proteins,
+	    carbs: carbs,
+	    fats: fats,
+	    proteins: proteins,
+	    name: name,
+	    timestamp: timestamp
+	});
+
+	try {
+	    attemptSave(req, res, redisConn, oldUserObj);
+	} catch(error) {
+	    // Some error happened with the connection to the database.
+	    res.sendStatus(200);
+	    res.status(500).send('Error');
+	}
     });
+
     app.get('/api/consumption', function(req, res) {
         var minTime = req.query.min,
             maxTime = req.query.max;
