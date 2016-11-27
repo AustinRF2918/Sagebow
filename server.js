@@ -5,12 +5,11 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         session = require('express-session'),
         request = require('request');
 
-    // var fs = require('fs');
     const redisConn = require('redis').createClient();
     const bcrypt = require('bcryptjs');
 
     // Application Configuration
-    const appPort = 4001;
+    const APP_PORT = 4001;
 
     // API Key for the USDA API.
     const API_KEY = 'DJJzSXqqAhl30URUOtKfmsZJkEZESNEqiKg58CxC';
@@ -35,7 +34,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     const attemptSave = require('./server/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
     const responseGenerator = require('./server/ajResponse.js');
     
-    app.all('*',function(req,res,next){
+    app.all('*',function(req, res, next){
         next();
     });
 
@@ -791,5 +790,5 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         });
     });
 
-    app.listen(appPort);
+    app.listen(APP_PORT);
 };
