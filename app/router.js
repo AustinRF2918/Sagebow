@@ -1,3 +1,8 @@
+const EXPRESS_PORT = require('./configuration.js').EXPRESS_PORT;
+const EXPRESS_ROOT = require('./configuration.js').EXPRESS_ROOT;
+
+const serveFile = require('./helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
+
 const loginController = require('./controllers/login.js');
 
 module.exports = function(app) {
