@@ -532,7 +532,10 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	}
     });
 
-    // Add consumption event
+    // Consumption Endpoint [POST]
+    //
+    // Set a consumption event that has fats, proteins
+    // carbs, and a name.
     app.post('/api/consumption', function(req, res) {
 	const neededFields = new Set([
 	    'fats',
@@ -601,6 +604,10 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	}
     });
 
+    // Consumption Endpoint [GET]
+    //
+    // Gets a list of all consumptions from a 
+    // given time span.
     app.get('/api/consumption', function(req, res) {
 	let timeRange = [req.query.min, req.query.max]
 	    .map((item) => {
@@ -638,7 +645,10 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         res.status(200).send(results);
     });
 
-    // Get food name history
+    // Foods  Endpoint [GET]
+    //
+    // Gets a list of 5 food events that were most
+    // recently called.
     app.get('/api/foods', function(req, res) {
 
 	// Here is a food list in which we will maintain
@@ -658,6 +668,10 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         res.status(200).send(foodList.slice(0, 5));
     });
 
+    // Foods  Endpoint [GET]
+    //
+    // Performs a search on any food events that
+    // have been called.
     app.get('/api/foods/*', function(req, res) {
 	const neededFields = new Set([
 	    'foodName'
@@ -701,17 +715,45 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	}
     });
     
-    // Query NDB
-    app.get('/api/query/:name',function(req,res){
-        // Find food dbnum
-        new Promise(function(resolve,reject){
+    // Query  Endpoint [GET]
+    //
+    // This is a proxy for the national
+    // food database: we place in a specific
+    // food name and see if it exists in
+    // the governments API.
+    app.get('/api/query/:name',function(req, res){
+
+	const neededFields = new Set([
+	    'name'
+	]);
+
+	// A mapping of all required fields onto the request body:
+	// in the case that all objects are mapped, the filter
+	// later on will create an array of length zero, indicating
+	// that all of our data was on the body of the request, otherwise,
+	// an error will be indicated.
+	const fields = Array.from(neededFields.values())
+	    .map((item) => req.body[item])
+	    .filter((item) => item === null || item === undefined);
+
+	// Make sure all of our fields were filtered out.
+	// Otherwise send a malformed error code.
+	if (fields.length !== 0) {
+	    res.status(422).send('Malformed');
+	    return;
+	}
+
+	// Utilizing a promise monad, we sequentially access the
+	// api for the usda and get nutritional information back to the client.
+        new Promise( (resolve, reject) => {
             const url = `http://api.nal.usda.gov/ndb/search/?format=json&q=${req.params.name}&max=1&api_key=${API_KEY}`;
 
             request(url, (err, response, body) => {
                 if (err || response.statusCode !== 200) {
+		    // Signifies that the promise monad will not go further.
                     reject();
                 } else {
-		    // ??
+		    // Set the then to have a single parameter (promise pattern).
                     resolve(JSON.parse(body).list.item[0].ndbno);
                 }
             });
@@ -719,7 +761,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
             new Promise( (resolve, reject) => {
                 const url = 'http://api.nal.usda.gov/ndb/reports/?ndbno=${dbnum}&type=s&format=json&api_key=${API_KEY}';
 
-                request(url, (err,response,body) => {
+                request(url, (err, response, body) => {
                     if (err || response.statusCode !== 200) {
                         reject(err);
                     } else {
