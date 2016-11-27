@@ -1,16 +1,19 @@
 module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     // Used modules
-    var app = require('express')(),
+    const app = require('express')(),
         bodyParser = require('body-parser'),
         session = require('express-session'),
         request = require('request');
 
     // var fs = require('fs');
-    var redisConn = require('redis').createClient();
-    var bcrypt = require('bcryptjs');
+    const redisConn = require('redis').createClient();
+    const bcrypt = require('bcryptjs');
 
     // Application Configuration
-    var appPort = 4001;
+    const appPort = 4001;
+
+    // API Key for the USDA API.
+    const API_KEY = 'DJJzSXqqAhl30URUOtKfmsZJkEZESNEqiKg58CxC';
 
     // Express modules
     // app.use(require('connect-livereload')({
@@ -28,9 +31,9 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     }));
 
     //Helper functions described in server/helper.js.
-    var serveFile = require('./server/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
-    var attemptSave = require('./server/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
-    var responseGenerator = require('./server/ajResponse.js');
+    const serveFile = require('./server/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
+    const attemptSave = require('./server/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
+    const responseGenerator = require('./server/ajResponse.js');
     
     app.all('*',function(req,res,next){
         next();
@@ -700,50 +703,48 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     
     // Query NDB
     app.get('/api/query/:name',function(req,res){
-        var apiKey = 'DJJzSXqqAhl30URUOtKfmsZJkEZESNEqiKg58CxC';
         // Find food dbnum
         new Promise(function(resolve,reject){
-            var url = 'http://api.nal.usda.gov/ndb/search/?format=json&q='+req.params.name+'&max=1&api_key=' + apiKey;
-            request(url,function(err,response,body){
-                if(err || response.statusCode !== 200){
-                    console.error(err);
-                    console.error(response);
+            const url = `http://api.nal.usda.gov/ndb/search/?format=json&q=${req.params.name}&max=1&api_key=${API_KEY}`;
+
+            request(url, (err, response, body) => {
+                if (err || response.statusCode !== 200) {
                     reject();
-                }else{
+                } else {
+		    // ??
                     resolve(JSON.parse(body).list.item[0].ndbno);
                 }
             });
-        }).then(function(dbnum){
-            return new Promise(function(resolve,reject){
-                var url = 'http://api.nal.usda.gov/ndb/reports/?ndbno='+dbnum+'&type=s&format=json&api_key='+apiKey;
-                request(url,function(err,response,body){
-                    if(err || response.statusCode !== 200){
-                        console.error(response);
+        }).then( (dbnum) => {
+            new Promise( (resolve, reject) => {
+                const url = 'http://api.nal.usda.gov/ndb/reports/?ndbno=${dbnum}&type=s&format=json&api_key=${API_KEY}';
+
+                request(url, (err,response,body) => {
+                    if (err || response.statusCode !== 200) {
                         reject(err);
-                    }else{
-                        var foodData = {},
-                            nutrients = JSON.parse(body).report.food.nutrients;
+                    } else {
+                        let foodData = {};
+                        const nutrients = JSON.parse(body).report.food.nutrients;
+
                         // Find the nutrients we are interested in
-                        for(var nutrient of nutrients){
-                            if(nutrient.nutrient_id == 203){
+			// Make this a method.
+                        for (let nutrient of nutrients){
+                            if (nutrient.nutrient_id == 203){
                                 foodData.proteins = nutrient.value;
-                            }
-                            if(nutrient.nutrient_id == 204){
+                            } else if (nutrient.nutrient_id == 204){
                                 foodData.fats = nutrient.value;
-                            }
-                            if(nutrient.nutrient_id == 205){
+                            } else if(nutrient.nutrient_id == 205){
                                 foodData.carbs = nutrient.value;
                             }
                         }
+
                         resolve(foodData);
                     }
                 });
             });
-        }).then(function(foodData){
+        }).then( (foodData) => {
             res.send(foodData);
-        }).catch(function(err){
-            console.error('query failure');
-            console.error(err);
+        }).catch( (err) => {
             res.status(400).end('Unable to perform request');
         });
     });

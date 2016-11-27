@@ -190,7 +190,3 @@ $(document).ready(function() {
 		updateBarGraph();
     });
 });
-
-
-
-
