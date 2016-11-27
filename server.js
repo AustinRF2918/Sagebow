@@ -30,9 +30,9 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     }));
 
     //Helper functions described in server/helper.js.
-    const serveFile = require('./server/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
-    const attemptSave = require('./server/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
-    const responseGenerator = require('./server/ajResponse.js');
+    const serveFile = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
+    const attemptSave = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
+    const responseGenerator = require('./app/ajResponse.js');
     
     app.all('*',function(req, res, next){
         next();
@@ -50,7 +50,6 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     // Login Static Serve
     //
     // Serves the static markup for the login page.
-
     app.get('/login', function(req, res) {
         serveFile('/login.html', res);
     });
