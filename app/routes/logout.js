@@ -26,4 +26,3 @@ router.get(/^\/log(out|off)$/, function(req, res){
 });
 
 module.exports = router;
-

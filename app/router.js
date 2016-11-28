@@ -41,4 +41,5 @@ module.exports = function(app) {
     });
 
     app.use(require('./routes/logout.js'));
+    app.use(require('./routes/delete.js'));
 }

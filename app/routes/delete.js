@@ -11,27 +11,19 @@ const router = express.Router();
 const redisConn = require('redis').createClient();
 const bcrypt = require('bcryptjs');
 
-// Login Static Serve
+// Delete Static Serve
 //
-// Serves the static markup for the login page.
-router.get('/login', function(req, res) {
-    if (DEBUG) {
-	console.log("Recieved a GET on /login.");
-    }
-
-    serveFile('/login.html', res);
+// Serves the static markup for the Delete page.
+router.get('/delete',function(req,res){
+    serveFile('delete.html', res);
 });
 
-
-// Login Endpoint [POST]
+// Delete endpoint
 //
-// This is the basic way that we go about logging a user in.
-router.post('/login', function(req, res) {
-    console.log(req.body);
-    if (DEBUG) {
-	console.log("Recieved a POST on /login.");
-    }
-
+// This is a simple "endpoint", though not exactly an endpoint. 
+// It deletes the current user object and redirects the client
+// to the login page.
+router.post('/delete', function(req, res) {
     const neededFields = new Set([
 	'username',
 	'password'
@@ -54,16 +46,10 @@ router.post('/login', function(req, res) {
 	return;
     }
 
-    // Trim the the now known to be filled
-    // username and passwords portions of
-    // the body and set it equal to the
-    // respective variables
     const username = req.body.username.trim();
     const password = req.body.password.trim();
 
-
-    // Attempt to retrieve a username from the redis
-    // cache: this may have multiple outcomes.
+    // Attempt user lookup
     redisConn.get(username, (err, userObj) => {
 	userObj = JSON.parse(userObj);
 
@@ -84,11 +70,10 @@ router.post('/login', function(req, res) {
 	    // If none of these cases have happened, create a user object
 	    // of the specific client that is attempting to log in and
 	    // send a 200 status code.
-	    req.session.userObj = userObj;
+	    redisConn.del(username);
 	    res.sendStatus(200);
 	}
     });
 });
-
 
 module.exports = router;

@@ -37,39 +37,11 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
     // PRIVATE ROUTES
 
-    // * path
-    //
-    // In the case that neither login or setup were called, we use
-    // this wildstar pattern to check for the existance of a user
-    // session object.
-    app.get('*', function(req, res, next) {
-        if (req.session.userObj) {
-	    // In the case that our session contains a user object,
-	    // continue on to the next routes.
-            next();
-        } else {
-	    // Otherwise, signify that the user must login by redirecting
-	    // to the login page.
-	    // to the login page.
-            res.redirect('/login');
-        }
-    });
-
-    // Logout/Login endpoint
-    //
-    // This is a simple "endpoint", though not exactly an endpoint. 
-    // It deletes the current user object and redirects the client
-    // to the login page.
-    app.get(/^\/log(out|off)$/,function(req,res){
-        delete req.session.userObj;
-        res.redirect('/login');
-    });
-    
     // Setup Static Serve
     //
     // Serves the static markup for the Delete page.
     app.get('/delete',function(req,res){
-        serveFile('delete.html',res);
+        serveFile('delete.html', res);
     });
 
     // Delete endpoint
