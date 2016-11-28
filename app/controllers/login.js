@@ -20,6 +20,11 @@ module.exports = function(app) {
     //
     // This is the basic way that we go about logging a user in.
     const post = function(req, res) {
+	console.log(req.body);
+	if (DEBUG) {
+	    console.log("Recieved a POST on /login.");
+	}
+
 	const neededFields = new Set([
 	    'username',
 	    'password'

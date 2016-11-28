@@ -26,7 +26,10 @@ module.exports = function(app) {
 
     // GETS and POSTS for the login page.
     app.get('/login', loginController.get);
-    app.post('/^\login$/', loginController.post);
+    app.post('/login', function(req, res) {
+	console.log(req.body);
+	loginController.post(req, res);
+    });
 
     // GETS and POSTS for the setup page.
     app.get('/setup', setupController.get);
