@@ -94,14 +94,37 @@ var LoginView = Backbone.View.extend({
 	var that = this;
 
 	if (this.validateRequired()) {
-	    this.userFields.save(this.getFields(), {
+	    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
+	    if (DEBUG) {
+		console.log(`[setup/app.js::SetupView::attemptCreation]: Validation passed!...`);
+		console.log(this.getFields());
+	    }
+
+	    var fields = that.getFields();
+	    // !DEBUG DISPLAY
+	    console.log(fields);
+	    that.userFields.save(fields, {
+		
 		dataType: 'text',
 
 		success: function(model, response) {
+		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
+		    if (DEBUG) {
+			console.log(`[setup/app.js::SetupView::attemptCreation]: Success!...`);
+		    }
+		    // !DEBUG DISPLAY
 		    window.location.pathname = '/entry';
 		},
 
 		error: function(model, response) {
+		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
+		    if (DEBUG) {
+			console.log(`[setup/app.js::SetupView::attemptCreation]: Error!...`);
+		    }
+		    // !DEBUG DISPLAY
+
+		    console.log(response.responseText);
+
 		    if (response.responseText === "Not Found") {
 			produceModal("Oops", "This username does not exist.", true).display($(that.el));
 		    } else if (response.responseText === "Malformed") {

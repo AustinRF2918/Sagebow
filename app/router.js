@@ -1,11 +1,14 @@
 const EXPRESS_PORT = require('./configuration.js').EXPRESS_PORT;
 const EXPRESS_ROOT = require('./configuration.js').EXPRESS_ROOT;
+const DEBUG = require('./configuration.js').DEBUG;
 
 const serveFile = require('./helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
 
-const loginController = require('./controllers/login.js');
 
 module.exports = function(app) {
+    const loginController = require('./controllers/login.js')(app);
+    const setupController = require('./controllers/setup.js')(app);
+
     // Routes any URL passed to our application
     // to the next possible routes.
     app.all('*', (req, res, next) => {
@@ -21,9 +24,11 @@ module.exports = function(app) {
         serveFile(req.url.match('[^?#]+')[0], res);
     });
 
-    // Login Static Serve
-    //
-    // Serves the static markup for the login page.
-    app.get('/login', loginController.loginGet);
-    app.post(/^\/login$/, loginController.loginPost);
+    // GETS and POSTS for the login page.
+    app.get('/login', loginController.get);
+    app.post('/^\login$/', loginController.post);
+
+    // GETS and POSTS for the setup page.
+    app.get('/setup', setupController.get);
+    app.post('/^\setup$/', setupController.post);
 }

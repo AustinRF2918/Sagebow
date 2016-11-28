@@ -139,22 +139,28 @@ var SetupView = Backbone.View.extend({
 		console.log(`[setup/app.js::SetupView::attemptCreation]: Validation passed.`);
 	    }
 	    // !DEBUG DISPLAY
+	    var userFields;
 
 	    try {
-		var userFields = this.getFields();
+		userFields = this.getFields();
+		if (DEBUG) {
+		    console.log(userFields);
+		}
 	    } catch(e) {
 		produceModal("Oops", "All fields are required.", true).display($(this.el));
 		return;
 	    }
 
+	    console.log(userFields);
 	    // Save the model using this.getFields(): We could actually automatically
 	    // update our model on form changes and we wouldn't even have to use
 	    // the "this.getFields() functionality, and in fact we could fully delete
 	    // it.
-	    this.userFields.save(this.getFields(), {
+	    that.userFields.save(userFields, {
 		dataType: 'text',
 
 		success: function(model, response) {
+		    console.log(response);
 
 		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
 		    if (DEBUG) {

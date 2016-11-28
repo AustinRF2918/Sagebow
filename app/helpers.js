@@ -1,3 +1,5 @@
+const DEBUG = require('./configuration.js').DEBUG;
+
 /*
  * These are server utility functions that are used 
  * to dynamically serve content to the user. They use
@@ -25,8 +27,6 @@ module.exports = function( EXPRESS_PORT, EXPRESS_ROOT ) {
 	    res.set('Content-Type', 'text/html');
 	    res.sendFile( uri, {
 		root: EXPRESS_ROOT,
-		//NOTE THAT THIS WAS MODIFIED BECAUSE
-		//I WAS TRYING TO DO SOMETHING BAD: PLEASE FIX IT :((.
 		dotfiles: 'allow',
 		headers: {
 		    'x-timestamp': Date.now(),
