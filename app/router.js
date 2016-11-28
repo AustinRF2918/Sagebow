@@ -24,6 +24,6 @@ module.exports = function(app) {
         serveFile(req.url.match('[^?#]+')[0], res);
     });
 
-    app.use(require('./controllers/login.js')(app));
-    app.use(require('./controllers/setup.js')(app));
+    app.use(require('./routes/login.js')(app));
+    app.use(require('./routes/setup.js')(app));
 }
