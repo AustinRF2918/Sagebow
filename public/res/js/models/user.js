@@ -62,3 +62,24 @@ var UserModelLogin = Backbone.Model.extend({
 	return '/login';
     }
 });
+
+// User deletion model: This is a model that cooresponds to a user
+// object that is being deleted. It is then passed to the deletion
+// end-point for destruction .
+var UserModelDeletion = Backbone.Model.extend({
+    username: '',
+    password: '',
+
+    initialize: function() {
+	if (DEBUG) {
+	    console.log("[models/user.js::UserModelDelete::initialize]: Initializing object...");
+	    console.log(`Fields:
+			 username: ${this.username},
+			 password: ${this.password}`)
+	}
+    },
+
+    url: function() {
+	return '/delete';
+    }
+});

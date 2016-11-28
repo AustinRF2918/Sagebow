@@ -70,8 +70,12 @@ router.post('/delete', function(req, res) {
 	    // If none of these cases have happened, create a user object
 	    // of the specific client that is attempting to log in and
 	    // send a 200 status code.
-	    redisConn.del(username);
-	    res.sendStatus(200);
+	    if (req.session.userObj.username === username) {
+		redisConn.del(username);
+		res.sendStatus(200);
+	    } else {
+		res.status(422).send('Malformed');
+	    }
 	}
     });
 });

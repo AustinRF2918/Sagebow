@@ -2,35 +2,35 @@ include utility/_boilerplate.pug
 html
   head
     +generateBoilerplate(true)
-    script(src="res/js/delete_app.js")
+    script(src="res/js/models/user.js")
+    script(src="res/js/delete/app.js")
     
   include utility/_modalWindow-mixins.pug
+
   body
     .full-background
     .full-container
       .primary-container-login
         .row.no-margin-mobile
-          .col-lg-12
+          .col-lg-12.text-xs-center.text-md-left
             img(src='/res/img/sagebow.png')
         .row.m-t-1.no-margin-mobile
-          .col-lg-6
-            h1.light-text Are you sure? We'll miss you!
+          .col-lg-6.text-xs-center.text-md-left
+            h1.light-text Account Deletion
         .row.m-t-1.no-margin-mobile
-          .col-lg-12.p-y-1
-            div.cta-container
-              .row
-                .col-lg-6.extend-full-height
+          .col-lg-12.p-y-2
+            div.cta-container(style="")
+              .row(style="")
+                .col-lg-5.extend-full-height
                   .email-address-container
                     .form-group
-                      input#username.required.form-control.materialize-form(type="text", placeholder="Confirm delete with your username")
-                      label.label(for="username") Username:
-                .col-lg-6.extend-full-height
+                      input#username.required.form-control.materialize-form(type="text", placeholder="Username")
+                .col-lg-5.extend-full-height
                   div.password-container
                     .form-group
-                      input#password.required.form-control.materialize-form(type="password", placeholder="Confirm delete with your password")
-                      label.label(for="password") Password:
-                .col-lg-4
+                      input#password.required.form-control.materialize-form(type="password", placeholder="Password")
+                .col-lg-2(style="height: 50px;")
                   div.login-container
                     .form-group
-                      a.btn.btn-login.danger Delete account
-                      label(class=["consistency-hide"] for="btn") Password:
+                      a.btn.btn-login.danger Delete
+

@@ -65,11 +65,6 @@ var LoginView = Backbone.View.extend({
 	return inputsSatisfied && selectionsSatisfied;
     },
 
-    events: {
-	"click .btn-login": "attemptLogin",
-	"keyup .form-control": "attemptLogin"
-    },
-
     getFields: function() {
 	return {
 	    username: this.$username.val(),
