@@ -24,6 +24,21 @@ module.exports = function(app) {
         serveFile(req.url.match('[^?#]+')[0], res);
     });
 
-    app.use(require('./routes/login.js')(app));
-    app.use(require('./routes/setup.js')(app));
+    app.use(require('./routes/login.js'));
+    app.use(require('./routes/setup.js'));
+
+    // * Path
+    //
+    // In the case that neither login or setup were called, we use
+    // this wildstar pattern to check for the existance of a user
+    // session object.
+    app.get('*', function(req, res, next) {
+        if (req.session.userObj) {
+            next();
+        } else {
+            res.redirect('/login');
+        }
+    });
+
+    app.use(require('./routes/logout.js'));
 }

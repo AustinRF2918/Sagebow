@@ -170,6 +170,4 @@ router.post('/setup', function(req, res) {
     });
 });
 
-module.exports = function(app) {
-    return router;
-};
+module.exports = router;
