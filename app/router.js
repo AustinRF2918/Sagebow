@@ -4,11 +4,11 @@ const DEBUG = require('./configuration.js').DEBUG;
 
 const serveFile = require('./helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
 
+let express = require('express');
+let router = express.Router();
+
 
 module.exports = function(app) {
-    const loginController = require('./controllers/login.js')(app);
-    const setupController = require('./controllers/setup.js')(app);
-
     // Routes any URL passed to our application
     // to the next possible routes.
     app.all('*', (req, res, next) => {
@@ -24,14 +24,6 @@ module.exports = function(app) {
         serveFile(req.url.match('[^?#]+')[0], res);
     });
 
-    // GETS and POSTS for the login page.
-    app.get('/login', loginController.get);
-    app.post('/login', function(req, res) {
-	console.log(req.body);
-	loginController.post(req, res);
-    });
-
-    // GETS and POSTS for the setup page.
-    app.get('/setup', setupController.get);
-    app.post('/^\setup$/', setupController.post);
+    app.use(require('./controllers/login.js')(app));
+    app.use(require('./controllers/setup.js')(app));
 }

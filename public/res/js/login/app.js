@@ -100,7 +100,7 @@ var LoginView = Backbone.View.extend({
 		console.log(this.getFields());
 	    }
 
-	    var fields = that.getFields();
+	    var fields = this.getFields();
 	    // !DEBUG DISPLAY
 	    console.log(fields);
 	    that.userFields.save(fields, {
@@ -120,6 +120,7 @@ var LoginView = Backbone.View.extend({
 		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
 		    if (DEBUG) {
 			console.log(`[setup/app.js::SetupView::attemptCreation]: Error!...`);
+			console.log(`[setup/app.js::SetupView::attemptCreation]: ${that.userFields.values()}!...`);
 		    }
 		    // !DEBUG DISPLAY
 
