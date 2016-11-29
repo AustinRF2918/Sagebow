@@ -52,21 +52,15 @@ var SetupView = Backbone.View.extend({
 	var that = this;
 
 	$(this.el).find(".btn-create").click(function(event) {
+	    $(".btn-login").blur();
 	    that.attemptCreation(event);
 	});
 
-	$(this.el).keypress(function(event) {
-	    console.log($('body').has('.window'));
+	$(document).keypress(function(event) {
 	    if (event.which === 13 ) {
 		if (($('body').has('.window').length == 0)) {
 		    that.attemptCreation(event);
-		} else {
-		    if (($(".top-text").has('.success-text').length === 0)) {
-			$(".modal").parent().remove();
-		    } else {
-			window.location.href = '/login';
-		    }
-		}
+		} 
 	    } 
 	});
     },
