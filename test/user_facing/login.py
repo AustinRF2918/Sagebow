@@ -205,6 +205,26 @@ class TestIntroduction(unittest.TestCase):
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, False)
         time.sleep(.5)
 
+    def test_modal_close_enter_edge_case(self):
+        driver.get("http://localhost:4001/login")
+        name = driver.find_element_by_id('username')
+        password = driver.find_element_by_id('password')
+        login = driver.find_element_by_class_name('btn-login')
+        page = driver.find_element_by_class_name('full-container')
+        account_creation = driver.find_element_by_class_name('btn-make-account')
+
+        name.send_keys("boston");
+        password.send_keys("gdsagdsagjkdksagjdk");
+        password.send_keys(Keys.ENTER);
+
+        time.sleep(.3)
+        self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
+        action = webdriver.common.action_chains.ActionChains(driver)
+        action.send_keys(Keys.ENTER)
+        action.perform()
+        self.assertEqual('The password you entered is incorrect.' in driver.page_source, False)
+        time.sleep(.5)
+
     def tearDown(self):
         driver.get("http://localhost:4001/login")
         time.sleep(0.1)

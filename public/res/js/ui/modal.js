@@ -71,7 +71,7 @@ var ModalView = Backbone.View.extend({
     removeModal: function(event) {
 	// Quite coupled: Watch out here.
 	this.closeFn();
-	if ($(event.target).hasClass("btn-exit") || $(event.target).hasClass("overlay") || event.keyCode === 13) {
+	if ($(event.target).hasClass("btn-exit") || $(event.target).hasClass("overlay")) {
 	    this.undelegateEvents();
 	    this.$el.removeData().unbind(); 
 	    this.remove();  

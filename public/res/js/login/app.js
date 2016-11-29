@@ -36,8 +36,8 @@ var LoginView = Backbone.View.extend({
 	var that = this;
 
 	$(this.el).find(".btn-login").click(function(event) {
-	    that.attemptLogin(event);
 	    $(".btn-login").blur();
+	    that.attemptLogin(event);
 	});
 
 	$(document).keypress(function(event) {
