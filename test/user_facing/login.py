@@ -67,5 +67,73 @@ class TestIntroduction(unittest.TestCase):
         self.assertEqual('Entry' in driver.page_source, True)
         driver.find_element_by_id('logout-button').click()
 
+    def test_modal_close_button(self):
+        driver.get("http://localhost:4001/login")
+        name = driver.find_element_by_id('username')
+        password = driver.find_element_by_id('password')
+
+        name.send_keys("boston");
+        password.send_keys("gdsagdsagjkdksagjdk");
+
+        driver.find_element_by_class_name('btn-login').click()
+        time.sleep(0.5)
+        self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
+
+        driver.find_element_by_class_name('btn-reject').click()
+        time.sleep(0.5)
+        self.assertEqual('The password you entered is incorrect.' in driver.page_source, False)
+
+    def test_modal_close_outside(self):
+        driver.get("http://localhost:4001/login")
+        name = driver.find_element_by_id('username')
+        password = driver.find_element_by_id('password')
+
+        name.send_keys("boston");
+        password.send_keys("gdsagdsagjkdksagjdk");
+
+        driver.find_element_by_class_name('btn-login').click()
+        time.sleep(0.8)
+
+        self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
+
+        window = driver.find_element_by_class_name('window')
+        action = webdriver.common.action_chains.ActionChains(driver)
+        action.move_to_element_with_offset(window, -150, -150) 
+        action.click()
+        action.perform()
+
+        time.sleep(0.8)
+
+        self.assertEqual('Oops' in driver.page_source, False)
+
+    def test_modal_not_close_inside(self):
+        driver.get("http://localhost:4001/login")
+        name = driver.find_element_by_id('username')
+        password = driver.find_element_by_id('password')
+
+        name.send_keys("boston");
+        password.send_keys("gdsagdsagjkdksagjdk");
+
+        driver.find_element_by_class_name('btn-login').click()
+        time.sleep(0.8)
+
+        self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
+
+        window = driver.find_element_by_class_name('window')
+        action = webdriver.common.action_chains.ActionChains(driver)
+        action.move_to_element_with_offset(window, 150, 150) 
+        action.click()
+        action.perform()
+
+        time.sleep(0.8)
+
+        self.assertEqual('Oops' in driver.page_source, True)
+
+    
+    def tearDown(self):
+        driver.get("http://localhost:4001/login")
+        
+
+
 if __name__ == '__main__':
     unittest.main()
