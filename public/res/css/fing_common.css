@@ -56,7 +56,7 @@ meter{
     width: 0px;
     padding: 0px;
     -webkit-backface-visibility: hidden;
-    transform: scale(.2);
+    transform: scale(0);
     line-height: 0px;
     letter-spacing: 0em;
 }

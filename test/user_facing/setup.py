@@ -1,9 +1,6 @@
 import unittest
 import time
 
-import requests
-import json
-
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -75,14 +72,6 @@ class TestSetup(unittest.TestCase):
         self.assertEqual('All fields are required.' in driver.page_source, True)
 
     def test_complete_signup(self):
-        reset_user = {
-            'username': "bostonaa",
-            'password': "jdskajdska",
-            'DEV_UTIL': "hide"
-        }
-
-        requests.post("http://localhost:4001/delete/", data = reset_user)
-
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
         weight = driver.find_element_by_id('weight')
@@ -100,24 +89,31 @@ class TestSetup(unittest.TestCase):
         age.send_keys("22");
 
         gender.click()
+        ui_wait()
         action = webdriver.common.action_chains.ActionChains(driver)
         action.move_to_element_with_offset(gender, 33, 43) 
         action.click()
+        ui_wait()
         action.perform()
 
         goal.click()
+        ui_wait()
         action = webdriver.common.action_chains.ActionChains(driver)
         action.move_to_element_with_offset(goal, 33, 43) 
         action.click()
+        ui_wait()
         action.perform()
 
         activity_level.click()
+        ui_wait()
         action = webdriver.common.action_chains.ActionChains(driver)
         action.move_to_element_with_offset(activity_level, 33, 43) 
         action.click()
+        ui_wait()
         action.perform()
 
         driver.find_element_by_class_name('btn-create').click()
+        ui_wait()
         ui_wait()
         self.assertEqual('Nice' in driver.page_source, True)
 
