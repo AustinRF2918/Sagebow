@@ -11,12 +11,16 @@ from selenium.webdriver.common.keys import Keys
 driver = webdriver.Chrome('/usr/bin/chromedriver')
 driver.set_window_size(1120, 1120)
 
+def ui_wait():
+    time.sleep(0.4)
+    
+
 class TestIntroduction(unittest.TestCase):
     def setUp(self):
-        driver.implicitly_wait(1)
+        driver.get("http://localhost:4001/login")
+        driver.implicitly_wait(.5)
 
     def test_url(self):
-        driver.get("http://localhost:4001/login")
         self.assertEqual('Welcome back to Sagebow.' in driver.page_source, True)
         self.assertEqual('Enter your username' in driver.page_source, True)
         self.assertEqual('Enter your password' in driver.page_source, True)
@@ -24,17 +28,16 @@ class TestIntroduction(unittest.TestCase):
         self.assertEqual('Create a new account' in driver.page_source, True)
 
     def test_no_data(self):
-        driver.get("http://localhost:4001/login")
         driver.find_element_by_class_name('btn-login').click()
+        ui_wait()
         self.assertEqual('Oops' in driver.page_source, True)
 
     def test_transition_to_setup(self):
-        driver.get("http://localhost:4001/login")
         driver.find_element_by_class_name('btn-make-account').click()
+        ui_wait()
         self.assertEqual('Sign Up' in driver.page_source, True)
 
     def test_bad_login(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
 
@@ -42,10 +45,10 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("gdsagdsagjkdksagjdk");
 
         driver.find_element_by_class_name('btn-login').click()
+        ui_wait()
         self.assertEqual('This username does not exist.' in driver.page_source, True)
 
     def test_bad_password(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
 
@@ -53,11 +56,11 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("gdsagdsagjkdksagjdk");
 
         driver.find_element_by_class_name('btn-login').click()
-        time.sleep(0.5)
+        ui_wait()
+
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
 
     def test_good_password(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
 
@@ -65,12 +68,11 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("password1");
 
         driver.find_element_by_class_name('btn-login').click()
-        time.sleep(0.5)
+        ui_wait()
+
         self.assertEqual('Entry' in driver.page_source, True)
-        driver.find_element_by_id('logout-button').click()
 
     def test_modal_close_button(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
 
@@ -78,15 +80,14 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("gdsagdsagjkdksagjdk");
 
         driver.find_element_by_class_name('btn-login').click()
-        time.sleep(0.5)
+        ui_wait()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
 
         driver.find_element_by_class_name('btn-reject').click()
-        time.sleep(0.5)
+        ui_wait()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, False)
 
     def test_modal_close_outside(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
 
@@ -94,7 +95,7 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("gdsagdsagjkdksagjdk");
 
         driver.find_element_by_class_name('btn-login').click()
-        time.sleep(0.8)
+        ui_wait()
 
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
 
@@ -103,13 +104,11 @@ class TestIntroduction(unittest.TestCase):
         action.move_to_element_with_offset(window, -150, -150) 
         action.click()
         action.perform()
-
-        time.sleep(0.8)
+        ui_wait()
 
         self.assertEqual('Oops' in driver.page_source, False)
 
     def test_modal_not_close_inside(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
 
@@ -117,7 +116,7 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("gdsagdsagjkdksagjdk");
 
         driver.find_element_by_class_name('btn-login').click()
-        time.sleep(0.8)
+        ui_wait()
 
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
 
@@ -126,13 +125,12 @@ class TestIntroduction(unittest.TestCase):
         action.move_to_element_with_offset(window, 150, 150) 
         action.click()
         action.perform()
+        ui_wait()
 
-        time.sleep(0.8)
 
         self.assertEqual('Oops' in driver.page_source, True)
 
     def test_modal_open_enter(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
         login = driver.find_element_by_class_name('btn-login')
@@ -143,30 +141,29 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("gdsagdsagjkdksagjdk");
 
         password.send_keys(Keys.ENTER);
-        time.sleep(0.8)
+        ui_wait()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
         driver.find_element_by_class_name('btn-reject').click()
-        time.sleep(0.8)
+        ui_wait()
 
         name.send_keys(Keys.ENTER);
-        time.sleep(0.8)
+        ui_wait()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
         driver.find_element_by_class_name('btn-reject').click()
-        time.sleep(0.8)
+        ui_wait()
 
         login.send_keys(Keys.ENTER);
-        time.sleep(0.8)
+        ui_wait()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
         driver.find_element_by_class_name('btn-reject').click()
-        time.sleep(0.8)
+        ui_wait()
 
         account_creation.send_keys(Keys.ENTER);
-        time.sleep(0.8)
+        ui_wait()
         self.assertEqual('Sign Up' in driver.page_source, True)
-        time.sleep(0.8)
+        ui_wait()
 
     def test_modal_close_enter_from_enter(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
         login = driver.find_element_by_class_name('btn-login')
@@ -177,16 +174,15 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("gdsagdsagjkdksagjdk");
         password.send_keys(Keys.ENTER);
 
-        time.sleep(.5)
+        ui_wait()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
         action = webdriver.common.action_chains.ActionChains(driver)
         action.send_keys(Keys.ENTER)
         action.perform()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, False)
-        time.sleep(.5)
+        ui_wait()
 
     def test_modal_close_enter_from_click(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
         login = driver.find_element_by_class_name('btn-login')
@@ -197,16 +193,15 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("gdsagdsagjkdksagjdk");
         driver.find_element_by_class_name('btn-login').click()
 
-        time.sleep(.5)
+        ui_wait()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
         action = webdriver.common.action_chains.ActionChains(driver)
         action.send_keys(Keys.ENTER)
         action.perform()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, False)
-        time.sleep(.5)
+        ui_wait()
 
     def test_modal_close_enter_edge_case(self):
-        driver.get("http://localhost:4001/login")
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
         login = driver.find_element_by_class_name('btn-login')
@@ -222,17 +217,16 @@ class TestIntroduction(unittest.TestCase):
         action.send_keys(Keys.ENTER)
         action.perform()
             
-        time.sleep(.50)
+        ui_wait()
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
         action = webdriver.common.action_chains.ActionChains(driver)
         action.send_keys(Keys.ENTER)
         action.perform()
-        time.sleep(.5)
+        ui_wait()
 
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, False)
 
     def tearDown(self):
-        driver.get("http://localhost:4001/login")
         time.sleep(0.1)
         
 
