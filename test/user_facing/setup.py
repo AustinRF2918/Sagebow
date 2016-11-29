@@ -153,11 +153,10 @@ class TestSetup(unittest.TestCase):
 
         window = driver.find_element_by_class_name('window')
         action = webdriver.common.action_chains.ActionChains(driver)
-        action.move_to_element_with_offset(window, 150, 150) 
+        action.move_to_element_with_offset(window, 20, 20) 
         action.click()
         action.perform()
         ui_wait()
-
 
         self.assertEqual('All fields' in driver.page_source, True)
 
