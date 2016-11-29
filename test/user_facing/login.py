@@ -217,13 +217,19 @@ class TestIntroduction(unittest.TestCase):
         password.send_keys("gdsagdsagjkdksagjdk");
         password.send_keys(Keys.ENTER);
 
-        time.sleep(.3)
+        time.sleep(.26)
+        action = webdriver.common.action_chains.ActionChains(driver)
+        action.send_keys(Keys.ENTER)
+        action.perform()
+            
+        time.sleep(.50)
         self.assertEqual('The password you entered is incorrect.' in driver.page_source, True)
         action = webdriver.common.action_chains.ActionChains(driver)
         action.send_keys(Keys.ENTER)
         action.perform()
-        self.assertEqual('The password you entered is incorrect.' in driver.page_source, False)
         time.sleep(.5)
+
+        self.assertEqual('The password you entered is incorrect.' in driver.page_source, False)
 
     def tearDown(self):
         driver.get("http://localhost:4001/login")

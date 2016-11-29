@@ -1,6 +1,4 @@
 /*globals $, validateRequired*/
-var DEBUG = true;
-console.log(`Setting DEBUG to ${DEBUG} in login/app.js.`);
 
 var LoginView = Backbone.View.extend({
     // The tag that represents the
@@ -16,10 +14,6 @@ var LoginView = Backbone.View.extend({
     userFields: undefined,
 
     initialize: function(attrs) {
-	if (DEBUG) {
-	    console.log("[login/app.js::LoginView::initialize]: Initializing object...");
-	}
-
 	this.el = this.options.applicationContainer;
 	this.options = attrs;
 
@@ -27,6 +21,8 @@ var LoginView = Backbone.View.extend({
 	// fourth between the server.
 	this.userFields = this.options.user;
 
+	// UI Elements which we will use to
+	// enter data.
 	this.$username = this.options.$username;
 	this.$password = this.options.$password;
 
@@ -44,9 +40,7 @@ var LoginView = Backbone.View.extend({
 	    if (event.which === 13 ) {
 		if (($('body').has('.window').length == 0)) {
 		    that.attemptLogin(event);
-		} else {
-		    $(".modal").parent().remove();
-		}
+		} 
 	    } 
 	});
     },
@@ -71,62 +65,37 @@ var LoginView = Backbone.View.extend({
     },
 
     attemptLogin: function(event) {
-	// DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-	if (DEBUG) {
-	    console.log(`[setup/app.js::SetupView::attemptCreation]: Potential login event...`);
+	if (!this.validateRequired()) {
+	    produceModal("Oops", "All fields are required.", true).display($(this.el));
+	    return false;
 	}
-	// !DEBUG DISPLAY
 
+	var fields = this.getFields();
 	var that = this;
 
-	if (this.validateRequired()) {
-	    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-	    if (DEBUG) {
-		console.log(`[setup/app.js::SetupView::attemptCreation]: Validation passed!...`);
-		console.log(this.getFields());
-	    }
+	this.userFields.save(fields, {
+	    dataType: 'text',
 
-	    var fields = this.getFields();
-	    // !DEBUG DISPLAY
-	    console.log(fields);
-	    that.userFields.save(fields, {
-		
-		dataType: 'text',
+	    success: function(model, response) {
+		window.location.pathname = '/entry';
+		return false;
+	    },
 
-		success: function(model, response) {
-		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-		    if (DEBUG) {
-			console.log(`[setup/app.js::SetupView::attemptCreation]: Success!...`);
-		    }
-		    // !DEBUG DISPLAY
-		    window.location.pathname = '/entry';
-		},
+	    error: function(model, response) {
+		if (response.responseText === "Not Found") {
+		    produceModal("Oops", "This username does not exist.", true).display($(that.el));
+		} else if (response.responseText === "Malformed") {
+		    produceModal("Oops", "The password you entered is incorrect.", true).display($(that.el));
 
-		error: function(model, response) {
-		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-		    if (DEBUG) {
-			console.log(`[setup/app.js::SetupView::attemptCreation]: Error!...`);
-			console.log(`[setup/app.js::SetupView::attemptCreation]: ${that.userFields.values()}!...`);
-		    }
-		    // !DEBUG DISPLAY
+		} else if (response.responseText === "Error") {
+		    produceModal("Oops", "We experienced an error and couldn\'t log you in. Try again in a minute.", true).display($(that.el));
+		} else {
+		    produceModal("Oops", "An unknown error occured, maybe you should try again later.", true).display($(that.el));
+		}
 
-		    console.log(response.responseText);
-
-		    if (response.responseText === "Not Found") {
-			produceModal("Oops", "This username does not exist.", true).display($(that.el));
-		    } else if (response.responseText === "Malformed") {
-			produceModal("Oops", "The password you entered is incorrect.", true).display($(that.el));
-
-		    } else if (response.responseText === "Error") {
-			produceModal("Oops", "We experienced an error and couldn\'t log you in. Try again in a minute.", true).display($(that.el));
-		    } else {
-			produceModal("Oops", "An unknown error occured, maybe you should try again later.", true).display($(that.el));
-		    }
-		},
-	    });
-	} else {
-	    produceModal("Oops", "All fields are required.", true).display($(this.el));
-	}
+		return true;
+	    },
+	});
     }
 });
 

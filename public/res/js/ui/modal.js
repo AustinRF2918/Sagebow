@@ -52,9 +52,16 @@ var ModalView = Backbone.View.extend({
 	    this.closeFn = this.options.closeFn;
 	}
 
+
 	// Simple Backbone binding schema.
 	_.bindAll(this, 'render');
 	this.render();
+
+	$(document).keypress(function(event) {
+	    if (event.which === 13 ) {
+		$(".modal").parent().remove();
+	    }
+	});
     },
 
     render: function() {
@@ -90,6 +97,10 @@ var ModalView = Backbone.View.extend({
 
 
 function produceModal(header, message, isDangerous) {
+    if (($('body').has('.window').length !== 0)) {
+	$(".modal").parent().remove();
+    } 
+
     var modalItem = new ModalView({
 	header: header,
 	message: message,
