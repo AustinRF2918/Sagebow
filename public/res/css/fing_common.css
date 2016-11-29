@@ -44,7 +44,8 @@ meter{
     box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.4);
     height: 0px;
     padding: 0px;
-    font-size: 0px;
+    line-height: 0px;
+    font-size: 9vw;
     letter-spacing: 0em;
 }
 
@@ -52,9 +53,11 @@ meter{
     color: transparent !important;
     background: transparent !important;
     box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.4);
-    height: 0px;
+    width: 0px;
     padding: 0px;
-    font-size: 0px;
+    -webkit-backface-visibility: hidden;
+    transform: scale(.2);
+    line-height: 0px;
     letter-spacing: 0em;
 }
 
