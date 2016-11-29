@@ -9,7 +9,10 @@ from selenium.webdriver.common.keys import Keys
 
 
 driver = webdriver.Chrome('/usr/bin/chromedriver')
-driver.set_window_size(1120, 1120)
+driver.set_window_size(900, 900)
+driver.set_window_position(900, 0)
+
+
 
 def ui_wait():
     time.sleep(0.4)

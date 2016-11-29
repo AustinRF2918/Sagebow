@@ -23,7 +23,7 @@
   outline: none;
   transition-duration: $transition-duration;
 
-  &:hover {
+  &:hover, &:active, &:focus{
     background: $hover-background;
     color: $hover-text-color;
     transition-duration: $transition-duration;
