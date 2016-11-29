@@ -239,13 +239,13 @@ class TestSetup(unittest.TestCase):
         action.perform()
             
         ui_wait()
-        self.assertEqual('All fields' in driver.page_source, True)
+        self.assertEqual('All fields' in driver.page_source, False)
         action = webdriver.common.action_chains.ActionChains(driver)
         action.send_keys(Keys.ENTER)
         action.perform()
         ui_wait()
 
-        self.assertEqual('All fields' in driver.page_source, False)
+        self.assertEqual('All fields' in driver.page_source, True)
 
     def tearDown(self):
         time.sleep(0.1)
