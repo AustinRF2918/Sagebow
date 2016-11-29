@@ -39,7 +39,23 @@ meter{
 
 
 .hidden {
-    display: none !important;
+    color: transparent !important;
+    background: transparent !important;
+    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.4);
+    height: 0px;
+    padding: 0px;
+    font-size: 0px;
+    letter-spacing: 0em;
+}
+
+.hidden * {
+    color: transparent !important;
+    background: transparent !important;
+    box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.4);
+    height: 0px;
+    padding: 0px;
+    font-size: 0px;
+    letter-spacing: 0em;
 }
 
 .center {

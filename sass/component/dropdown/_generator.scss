@@ -1,13 +1,4 @@
 @mixin generateDropdown {
-    &-hidden {
-	display: none;
-	* {
-	    display: none;
-	}
-    }
-
-    * {
-    }
 }
 
 .dropdown-menu-custom {
