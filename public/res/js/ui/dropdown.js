@@ -31,7 +31,12 @@ var DropdownReplacer = (function () {
 	    // remove the hidden class, showing everything
 	    // contianed.
 	    anchor.click(function(event){
-		optionContainer.toggleClass('hidden');
+		var temp = optionContainer.hasClass('hidden');
+		$('.dropdown-menu-custom').addClass('hidden');
+
+		if (temp) {
+		    optionContainer.toggleClass('hidden');
+		}
 
 		// Stop the event from bubbling up the call
 		// chain.
