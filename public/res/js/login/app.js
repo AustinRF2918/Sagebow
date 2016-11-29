@@ -77,12 +77,16 @@ var LoginView = Backbone.View.extend({
 	var fields = this.getFields();
 	var that = this;
 
+	// Save the model using this.getFields(): We could actually automatically
+	// update our model on form changes and we wouldn't even have to use
+	// the "this.getFields() functionality, and in fact we could fully delete
+	// it.
 	this.userFields.save(fields, {
 	    dataType: 'text',
 
 	    success: function(model, response) {
 		window.location.pathname = '/entry';
-		return false;
+		return true;
 	    },
 
 	    error: function(model, response) {
@@ -97,7 +101,7 @@ var LoginView = Backbone.View.extend({
 		    produceModal("Oops", "An unknown error occured, maybe you should try again later.", true).display($(that.el));
 		}
 
-		return true;
+		return false;
 	    },
 	});
     }

@@ -1,11 +1,10 @@
 /*globals $, Dropdown, Modal*/
-var DEBUG = true;
-console.log(`Setting DEBUG to ${DEBUG} in setup/app.js.`);
 
 var SetupView = Backbone.View.extend({
     // The tag that represents the
     // hook that this view is associated
     // with.
+    el: $("body"),
 
     // UI Components.
     $username: undefined,
@@ -21,10 +20,6 @@ var SetupView = Backbone.View.extend({
     userFields: undefined,
 
     initialize: function(attrs) {
-	if (DEBUG) {
-	    console.log("[setup/app.js::SetupView::initialize]: Initializing object...");
-	}
-
 	this.el = this.options.applicationContainer;
 	this.options = attrs;
 
@@ -46,6 +41,9 @@ var SetupView = Backbone.View.extend({
 	this.$height = this.options.$height;
 	this.$age = this.options.$age;
 
+	// Stack of current modals.
+	this.modals = [];
+
 	_.bindAll(this, 'render');
 	this.render();
 
@@ -58,7 +56,7 @@ var SetupView = Backbone.View.extend({
 
 	$(document).keypress(function(event) {
 	    if (event.which === 13 ) {
-		if (($('body').has('.window').length == 0)) {
+		if (($('body').has('.window').length === 0)) {
 		    that.attemptCreation(event);
 		} 
 	    } 
@@ -70,30 +68,13 @@ var SetupView = Backbone.View.extend({
     // nodes for ANY item that is not equal to ''. If any nodes are
     // in the resultant list, our inputs will not be satisfied.
     validateRequired: function() {
-	if (DEBUG) {
-	    console.log("[setup/app.js::validateRequired]: Validating fields...");
-	}
-
 	var fieldsFilled = $(this.el)
 	    .find('.required')
 	    .filter(function(element, item) {
 		return ($(item).attr('set') === 'false')|| item.value === '';
-	    })
-
-	if (DEBUG) {
-	    console.log(`[setup/app.js::validateRequired]: value: ${fieldsFilled.toString()}`);
-	    console.log(`[setup/app.js::validateRequired]: length: ${fieldsFilled.length}`);
-	    for (var i = 0; i < fieldsFilled.length; i++) {
-		console.log(`    [setup/app.js::validateRequired]: ${fieldsFilled[i.text]}`);
-	    }
-	}
+	    });
 
 	return fieldsFilled.length === 0;
-    },
-
-    events: {
-	"click .btn-create": "attemptCreation",
-	"keyup .form-control": "attemptCreation"
     },
 
     getFields: function() {
@@ -118,15 +99,14 @@ var SetupView = Backbone.View.extend({
 	}
     },
 
-    createUser: function() {
-	
-    },
-
     attemptCreation: function(event) {
 	if (!this.validateRequired()) {
-	    produceModal("Oops", "All fields are required.", true).display($(this.el));
+	    var modal = produceModal("Oops", "All fields are required.", true);
+	    modal.display($(this.el));
+	    console.log("HI");
 	    return false;
 	}
+
 
 	var fields = this.getFields();
 	var that = this;
@@ -149,17 +129,31 @@ var SetupView = Backbone.View.extend({
 		});
 
 		successModal.display($(that.el));
+		that.currentModals.push(successModal);
+		return true;
 	    },
 
 	    error: function(model, response) {
 		if (response.responseText === "Error") {
-		    produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true).display($(that.el));
+		    var modal = produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true)
+		    modal.display($(that.el));
+		    that.currentModals.push(modal);
+		    return false;
 		} else if (response.responseText === "Conflict") {
-		    produceModal("Oops", "A user with this account name already exists!", true).display($(that.el));
+		    var modal = produceModal("Oops", "A user with this account name already exists!", true)
+		    modal.display($(that.el));
+		    that.currentModals.push(modal);
+		    return false;
 		} else if (response.responseText === "Malformed") {
-		    produceModal("Oops", "The data you sent us was malformed!", true).display($(that.el));
+		    var modal = produceModal("Oops", "The data you sent us was malformed!", true)
+		    modal.display($(that.el));
+		    that.currentModals.push(modal);
+		    return false;
 		} else {
-		    produceModal("Oops", "An unknown error occured on our server, maybe you want to try again later?", true).display($(that.el));
+		    var modal = produceModal("Oops", "An unknown error occured on our server, maybe you want to try again later?", true)
+		    modal.display($(that.el));
+		    that.currentModals.push(modal);
+		    return false;
 		}
 	    },
 	});

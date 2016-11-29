@@ -52,16 +52,9 @@ var ModalView = Backbone.View.extend({
 	    this.closeFn = this.options.closeFn;
 	}
 
-
 	// Simple Backbone binding schema.
 	_.bindAll(this, 'render');
 	this.render();
-
-	$(document).keypress(function(event) {
-	    if (event.which === 13 ) {
-		$(".modal").parent().remove();
-	    }
-	});
     },
 
     render: function() {
@@ -76,9 +69,9 @@ var ModalView = Backbone.View.extend({
     },
 
     removeModal: function(event) {
-	// Quite coupled: Watch out here.
+	console.log("Hey!");
 	this.closeFn();
-	if ($(event.target).hasClass("btn-exit") || $(event.target).hasClass("overlay")) {
+	if ($(event.target).hasClass("btn-exit") || $(event.target).hasClass("overlay") || event.which === 13) {
 	    this.undelegateEvents();
 	    this.$el.removeData().unbind(); 
 	    this.remove();  
@@ -87,7 +80,14 @@ var ModalView = Backbone.View.extend({
     },
 
     display: function($el) {
+	var that = this;
 	$.when($el.append(this.render().el)).then(function() {
+	    $(document).keypress(function(event) {
+		if (event.which === 13 ) {
+		    that.removeModal(event);
+		}
+	    });
+
 	    setTimeout(function(){
 		$el.find(".begin-transparent").removeClass('begin-transparent');
 	    }, 50);
