@@ -37,17 +37,15 @@ var LoginView = Backbone.View.extend({
 
 	$(this.el).find(".btn-login").click(function(event) {
 	    that.attemptLogin(event);
+	    $(".btn-login").blur();
 	});
 
-	$(this.el).keypress(function(event) {
-	    console.log($('body').has('.window'));
+	$(document).keypress(function(event) {
 	    if (event.which === 13 ) {
 		if (($('body').has('.window').length == 0)) {
 		    that.attemptLogin(event);
 		} else {
-		    if (($(".top-text").has('.success-text').length === 0)) {
-			$(".modal").parent().remove();
-		    } 
+		    $(".modal").parent().remove();
 		}
 	    } 
 	});
@@ -78,13 +76,6 @@ var LoginView = Backbone.View.extend({
 	    console.log(`[setup/app.js::SetupView::attemptCreation]: Potential login event...`);
 	}
 	// !DEBUG DISPLAY
-
-
-	if (event.keyCode && event.keyCode !== 13 ) {
-	    return;
-	} else {
-	    $(this.el).find(".form-control").blur();
-	}
 
 	var that = this;
 
