@@ -52,7 +52,7 @@ var SetupView = Backbone.View.extend({
 	var that = this;
 
 	$(this.el).find(".btn-create").click(function(event) {
-	    $(".btn-login").blur();
+	    $(".btn-create").blur();
 	    that.attemptCreation(event);
 	});
 
@@ -119,106 +119,50 @@ var SetupView = Backbone.View.extend({
     },
 
     createUser: function() {
-	// Unfourtunately, JavaScript does not allow lexical scoping of
-	// variables (at least in ES5, if we were using ES6, we could
-	// use let in conjunction with arrow functions to fix this,
-	// but here we must do the relatively hacky solution of defining
-	// a "that", which is relatively idiomatic.
-	var that = this;
-
-	if (this.validateRequired()) {
-
-	    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-	    if (DEBUG) {
-		console.log(`[setup/app.js::SetupView::attemptCreation]: Validation passed.`);
-	    }
-	    // !DEBUG DISPLAY
-	    var userFields;
-
-	    try {
-		userFields = this.getFields();
-		if (DEBUG) {
-		    console.log(userFields);
-		}
-	    } catch(e) {
-		produceModal("Oops", "All fields are required.", true).display($(this.el));
-		return;
-	    }
-
-	    console.log(userFields);
-	    // Save the model using this.getFields(): We could actually automatically
-	    // update our model on form changes and we wouldn't even have to use
-	    // the "this.getFields() functionality, and in fact we could fully delete
-	    // it.
-	    that.userFields.save(userFields, {
-		dataType: 'text',
-
-		success: function(model, response) {
-		    console.log(response);
-
-		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-		    if (DEBUG) {
-			console.log(`[setup/app.js::SetupView::attemptCreation]: Successful creation of user object.`);
-			console.log(`[setup/app.js::SetupView::attemptCreation]: ${this.userFields}.`);
-		    }
-		    // !DEBUG DISPLAY
-
-		    var successModal = new ModalView({
-			header: "Nice",
-			message: "You made an account! Press okay to go to the login page.",
-			isDangerous: false,
-			closeFn: function() {
-			    window.location.href = '/login';
-			}
-		    });
-
-		    successModal.display($(that.el));
-		},
-
-		error: function(model, response) {
-		    if (response.responseText === "Error") {
-			produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true).display($(that.el));
-		    } else if (response.responseText === "Conflict") {
-			produceModal("Oops", "A user with this account name already exists!", true).display($(that.el));
-		    } else if (response.responseText === "Malformed") {
-			produceModal("Oops", "The data you sent us was malformed!", true).display($(that.el));
-		    } else {
-			produceModal("Oops", "An unknown error occured on our server, maybe you want to try again later?", true).display($(that.el));
-		    }
-		},
-	    });
-	} else {
-	    produceModal("Oops", "All fields are required.", true).display($(this.el));
-	}
-
+	
     },
 
     attemptCreation: function(event) {
-	// DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-	if (DEBUG) {
-	    console.log(`[setup/app.js::SetupView::attemptCreation]: Potential creation event...`);
-	}
-	// !DEBUG DISPLAY
-
-	// Here we check to see if the user has pressed the enter key, or some other.
-	// In the case that an enter key is pressed, the creation function is promptly
-	// returned, otherwise we take the focus off of the form control to prepare
-	// focus to be on the modal.
-	if (event.keyCode && event.keyCode !== 13 ) {
-	    return;
-	} else {
-	    $(this.el).find(".form-control").blur();
+	if (!this.validateRequired()) {
+	    produceModal("Oops", "All fields are required.", true).display($(this.el));
+	    return false;
 	}
 
-	// DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-	if (DEBUG) {
-	    console.log(`[setup/app.js::SetupView::attemptCreation]: Attempting creation of user object.`);
-	    console.log(`[setup/app.js::SetupView::attemptCreation]: User object: ${this.userFields}`);
-	}
-	// !DEBUG DISPLAY
+	var fields = this.getFields();
+	var that = this;
 
-	// Create a user object.
-	this.createUser();
+	// Save the model using this.getFields(): We could actually automatically
+	// update our model on form changes and we wouldn't even have to use
+	// the "this.getFields() functionality, and in fact we could fully delete
+	// it.
+	this.userFields.save(fields, {
+	    dataType: 'text',
+
+	    success: function(model, response) {
+		var successModal = new ModalView({
+		    header: "Nice",
+		    message: "You made an account! Press okay to go to the login page.",
+		    isDangerous: false,
+		    closeFn: function() {
+			window.location.href = '/login';
+		    }
+		});
+
+		successModal.display($(that.el));
+	    },
+
+	    error: function(model, response) {
+		if (response.responseText === "Error") {
+		    produceModal("Oops", "An error occured on our server, maybe you want to try again later?", true).display($(that.el));
+		} else if (response.responseText === "Conflict") {
+		    produceModal("Oops", "A user with this account name already exists!", true).display($(that.el));
+		} else if (response.responseText === "Malformed") {
+		    produceModal("Oops", "The data you sent us was malformed!", true).display($(that.el));
+		} else {
+		    produceModal("Oops", "An unknown error occured on our server, maybe you want to try again later?", true).display($(that.el));
+		}
+	    },
+	});
     }
 });
 

@@ -45,6 +45,10 @@ var LoginView = Backbone.View.extend({
 	});
     },
 
+    // validateRequired() takes the global DOM and checks for all DOM
+    // nodes with the required class, following this it filters the
+    // nodes for ANY item that is not equal to ''. If any nodes are
+    // in the resultant list, our inputs will not be satisfied.
     validateRequired: function() {
 	var inputsSatisfied = $(this.el)
 	    .find('.required')
