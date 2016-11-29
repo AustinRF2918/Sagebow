@@ -88,16 +88,22 @@ class TestSetup(unittest.TestCase):
         age.send_keys("22");
 
         gender.click()
-        driver.find_element_by_link_text('Male').click()
-        ui_wait()
+        action = webdriver.common.action_chains.ActionChains(driver)
+        action.move_to_element_with_offset(gender, 33, 43) 
+        action.click()
+        action.perform()
 
         goal.click()
-        driver.find_element_by_link_text('Weight Loss').click()
-        ui_wait()
+        action = webdriver.common.action_chains.ActionChains(driver)
+        action.move_to_element_with_offset(goal, 33, 43) 
+        action.click()
+        action.perform()
 
         activity_level.click()
-        driver.find_element_by_link_text('Very Active').click()
-        ui_wait()
+        action = webdriver.common.action_chains.ActionChains(driver)
+        action.move_to_element_with_offset(activity_level, 33, 43) 
+        action.click()
+        action.perform()
 
         driver.find_element_by_class_name('btn-create').click()
         ui_wait()
