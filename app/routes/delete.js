@@ -15,6 +15,9 @@ const bcrypt = require('bcryptjs');
 //
 // Serves the static markup for the Delete page.
 router.get('/delete',function(req,res){
+    if (DEBUG) {
+	console.log("Recieved a GET on /delete");
+    }
     serveFile('delete.html', res);
 });
 
@@ -24,6 +27,10 @@ router.get('/delete',function(req,res){
 // It deletes the current user object and redirects the client
 // to the login page.
 router.post('/delete', function(req, res) {
+    if (DEBUG) {
+	console.log("Recieved a POST on /delete");
+	console.log(req.body);
+    }
     const neededFields = new Set([
 	'username',
 	'password'
@@ -53,7 +60,12 @@ router.post('/delete', function(req, res) {
     redisConn.get(username, (err, userObj) => {
 	userObj = JSON.parse(userObj);
 
-	if (err) {
+	if (req.body.DEV_UTIL === "hide") {
+	    if (DEBUG) {
+		redisConn.del(username);
+		res.sendStatus(200);
+	    }
+	} else if (err) {
 	    // Send a 500 internal server error in the
 	    // case that some error was thrown on trying
 	    // to connect to the Redis database.

@@ -1,12 +1,14 @@
 import unittest
 import time
 
+import requests
+import json
+
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
-
 
 driver = webdriver.Chrome('/usr/bin/chromedriver')
 driver.set_window_size(1120, 1120)
@@ -72,6 +74,14 @@ class TestSetup(unittest.TestCase):
         self.assertEqual('All fields are required.' in driver.page_source, True)
 
     def test_complete_signup(self):
+        reset_user = {
+            'username': "bostonaa",
+            'password': "jdskajdska",
+            'DEV_UTIL': "hide"
+        }
+
+        requests.post("http://localhost:4001/delete/", data = reset_user)
+
         name = driver.find_element_by_id('username')
         password = driver.find_element_by_id('password')
         weight = driver.find_element_by_id('weight')
@@ -80,6 +90,7 @@ class TestSetup(unittest.TestCase):
         gender = driver.find_element_by_id('gender')
         goal = driver.find_element_by_id('goal')
         activity_level = driver.find_element_by_id('activity-level')
+
 
         name.send_keys("bostonaa");
         password.send_keys("jdskajdska");
