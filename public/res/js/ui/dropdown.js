@@ -5,11 +5,20 @@
   It is required that each of these selection
   tags has an id.
 */
-var DropdownReplacer = (function () {
-    var dropdownButtonClasses = ["btn", "btn-setup-dropdown"];
-    var dropdownMenuClasses = ["dropdown-menu-custom"];
-    var dropdownItemClasses = ["dropdown-item", "btn", "btn-setup-dropdown"];
+var DropdownReplacer = (function (optionals) {
+    var dropdownButtonClasses = (optionals && optionals.buttonClasses) || ["btn", "btn-setup-dropdown"];
+    var dropdownMenuClasses = (optionals && optionals.menuClasses) || ["dropdown-menu-custom"];
+    var dropdownItemClasses = (optionals && optionals.itemClasses) || ["dropdown-item", "btn", "btn-setup-dropdown"];
 
+    var rowSeperatorClass = (optionals && optionals.seperatorClass) || "row";
+    var buttonGroupClass = (optionals && optionals.groupClass) || "btnGroup";
+    var disabledClass = (optionals && optionals.disabledClass) || "hidden";
+
+    function _getFirstElement(list) {
+	return list.map(function(item){
+	    return "." + item;
+	})[0];
+    }
     // Generates an anchor that represents a button
     // that toggles the state of a dropdown. This will
     // replace the "select" nodes on a subsection of the DOM. 
@@ -23,6 +32,8 @@ var DropdownReplacer = (function () {
 	    }).text($el.attr('name'));
     }
 
+    // Generates an anchor that represents a button
+    // that allows the value of a dropdown to be changed.
     function _generateDropdownItem($element, $anchor, $dropdownItems) {
 	return $('<a>')
 	    .addClass(dropdownItemClasses.join(" "))
@@ -39,29 +50,32 @@ var DropdownReplacer = (function () {
 
     }
 
+    // Performs dropdown action based on certain state
+    // variables.
     function _dropDown($dropdownMenu) {
-	var hadClass = $dropdownMenu.hasClass('hidden');
+	var hadClass = $dropdownMenu.hasClass(disabledClass);
 	
-	$(dropdownItemClasses.join(" ")).removeAttr('href');
-	$(dropdownMenuClasses.join(" ")).addClass('hidden');
+	$(_getFirstElement(dropdownItemClasses)).removeAttr('href');
+	$(_getFirstElement(dropdownMenuClasses)).addClass(disabledClass);
 
 	if (hadClass) {
-	    $dropdownMenu.removeClass('hidden');
+	    $dropdownMenu.removeClass(disabledClass);
 	    $dropdownMenu.children().attr('href', '#');
 	}
     }
 
+    // Performs replacement of selection nodes with our new,
+    // nice dropdowns.
     function _replaceDropdowns($parent) {
 	// Iterate through each selection document
 	// node: these selection objects are usually
 	// fairly ugly, we make our own version here.
 	$parent.find('select').each(function(i, element) {
 	    var $el = $(element);
-	    var $dropdownItems = $('<div>')
-		.addClass('dropdown-menu-custom')
-		.addClass('hidden');
-
 	    var $anchor = _generateDropdownButton($el);
+	    var $dropdownItems = $('<div>')
+		.addClass(dropdownMenuClasses.join(" "))
+		.addClass(disabledClass);
 
 	    // On the click of the dropdown element, we
 	    // remove the hidden class, showing everything
@@ -90,8 +104,8 @@ var DropdownReplacer = (function () {
 	    // anchor element and optionContainer element.
 	    $el.parent().append($anchor)
 		.append(
-		$('<div class="row">').append(
-		    $('<div class="btn-group">').append($dropdownItems)
+		$('<div class="' + rowSeperatorClass +'">').append(
+		    $('<div class="' + buttonGroupClass +'">').append($dropdownItems)
 		)
 	    );
 
@@ -101,18 +115,16 @@ var DropdownReplacer = (function () {
 	    // If any portion of the page is clicked while our dropdown
 	    // is expanded, we will want to collapse our dropdown.
 	    $(document).click(function(){
-		$(dropdownItemClasses.map(function(item){
-		    return "." + item;
-		})[0]).removeAttr('href');
+		$().removeAttr('href');
 
 		$(dropdownMenuClasses.map(function(item){
 		    return "." + item;
-		})[0]).addClass('hidden');
+		})[0]).addClass(disabledClass);
 	    });
 	});
     };
 
     return {
 	replaceDropdowns: _replaceDropdowns
-    }
+    };
 })();
