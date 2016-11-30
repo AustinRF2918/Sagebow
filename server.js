@@ -409,26 +409,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     // food name and see if it exists in
     // the governments API.
     app.get('/api/query/:name',function(req, res){
-
-	const neededFields = new Set([
-	    'name'
-	]);
-
-	// A mapping of all required fields onto the request body:
-	// in the case that all objects are mapped, the filter
-	// later on will create an array of length zero, indicating
-	// that all of our data was on the body of the request, otherwise,
-	// an error will be indicated.
-	const fields = Array.from(neededFields.values())
-	    .map((item) => req.body[item])
-	    .filter((item) => item === null || item === undefined);
-
-	// Make sure all of our fields were filtered out.
-	// Otherwise send a malformed error code.
-	if (fields.length !== 0) {
-	    res.status(422).send('Malformed');
-	    return;
-	}
+	console.log("Recieved a GET on /api/query/:name.");
 
 	// Utilizing a promise monad, we sequentially access the
 	// api for the usda and get nutritional information back to the client.
@@ -437,44 +418,37 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
             request(url, (err, response, body) => {
                 if (err || response.statusCode !== 200) {
-		    // Signifies that the promise monad will not go further.
-                    reject();
+		    res.status(400).end('Unable to perform request');
                 } else {
 		    // Set the then to have a single parameter (promise pattern).
                     resolve(JSON.parse(body).list.item[0].ndbno);
                 }
             });
-        }).then( (dbnum) => {
-            new Promise( (resolve, reject) => {
-                const url = 'http://api.nal.usda.gov/ndb/reports/?ndbno=${dbnum}&type=s&format=json&api_key=${API_KEY}';
+        }).then( (databaseNumber) => {
+	    const url = `http://api.nal.usda.gov/ndb/reports/?ndbno=${databaseNumber}&type=s&format=json&api_key=${API_KEY}`;
 
-                request(url, (err, response, body) => {
-                    if (err || response.statusCode !== 200) {
-                        reject(err);
-                    } else {
-                        let foodData = {};
-                        const nutrients = JSON.parse(body).report.food.nutrients;
+	    request(url, function(err, response, body) {
+		if (err || response.statusCode !== 200) {
+		    res.status(400).end('Unable to perform request');
+		} else {
+		    let foodData = {};
+		    const nutrients = JSON.parse(body).report.food.nutrients;
 
-                        // Find the nutrients we are interested in
-			// Make this a method.
-                        for (let nutrient of nutrients){
-                            if (nutrient.nutrient_id == 203){
-                                foodData.proteins = nutrient.value;
-                            } else if (nutrient.nutrient_id == 204){
-                                foodData.fats = nutrient.value;
-                            } else if(nutrient.nutrient_id == 205){
-                                foodData.carbs = nutrient.value;
-                            }
-                        }
+		    // Find the nutrients we are interested in
+		    // Make this a method.
+		    for (let nutrient of nutrients){
+			if (nutrient.nutrient_id == 203){
+			    foodData.proteins = nutrient.value;
+			} else if (nutrient.nutrient_id == 204){
+			    foodData.fats = nutrient.value;
+			} else if(nutrient.nutrient_id == 205){
+			    foodData.carbs = nutrient.value;
+			}
+		    }
 
-                        resolve(foodData);
-                    }
-                });
-            });
-        }).then( (foodData) => {
-            res.send(foodData);
-        }).catch( (err) => {
-            res.status(400).end('Unable to perform request');
+		    res.send(foodData);
+		}
+	    });
         });
     });
 

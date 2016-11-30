@@ -31,12 +31,14 @@ function getCurrentEntry() {
 function queryNutrientData(foodName) {
     new Promise(function queryBackend(onResolve, onReject){
         $.get('/api/query/'+foodName).done(function(foodData){
+	    console.log(foodData);
             onResolve(foodData);
         }).fail(function(){
             onReject();
         });
     }).then(function(foodData){
         // Fill in inputs with data
+	console.log(foodData);
         $('#carbs').val(foodData.carbs);
         $('#fats').val(foodData.fats);
         $('#proteins').val(foodData.proteins);

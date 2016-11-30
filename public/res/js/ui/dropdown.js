@@ -75,12 +75,9 @@ var DropdownReplacer = (function (optionals) {
 	}
     }
 
-    // Performs replacement of selection nodes with our new,
-    // nice dropdowns.
+    // Performs the actual replacement.
     function _replaceDropdowns($parent) {
-	// Iterate through each selection document
-	// node: these selection objects are usually
-	// fairly ugly, we make our own version here.
+	// Iterate through each selection item.
 	$parent.find('select').each(function(i, element) {
 	    var $el = $(element);
 	    var $anchor = _generateDropdownButton($el);
@@ -99,10 +96,6 @@ var DropdownReplacer = (function (optionals) {
 		event.stopPropagation();
 	    });
 
-	    // Our drop-downs render weird in the case that we do
-	    // not add a btn-margin fix. This is a hack, but I am
-	    // refactoring the server logic code, not the markup
-	    // (for now.)
 	    $el.children().each(function(item, element) {
 		// Append each of the dropdown items as a
 		// new anchor tag which is a child to the original
