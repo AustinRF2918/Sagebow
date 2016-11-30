@@ -245,32 +245,24 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	// Otherwise send a malformed error code.
 	if (fields.length !== 0) {
 	    res.status(422).send('Malformed');
-	    return;
 	}
 
 	// Set our data equal to the request body which we have
 	// ensured exists.
-        let carbs = req.query.carbs,
-	      fats = req.query.fats,
-	      proteins = req.query.proteins,
-	      name = req.query.name,
-              timestamp = req.query.timestamp || new Date();
-
-	// Attempt to parse all of the data: It is possible
-	// that we got sent bad data.
 	try {
-	    timestamp = new Date(timestamp);
-	    carbs = parseFloat(carbs);
-	    fats = parseFloat(fats);
-	    proteins = parseFloat(proteins);
+	    const carbs = parseFloat(req.query.carbs),
+		  fats = parseFloat(req.query.fats),
+		  proteins = parseFloat(req.query.proteins),
+		  name = req.query.name,
+		  timestamp = (req.query.timestamp && new Date(req.query.timestamp))|| new Date();
 	} catch(error) {
 	    // The data was in some way unparseable. Therefore,
 	    // it was malformed.
 	    res.status(422).send('Malformed');
 	}
-
+	
 	// Used in case of failure. Deep copy
-	const oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
+	const cachedUser = JSON.parse(JSON.stringify(req.session.userObj));
 
 	// Add entry
 	req.session.userObj.nutrientHistory.unshift({
@@ -283,7 +275,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	});
 
 	try {
-	    attemptSave(req, res, redisConn, oldUserObj);
+	    attemptSave(req, res, redisConn, cachedUser);
 	} catch(error) {
 	    // Some error happened with the connection to the database.
 	    res.sendStatus(200);
