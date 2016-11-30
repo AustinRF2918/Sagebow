@@ -24,11 +24,16 @@ var DropdownReplacer = (function () {
 	    .addClass("dropdown-item")
 	    .addClass("btn")
 	    .addClass("btn-setup-dropdown")
-	    .click(function(){
-		_dropDown($dropdownItems);
+	    .click(function(event){
 		$anchor.text($(this).text())
-		.attr('set', true);
-	    }).text($element.text());
+		    .attr('set', true);
+		if (event.screenX === 0 && event.screenY === 0) {
+		    $anchor.focus();
+		}
+		_dropDown($dropdownItems);
+	    })
+	    .text($element.text());
+
     }
 
     function _dropDown($dropdownMenu) {
@@ -93,7 +98,7 @@ var DropdownReplacer = (function () {
 	    // If any portion of the page is clicked while our dropdown
 	    // is expanded, we will want to collapse our dropdown.
 	    $(document).click(function(){
-		_dropDown($dropdownItems);
+		$('.dropdown-item').removeAttr('href');
 		$('.dropdown-menu-custom').addClass('hidden');
 	    });
 	});
