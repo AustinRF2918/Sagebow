@@ -28,7 +28,7 @@ var DropdownReplacer = (function () {
 		_dropDown($dropdownItems);
 		$anchor.text($(this).text())
 		.attr('set', true);
-	    }).text($element.innerText);
+	    }).text($element.text());
     }
 
     function _dropDown($dropdownMenu) {
@@ -69,12 +69,12 @@ var DropdownReplacer = (function () {
 	    // not add a btn-margin fix. This is a hack, but I am
 	    // refactoring the server logic code, not the markup
 	    // (for now.)
-	    $el.children().each(function(item, $element) {
+	    $el.children().each(function(item, element) {
 		// Append each of the dropdown items as a
 		// new anchor tag which is a child to the original
 		// select (now anchor) element.
 		$dropdownItems.append(
-		    _generateDropdownItem($element, $anchor, $dropdownItems)
+		    _generateDropdownItem($(element), $anchor, $dropdownItems)
 		);
 	    });
 
