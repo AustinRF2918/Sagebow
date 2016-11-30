@@ -49,7 +49,10 @@ var DropdownReplacer = (function () {
 	// fairly ugly, we make our own version here.
 	$parent.find('select').each(function(i, element) {
 	    var $el = $(element);
-	    var $dropdownItems = $('<div class="dropdown-menu-custom hidden">');
+	    var $dropdownItems = $('<div>')
+		.addClass('dropdown-menu-custom')
+		.addClass('hidden');
+
 	    var $anchor = _generateDropdownButton($el);
 
 	    // On the click of the dropdown element, we
@@ -77,9 +80,8 @@ var DropdownReplacer = (function () {
 
 	    // Make rows and sub-rows and append the generated
 	    // anchor element and optionContainer element.
-	    $el.parent().append(
-		$('<div class="row">').append($anchor)
-	    ).append(
+	    $el.parent().append($anchor)
+		.append(
 		$('<div class="row">').append(
 		    $('<div class="btn-group">').append($dropdownItems)
 		)
