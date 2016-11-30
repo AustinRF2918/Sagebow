@@ -19,6 +19,10 @@ var DropdownReplacer = (function (optionals) {
 	    return "." + item;
 	})[0];
     }
+
+    function _eventFromKeyboard(event) {
+	return event.screenX === 0 && event.screenY === 0;
+    }
     // Generates an anchor that represents a button
     // that toggles the state of a dropdown. This will
     // replace the "select" nodes on a subsection of the DOM. 
@@ -40,7 +44,7 @@ var DropdownReplacer = (function (optionals) {
 	    .click(function(event){
 		$anchor.text($(this).text()).attr('set', true);
 
-		if (event.screenX === 0 && event.screenY === 0) {
+		if (_eventFromKeyboard(event)) {
 		    $anchor.focus();
 		}
 
@@ -48,6 +52,13 @@ var DropdownReplacer = (function (optionals) {
 	    })
 	    .text($element.text());
 
+    }
+
+    // Generates the container for the dropdown items.
+    function _generateDropdownContainer() {
+	return $('<div>')
+	    .addClass(dropdownMenuClasses.join(" "))
+	    .addClass(disabledClass);
     }
 
     // Performs dropdown action based on certain state
@@ -73,9 +84,7 @@ var DropdownReplacer = (function (optionals) {
 	$parent.find('select').each(function(i, element) {
 	    var $el = $(element);
 	    var $anchor = _generateDropdownButton($el);
-	    var $dropdownItems = $('<div>')
-		.addClass(dropdownMenuClasses.join(" "))
-		.addClass(disabledClass);
+	    var $dropdownItems = _generateDropdownContainer();
 
 	    // On the click of the dropdown element, we
 	    // remove the hidden class, showing everything
@@ -84,7 +93,7 @@ var DropdownReplacer = (function (optionals) {
 		// Stop the event from bubbling up the call
 		// chain.
 		_dropDown($dropdownItems);
-		if (event.screenX !== 0 && event.screenY !== 0) {
+		if (_eventFromKeyboard(event)) {
 		    $anchor.blur();
 		}
 		event.stopPropagation();
@@ -118,11 +127,8 @@ var DropdownReplacer = (function (optionals) {
 	    // If any portion of the page is clicked while our dropdown
 	    // is expanded, we will want to collapse our dropdown.
 	    $(document).click(function(){
-		$().removeAttr('href');
-
-		$(dropdownMenuClasses.map(function(item){
-		    return "." + item;
-		})[0]).addClass(disabledClass);
+		$(_getFirstElement(dropdownItemClasses)).removeAttr('href');
+		$(_getFirstElement(dropdownMenuClasses)).addClass(disabledClass);
 	    });
 	});
     };
