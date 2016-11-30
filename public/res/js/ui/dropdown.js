@@ -84,6 +84,9 @@ var DropdownReplacer = (function (optionals) {
 		// Stop the event from bubbling up the call
 		// chain.
 		_dropDown($dropdownItems);
+		if (event.screenX !== 0 && event.screenY !== 0) {
+		    $anchor.blur();
+		}
 		event.stopPropagation();
 	    });
 
