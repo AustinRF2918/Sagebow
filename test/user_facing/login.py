@@ -9,7 +9,7 @@ from selenium.webdriver.common.keys import Keys
 
 
 driver = webdriver.Chrome('/usr/bin/chromedriver')
-driver.set_window_size(900, 900)
+driver.set_window_size(1440, 900)
 driver.set_window_position(900, 0)
 
 

@@ -13,9 +13,20 @@ var DropdownReplacer = (function () {
 	return $('<a>')
 	    .addClass($el.attr('subclasses'))
 	    .attr({
+		'href': '#',
 		'id': $el.attr('id'),
 		'set': false
 	    }).text($el.attr('name'));
+    }
+
+    function _dropDown($dropdownMenu) {
+	$('.dropdown-item').removeAttr('href');
+	$('.dropdown-menu-custom').addClass('hidden');
+
+	if ($dropdownMenu.hasClass('hidden')) {
+	    $dropdownMenu.removeClass('hidden');
+	    $dropdownMenu.children().attr('href', '#');
+	}
     }
 
     function _replaceDropdowns($parent) {
@@ -24,22 +35,16 @@ var DropdownReplacer = (function () {
 	// fairly ugly, we make our own version here.
 	$parent.find('select').each(function(i, element) {
 	    var $el = $(element);
+	    var $dropdownItems = $('<div class="dropdown-menu-custom hidden">');
 	    var anchor = _generateAnchor($el);
-	    var optionContainer = $('<div class="dropdown-menu-custom hidden">')
 
 	    // On the click of the dropdown element, we
 	    // remove the hidden class, showing everything
 	    // contianed.
 	    anchor.click(function(event){
-		var temp = optionContainer.hasClass('hidden');
-		$('.dropdown-menu-custom').addClass('hidden');
-
-		if (temp) {
-		    optionContainer.toggleClass('hidden');
-		}
-
 		// Stop the event from bubbling up the call
 		// chain.
+		_dropDown($dropdownItems);
 		event.stopPropagation();
 	    });
 
@@ -56,11 +61,12 @@ var DropdownReplacer = (function () {
 		// Append each of the dropdown items as a
 		// new anchor tag which is a child to the original
 		// select (now anchor) element.
-		optionContainer.append(
+		$dropdownItems.append(
 		    $('<a class="dropdown-item btn btn-setup-dropdown ' + extraAppendage + '">')
 			.click(function(){
 			    anchor.text($(this).text())
 			    .attr('set', true);
+			    $(this).parent().click();
 			}).text(element.innerText)
 		);
 	    });
@@ -71,7 +77,7 @@ var DropdownReplacer = (function () {
 		$('<div class="row">').append(anchor)
 	    ).append(
 		$('<div class="row">').append(
-		    $('<div class="btn-group">').append(optionContainer)
+		    $('<div class="btn-group">').append($dropdownItems)
 		)
 	    );
 
