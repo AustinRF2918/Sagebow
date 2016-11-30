@@ -91,6 +91,7 @@ var DropdownReplacer = (function () {
 	    // If any portion of the page is clicked while our dropdown
 	    // is expanded, we will want to collapse our dropdown.
 	    $(document).click(function(){
+		_dropDown($dropdownItems);
 		$('.dropdown-menu-custom').addClass('hidden');
 	    });
 	});
