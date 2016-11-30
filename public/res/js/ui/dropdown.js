@@ -15,6 +15,14 @@ var DropdownReplacer = (function (optionals) {
     var disabledClass = (optionals && optionals.disabledClass) || "hidden";
 
     function _getFirstElement(list) {
+	if (typeof list === "string") {
+	    throw TypeError("You must enter an array with at to _getFirstElement");
+	} else if (list.length === 0) {
+	    throw TypeError("You must enter an array with at least one item to _getFirstElement");
+	} else if (list === undefined) {
+	    throw TypeError("You must enter an array with to _getFirstElement");
+	}
+
 	return list.map(function(item){
 	    return "." + item;
 	})[0];
@@ -23,6 +31,7 @@ var DropdownReplacer = (function (optionals) {
     function _eventFromKeyboard(event) {
 	return event.screenX === 0 && event.screenY === 0;
     }
+
     // Generates an anchor that represents a button
     // that toggles the state of a dropdown. This will
     // replace the "select" nodes on a subsection of the DOM. 
@@ -127,6 +136,14 @@ var DropdownReplacer = (function (optionals) {
     };
 
     return {
-	replaceDropdowns: _replaceDropdowns
+	replaceDropdowns: _replaceDropdowns,
+	_internal: {
+	    getFirstElement: _getFirstElement,
+	    eventFromKeyboard: _eventFromKeyboard,
+	    generateDropdownButton: _generateDropdownButton,
+	    generateDropdownItem: _generateDropdownItem,
+	    generateDropdownContainer: _generateDropdownContainer,
+	    dropDown: _dropDown
+	}
     };
 })();
