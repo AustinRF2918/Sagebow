@@ -20,10 +20,12 @@ var DropdownReplacer = (function () {
     }
 
     function _dropDown($dropdownMenu) {
+	var hadClass = $dropdownMenu.hasClass('hidden');
+	
 	$('.dropdown-item').removeAttr('href');
 	$('.dropdown-menu-custom').addClass('hidden');
 
-	if ($dropdownMenu.hasClass('hidden')) {
+	if (hadClass) {
 	    $dropdownMenu.removeClass('hidden');
 	    $dropdownMenu.children().attr('href', '#');
 	}
@@ -64,9 +66,9 @@ var DropdownReplacer = (function () {
 		$dropdownItems.append(
 		    $('<a class="dropdown-item btn btn-setup-dropdown ' + extraAppendage + '">')
 			.click(function(){
+			    _dropDown($dropdownItems);
 			    anchor.text($(this).text())
 			    .attr('set', true);
-			    $(this).parent().click();
 			}).text(element.innerText)
 		);
 	    });
