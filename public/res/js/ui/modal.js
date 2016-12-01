@@ -20,7 +20,7 @@ var ModalView = Backbone.View.extend({
 	tag +=         '<p><%= this.message %></p>';
 	tag +=       '</div>';
 	tag +=       '<div class="bottom-text text-xs-right">';
-	tag +=         '<a class="btn btn-exit <%= this.buttonClass %>">'
+	tag +=         '<a class="btn btn-exit <%= this.buttonClass %>">';
 	if (this.btnText) {
 	    tag +=           this.btnText;
 	} else {
@@ -65,11 +65,10 @@ var ModalView = Backbone.View.extend({
     events: {
 	"click .btn": "removeModal",
 	"click .overlay": "removeModal",
-	"keyup .btn-exit": "removeModal",
+	"keyup .btn-exit": "removeModal"
     },
 
     removeModal: function(event) {
-	console.log("Hey!");
 	this.closeFn();
 	if ($(event.target).hasClass("btn-exit") || $(event.target).hasClass("overlay") || event.which === 13) {
 	    this.undelegateEvents();
