@@ -172,3 +172,36 @@ describe("Dropdown Functionality (Unit Tests)", function() {
     });
 });
 
+describe("Dropdown Integration (Component Integration)", function() {
+    var $anchor;
+    var $dropdownContainer;
+    var $selector = $('<select class="btn-cluster" name="Gender" id="gender" subclasses="btn required btn-setup-dropdown"><option>Male</option><option>Female</option></select>');
+
+    beforeEach(function() {
+	$anchor = DropdownReplacer._internal.generateDropdownButton($selector);
+	$dropdownContainer = DropdownReplacer._internal.generateDropdownContainer();
+	$selector.children().each(function(item, element) {
+	    $dropdownContainer.append(
+		DropdownReplacer._internal.generateDropdownItem($(element), $anchor, $dropdownContainer)
+	    );
+	});
+    });
+
+
+    it ('Makes button go active on sub-item click.', function() {
+	$dropdownContainer.children().click();
+	expect( $anchor.hasClass('hidden') ).to.equal(false);
+    });
+
+    it ('Makes button replace text on sub-item click.', function() {
+	$dropdownContainer.children().click();
+	expect( $anchor.text() ).to.equal("Female");
+    });
+
+    it ('Allows switching of choices.', function() {
+	$dropdownContainer.children()[0].click();
+	expect( $anchor.text() ).to.equal("Male");
+	$dropdownContainer.children()[1].click();
+	expect( $anchor.text() ).to.equal("Female");
+    });
+});
