@@ -1,3 +1,7 @@
+var vm = require('vm');
+var fs = require('fs');
+vm.runInThisContext(fs.readFileSync('./ui/dropdown.js'));
+var chai = require('chai');
 var expect = chai.expect;
 
 describe("Dropdown Functionality", function() {
@@ -15,19 +19,19 @@ describe("Dropdown Functionality", function() {
 	it ('throws when we pass nothing.', function() {
 	    expect(function() {
 		var bad = DropdownReplacer._internal.getFirstElement();
-	    }).to.throw(TypeError)
+	    }).to.throw(TypeError);
 	});
 
 	it ('throws when we pass absolutely nothing.', function() {
 	    expect(function() {
 		var bad = DropdownReplacer._internal.getFirstElement([]);
-	    }).to.throw(TypeError)
+	    }).to.throw(TypeError);
 	});
 
 	it ('throws when we pass string.', function() {
 	    expect(function() {
 		var bad = DropdownReplacer._internal.getFirstElement("");
-	    }).to.throw(TypeError)
+	    }).to.throw(TypeError);
 	});
     });
 
@@ -36,7 +40,8 @@ describe("Dropdown Functionality", function() {
 	    var mockEvent = {
 		screenX: 1,
 		screenY: 0
-	    }
+	    };
+
 	    expect( DropdownReplacer._internal.eventFromKeyboard(mockEvent) ).to.equal( false );
 
 	    mockEvent.screenX = 0;
