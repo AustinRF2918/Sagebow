@@ -6,7 +6,7 @@ if (!(typeof window != 'undefined' && window.document)) {
 }
 var expect = chai.expect;
 
-describe("Dropdown Functionality", function() {
+describe("Dropdown Functionality (Unit Tests)", function() {
     describe("Utilities functions should work.", function() {
 	it ('throws when we pass nothing.', function() {
 	    var jqueryHello = DropdownReplacer._internal.getFirstElement(["Hello"]);
@@ -98,4 +98,77 @@ describe("Dropdown Functionality", function() {
 	    expect( $testButton.attr('set') ).to.equal( 'false' );
 	});
     });
+
+    describe("Dropdown items  are generatable", function() {
+	var $element;
+	var $anchor;
+	var $mockEl;
+	var $dropdownItems;
+
+	beforeEach(function() {
+	    $element = $("<a>").text("testText");
+	    $anchor = $("<a>");
+	    $dropdownItems = $("<a>")
+		.addClass("disabled");
+	    $mockEl = DropdownReplacer._internal.generateDropdownItem($element, $anchor, $dropdownItems);
+	});
+
+	it ('Has the neccessary classes.', function(){
+	    expect( $mockEl.text() ).to.equal("testText");
+	    expect( $mockEl.text() ).to.not.equal("testTextBad");
+	    expect( $mockEl.hasClass("dropdown-item") ).to.equal(true);
+	    expect( $mockEl.hasClass("btn") ).to.equal(true);
+	    expect( $mockEl.hasClass("btn-setup-dropdown") ).to.equal(true);
+	    expect( $mockEl.hasClass("btn-setup-dropdown-bad") ).to.not.equal(true);
+	});
+
+	it ('Has the neccessary text.', function() {
+	    expect( $mockEl.text() ).to.equal("testText");
+	    expect( $mockEl.text() ).to.not.equal("testTextBad");
+	});
+    });
+
+    describe("Dropdown containers are generatable.", function() {
+	it ('Has the neccessary classes.', function(){
+	    var $mockEl = DropdownReplacer._internal.generateDropdownContainer();
+	    expect( $mockEl.hasClass("dropdown-menu-custom") ).to.equal(true);
+	});
+
+	it ('Begins disabled.', function() {
+	    var $mockEl = DropdownReplacer._internal.generateDropdownContainer();
+	    expect( $mockEl.hasClass("hidden") ).to.equal(true);
+	});
+    });
+
+    describe("Dropdown functionality affects all nodes on DOM.", function() {
+	var $element;
+	var $anchor;
+	var $mockEl;
+	var $dropdownContainer;
+	var $newItem;
+
+	beforeEach(function() {
+	    $element = $("<a>").text("testTextA");
+	    $anchor = $("<a>").attr('set', false);
+	    $dropdownContainer = $("<a>")
+		.addClass("disabled")
+		.text("testTextB");
+	    $newItem = $("<a>");
+	    $dropdownContainer.append($newItem);
+
+	    $mockEl = DropdownReplacer._internal.generateDropdownItem($element, $anchor, $dropdownContainer);
+	});
+
+	it ('Constructs properly.', function(){
+	    expect( $anchor.attr("set") ).to.equal('false');
+	    expect( $anchor.text() ).to.equal("");
+	});
+
+	it ('Affects the button of the container when clicked.', function(){
+	    $mockEl.click();
+	    expect( $anchor.text() ).to.equal("testTextA");
+	    expect( $anchor.attr("set") ).to.equal('true');
+	});
+    });
 });
+
