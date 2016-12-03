@@ -42,4 +42,6 @@ module.exports = function(app) {
 
     app.use(require('./routes/logout.js'));
     app.use(require('./routes/delete.js'));
-}
+    app.use(require('./routes/metrics.js'));
+    app.use(require('./routes/entry.js'));
+};
