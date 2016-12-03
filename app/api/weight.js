@@ -1,30 +1,20 @@
-const serveFile = require('../utilities/serving.js').serveFile,
-      debugMessage = require('../utilities/debug.js').debugMessage,
+const debugMessage = require('../utilities/debug.js').debugMessage,
       attemptSave  = require('../utilities/database.js').attemptSave,
       express = require('express'),
-      router = express.Router();
-
-//
-// TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient(),
-      bcrypt = require('bcryptjs');
-//
-//
+      router = express.Router(),
+      redisConn = require('../configuration.js').REDIS_CONNECTION;
 
 // Weight endpoint [POST]
 //
 // This is an endpoint for sending over weight updates
 // from the client side.
 router.post('/api/weight', function(req, res) {
+    debugMessage("Recieved a POST on /api/weight.");
+
     const values = validateRequest(['value'], req, res);
-
-    let timestamp = (req.body.timestamp || new Date(req.body.timestamp)) || new Date();
-
-    // This will be used in the case that the following
-    // operations fail.
-    let oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
-
+    const timestamp = (req.body.timestamp || new Date(req.body.timestamp)) || new Date();
     const weightHistory = req.session.userObj.weightHistory;
+    const backupUser = JSON.parse(JSON.stringify(req.session.userObj));
 
     // A litte funky here.
     let position = 0;
@@ -43,8 +33,7 @@ router.post('/api/weight', function(req, res) {
 	req.session.userObj.lastUpdated = timestamp;
     }
 
-    // Attempt save into our redisConn.
-    attemptSave(req, res, redisConn, oldUserObj);
+    attemptSave(req, res, redisConn, backupUser);
 });
 
 // Weight endpoint [GET]
@@ -54,6 +43,7 @@ router.post('/api/weight', function(req, res) {
 // on a range schema: We want all events between
 // min and max.
 router.get('/api/weight', function(req, res) {
+    debugMessage("Recieved a GET on /api/weight.");
 
     let timeRange = [req.query.min, req.query.max]
 	.map((item) => {

@@ -2,14 +2,9 @@ const serveFile = require('../utilities/serving.js').serveFile,
       validateRequest = require('../utilities/integrity.js').validateRequest,
       debugMessage = require('../utilities/debug.js').debugMessage,
       express = require('express'),
-      router = express.Router();
-
-//
-// TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient(),
+      router = express.Router(),
+      redisConn = require('../configuration.js').REDIS_CONNECTION,
       bcrypt = require('bcryptjs');
-//
-//
 
 // Setup Static Serve
 //

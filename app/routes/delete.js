@@ -3,12 +3,9 @@ const debugMessage = require("../utilities/debug.js").debugMessage,
       serveFile = require('../utilities/serving.js').serveFile,
       DEBUG = require('../configuration.js').DEBUG,
       express = require('express'),
-      router = express.Router();
-
-
-// TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient();
-const bcrypt = require('bcryptjs');
+      router = express.Router(),
+      redisConn = require('../configuration.js').REDIS_CONNECTION,
+      bcrypt = require('bcryptjs');
 
 // Delete Static Serve
 //

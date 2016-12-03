@@ -2,15 +2,11 @@ const serveFile = require('../utilities/serving.js').serveFile,
       debugMessage = require('../utilities/debug.js').debugMessage,
       validateRequest = require('../utilities/integrity.js').validateRequest,
       express = require('express'),
-      router = express.Router();
-
-//
-// TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient(),
+      router = express.Router(),
+      redisConn = require('../configuration.js').REDIS_CONNECTION,
       bcrypt = require('bcryptjs');
-//
-//
 
+//
 // Login Static Serve
 //
 // Serves the static markup for the login page.

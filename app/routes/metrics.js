@@ -3,13 +3,6 @@ const serveFile = require('../utilities/serving.js').serveFile,
       express = require('express'),
       router = express.Router();
 
-//
-// TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient(),
-      bcrypt = require('bcryptjs');
-//
-//
-
 // Setup Static Serve
 //
 // Serves the static markup for the setup page.

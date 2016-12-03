@@ -1,15 +1,8 @@
-const serveFile = require('../utilities/serving.js').serveFile,
-      debugMessage = require('../utilities/debug.js').debugMessage,
+const debugMessage = require('../utilities/debug.js').debugMessage,
       attemptSave = require('../utilities/database.js').attemptSave,
       express = require('express'),
-      router = express.Router();
-
-//
-// TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient(),
-      bcrypt = require('bcryptjs');
-//
-//
+      router = express.Router(),
+      redisConn = require('../configuration.js').REDIS_CONNECTION;
 
 // Last Updated Endpoint [GET]
 //

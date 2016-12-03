@@ -1,28 +1,18 @@
-const serveFile = require('../utilities/serving.js').serveFile,
-      debugMessage = require('../utilities/debug.js').debugMessage,
+const debugMessage = require('../utilities/debug.js').debugMessage,
       express = require('express'),
       router = express.Router();
-
-//
-// TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient(),
-      bcrypt = require('bcryptjs');
-//
-//
 
 // Foods  Endpoint [GET]
 //
 // Gets a list of 5 food events that were most
 // recently called.
 router.get('/api/foods', function(req, res) {
+    debugMessage("Recieved a GET on /api/foods.");
 
-    // Here is a food list in which we will maintain
-    // all of the nutrients we have entered..
     let foodList = [];
 
-    // Loop through each one, check if a name exists AND
-    // if it is in our food list already, if the condition
-    // is right, add to the list.
+    // See if the name exists and if it is already in
+    // our food list.
     for (const foodEvent of req.session.userObj.nutrientHistory) {
 	if (foodEvent.name && !(foodEvent.name in foodList)) {
 	    foodList.push(foodEvent.name);

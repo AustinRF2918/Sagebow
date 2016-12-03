@@ -1,22 +1,16 @@
-const serveFile = require('../utilities/serving.js').serveFile,
-      debugMessage = require('../utilities/debug.js').debugMessage,
+const debugMessage = require('../utilities/debug.js').debugMessage,
       attemptSave = require('../utilities/database.js').attemptSave,
       express = require('express'),
-      router = express.Router();
-
-//
-// TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient(),
-      bcrypt = require('bcryptjs');
-//
-//
-
+      router = express.Router(),
+      redisConn = require('../configuration.js').REDIS_CONNECTION;
 
 // Consumption Endpoint [POST]
 //
 // Set a consumption event that has fats, proteins
 // carbs, and a name.
 router.post('/api/consumption', function(req, res) {
+    debugMessage("Recieved a POST on /api/consumption.");
+
     const values = validateRequest(['fats', 'proteins', 'carbs', 'name'], req, res);
 
     try {
@@ -56,6 +50,8 @@ router.post('/api/consumption', function(req, res) {
 // Gets a list of all consumptions from a 
 // given time span.
 router.get('/api/consumption', function(req, res) {
+    debugMessage("Recieved a GET on /api/consumption.");
+
     let timeRange = [req.query.min, req.query.max]
 	.map((item) => {
 	    if (item) {
