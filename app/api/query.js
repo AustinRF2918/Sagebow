@@ -1,4 +1,6 @@
 const debugMessage = require('../utilities/debug.js').debugMessage,
+      validateRequest = require('../utilities/integrity.js').validateRequest,
+      request = require('request'),
       express = require('express'),
       router = express.Router();
 
