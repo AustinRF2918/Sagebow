@@ -1,5 +1,6 @@
 const serveFile = require('../utilities/serving.js').serveFile,
       debugMessage = require('../utilities/debug.js').debugMessage,
+      validateRequest = require('../utilities/integrity.js').validateRequest,
       express = require('express'),
       router = express.Router();
 
@@ -26,33 +27,10 @@ router.post('/login', function(req, res) {
     debugMessage("Recieved a POST on /login.");
     debugMessage(`Request body: ${req.body}`);
 
-    const neededFields = new Set([
-	'username',
-	'password'
-    ]);
+    const values = validateRequest(['username', 'password'], req, res);
 
-    // A mapping of all required fields onto the request body:
-    // in the case that all objects are mapped, the filter
-    // later on will create an array of length zero, indicating
-    // that all of our data was on the body of the request, otherwise,
-    // an error will be indicated.
-    const fields = Array.from(neededFields.values())
-	.map((item) => req.body[item])
-	.filter((item) => item === null || item === undefined);
-
-
-    // Make sure all of our fields were filtered out.
-    // Otherwise send a malformed error code.
-    if (fields.length !== 0) {
-	res.status(422).send('Malformed');
-    }
-
-    // Trim the the now known to be filled
-    // username and passwords portions of
-    // the body and set it equal to the
-    // respective variables
-    const username = req.body.username.trim(),
-	  password = req.body.password.trim();
+    const username = values['username'],
+	  password = values['password'];
 
 
     // Attempt to retrieve a username from the redis

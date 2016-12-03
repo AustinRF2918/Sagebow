@@ -1,4 +1,5 @@
 const serveFile = require('../utilities/serving.js').serveFile,
+      validateRequest = require('../utilities/integrity.js').validateRequest,
       debugMessage = require('../utilities/debug.js').debugMessage,
       express = require('express'),
       router = express.Router();
@@ -25,13 +26,13 @@ router.get('/setup', function(req, res) {
 // making sure all the data is sanitized and other good stuff.
 router.post('/setup', function(req, res) {
     debugMessage("Recieved a POST on /setup.");
-    debugMessage(`Request body: ${req.body}`);
+    debugMessage(`Request body: ${JSON.stringify(req.body)}`);
 
     // Set of needed fields that must be sent to the endpoint
     // by Sagebow's front-end. These roughly coorespond to
     // a user model that we may create later on for more
     // robust handling of user objects.
-    const neededFields = new Set([
+    const values = validateRequest([
 	'username',
 	'password',
 	'weight',
@@ -43,38 +44,18 @@ router.post('/setup', function(req, res) {
 	'goalSelector',
 	'genderSelector',
 	'dailyCalories'
-    ]);
+    ], req, res);
 
-    // A mapping of all required fields onto the request body:
-    // in the case that all objects are mapped, the filter
-    // later on will create an array of length zero, indicating
-    // that all of our data was on the body of the request, otherwise,
-    // an error will be indicated.
-    const fields = Array.from(neededFields.values())
-	.map((item) => req.body[item])
-	.filter((item) => item === null || item === undefined);
-
-    // Make sure all of our fields were filtered out.
-    // Otherwise send a malformed error code.
-    if (fields.length !== 0) {
-	debugMessage("Got malformed data on /setup.");
-	res.status(422).send('Malformed');
-    }
-
-    // A fairly sophisticated check upon all of the data that
-    // is required in our request body. In the case that a
-    // regex doesn't pass, we will send a malformed code.
-
+    
     // POTENTIAL CANIDATE FOR METHOD EXTRACTION.
     try {
 	if (
-	    req.body.username.toString().match(/[0-9a-z]{3,}/i) !== null &&
-	    req.body.password.toString().match(/.{6,}/) !== null &&
-	    parseFloat(req.body.weight) > 0 &&
-	    parseFloat(req.body.bmi) > 0 &&
-	    parseFloat(req.body.dailyCalories > 0)) {
+	    values['username'].match(/[0-9a-z]{3,}/i) !== null &&
+	    values['password'].match(/.{6,}/) !== null &&
+	    parseFloat(values['weight']) > 0 &&
+	    parseFloat(values['bmi']) > 0 &&
+	    parseFloat(values['dailyCalories'] > 0)) {
 		res.status(422).send('Malformed');
-		return;
 	}
     } catch(e) {
 	debugMessage("Malformed data was sent to the /setup endpoint.");
@@ -82,18 +63,18 @@ router.post('/setup', function(req, res) {
     }
 
     const userObj = {
-	username: req.body.username,
-	passwordHash: bcrypt.hashSync(req.body.password),
+	username: values['username'],
+	passwordHash: bcrypt.hashSync(values['password']),
 	weightHistory: [{
-	    weight: req.body.weight,
+	    weight: values['weight'],
 	    timestamp: new Date()
 	}],
-	weight: req.body.weight,
 	lastUpdated: new Date(),
-	bmi: req.body.bmi,
+	weight: values['weight'],
+	bmi: values['bmi'],
 	diet:{
-	    goal:req.body.goal,
-	    dailyCalories:req.body.dailyCalories
+	    goal: values['goal'] || values['goalSelector'],
+	    goal: values['dailyCalories']
 	},
 	nutrientHistory: []
     };
