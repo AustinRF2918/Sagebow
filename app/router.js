@@ -40,8 +40,17 @@ module.exports = function(app) {
         }
     });
 
+    // Private static routes and their (possible) associated APIs.
     app.use(require('./routes/logout.js'));
     app.use(require('./routes/delete.js'));
     app.use(require('./routes/metrics.js'));
     app.use(require('./routes/entry.js'));
+
+    // Private API Endpoints.
+    app.use(require('./api/consumption.js'));
+    app.use(require('./api/diet.js'));
+    app.use(require('./api/foods.js'));
+    app.use(require('./api/lastUpdated.js'));
+    app.use(require('./api/query.js'));
+    app.use(require('./api/weight.js'));
 };
