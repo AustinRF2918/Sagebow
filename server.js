@@ -3,10 +3,9 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     const app = require('express')(),
         bodyParser = require('body-parser'),
         session = require('express-session'),
-        request = require('request');
-
-    const redisConn = require('redis').createClient();
-    const bcrypt = require('bcryptjs');
+	request = require('request'),
+	redisConn = require('redis').createClient(),
+	bcrypt = require('bcryptjs');
 
     // Application Configuration
     const APP_PORT = 4001;
@@ -16,6 +15,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
 
     app.use(bodyParser.json());
+
     app.use(bodyParser.urlencoded({
         extended: true
     }));
@@ -31,7 +31,6 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     //Helper functions described in server/helper.js.
     const serveFile = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
     const attemptSave = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
-    const responseGenerator = require('./app/ajResponse.js');
     
     // End of public routes.
 
