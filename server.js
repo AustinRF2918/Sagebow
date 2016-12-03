@@ -1,14 +1,17 @@
-const debugMessage = require("./app/helpers.js").debugMessage;
-const APP_PORT = require("./app/configuration.js").APP_PORT;
-
 module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
-    // Used modules
+    // Middleware and libraries that we are attaching todo
+    // our actual express application.
     const app = require('express')(),
-        bodyParser = require('body-parser'),
-        session = require('express-session'),
-	request = require('request'),
-	redisConn = require('redis').createClient(),
-	bcrypt = require('bcryptjs');
+          bodyParser = require('body-parser'),
+          session = require('express-session'),
+	  request = require('request'),
+	  redisConn = require('redis').createClient(),
+	  bcrypt = require('bcryptjs');
+
+    // Self defined functions and configurations for out application.
+    const serveFile = require('./app/utilities/serving.js').serveFile,
+	  debugMessage = require('./app/utilities/debug.js').debugMessage,
+	  APP_PORT = require("./app/configuration.js").APP_PORT;
 
     debugMessage("Initialized ExpressJS dependencies.");
 
@@ -27,9 +30,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     debugMessage("Initialized ExpressJS middleware.");
 
     // Self defined modules in the application folder
-    const router = require('./app/router.js')(app),
-	  serveFile = require('./app/helpers.js').serveFile,
-	  attemptSave = require('./app/helpers.js').attemptSave;
+    const router = require('./app/router.js')(app);
 
     debugMessage("Initialized Express router..");
 

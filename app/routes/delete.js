@@ -1,5 +1,5 @@
-const debugMessage = require("../helpers.js").debugMessage,
-      serveFile = require('../helpers.js').serveFile,
+const debugMessage = require("../utilities/debug.js").debugMessage,
+      serveFile = require('../utilities/serving.js').serveFile,
       DEBUG = require('../configuration.js').DEBUG,
       express = require('express'),
       router = express.Router();

@@ -1,12 +1,7 @@
-const debugMessage = require("./helpers.js").debugMessage,
-      serveFile = require('./helpers.js').serveFile,
-      express = require('express');
-
-
+const debugMessage = require("./utilities/debug.js").debugMessage,
+      serveFile = require('./utilities/serving.js').serveFile;
 
 module.exports = function(app) {
-    let router = express.Router();
-
     // Routes any URL passed to our application
     // to the next possible routes.
     app.all('*', (req, res, next) => {

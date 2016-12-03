@@ -10,7 +10,7 @@ function checkFields(set, req) {
 
     // Make sure all of our fields were filtered out.
     // Otherwise send a malformed error code.
-    if (ields.length !== 0) {
+    if (fields.length !== 0) {
 	return false;
     } else {
 	return true;
@@ -19,5 +19,4 @@ function checkFields(set, req) {
 
 module.exports = {
     checkFields
-}
-
+};

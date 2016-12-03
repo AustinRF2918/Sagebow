@@ -1,7 +1,7 @@
-const serveFile = require('../helpers.js').serveFile,
+const serveFile = require('../utilities/serving.js').serveFile,
+      debugMessage = require('../utilities/debug.js').debugMessage,
       express = require('express'),
-      router = express.Router(),
-      debugMessage = require('../helpers.js').debugMessage;
+      router = express.Router();
 
 //
 // TODO: SEPERATE OUT!!

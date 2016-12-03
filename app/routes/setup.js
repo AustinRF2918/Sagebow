@@ -1,24 +1,20 @@
-const EXPRESS_PORT = require('../configuration.js').EXPRESS_PORT;
-const EXPRESS_ROOT = require('../configuration.js').EXPRESS_ROOT;
-const DEBUG = require('../configuration.js').DEBUG;
+const serveFile = require('../utilities/serving.js').serveFile,
+      debugMessage = require('../utilities/debug.js').debugMessage,
+      express = require('express'),
+      router = express.Router();
 
-const serveFile = require('../helpers.js').serveFile;
-const express = require('express');
-
-const router = express.Router();
-
+//
 // TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient();
-const bcrypt = require('bcryptjs');
+const redisConn = require('redis').createClient(),
+      bcrypt = require('bcryptjs');
+//
+//
 
 // Setup Static Serve
 //
 // Serves the static markup for the setup page.
 router.get('/setup', function(req, res) {
-    if (DEBUG) {
-	console.log("Recieved a GET on /setup.");
-    }
-
+    debugMessage("Recieved a GET on /setup.");
     serveFile('/setup.html', res);
 });
 
@@ -28,6 +24,8 @@ router.get('/setup', function(req, res) {
 // the general creation of user accounts from the server side,
 // making sure all the data is sanitized and other good stuff.
 router.post('/setup', function(req, res) {
+    debugMessage("Recieved a POST on /setup.");
+    debugMessage(`Request body: ${req.body}`);
 
     // Set of needed fields that must be sent to the endpoint
     // by Sagebow's front-end. These roughly coorespond to
@@ -47,10 +45,6 @@ router.post('/setup', function(req, res) {
 	'dailyCalories'
     ]);
 
-    if (DEBUG) {
-	console.log(req.body);
-    }
-
     // A mapping of all required fields onto the request body:
     // in the case that all objects are mapped, the filter
     // later on will create an array of length zero, indicating
@@ -63,12 +57,8 @@ router.post('/setup', function(req, res) {
     // Make sure all of our fields were filtered out.
     // Otherwise send a malformed error code.
     if (fields.length !== 0) {
-	if (DEBUG) {
-	    console.log("Got malformed data in setup.js.");
-	}
-
+	debugMessage("Got malformed data on /setup.");
 	res.status(422).send('Malformed');
-	return;
     }
 
     // A fairly sophisticated check upon all of the data that
@@ -87,12 +77,8 @@ router.post('/setup', function(req, res) {
 		return;
 	}
     } catch(e) {
-	if (DEBUG) {
-	    console.log("Got malformed data in setup.js.");
-	}
-
+	debugMessage("Malformed data was sent to the /setup endpoint.");
 	res.status(422).send('Malformed');
-	return;
     }
 
     const userObj = {
@@ -123,22 +109,19 @@ router.post('/setup', function(req, res) {
 	    if (err) {
 		// Some error happened while we where querying the
 		// cache.
-		if (DEBUG) {
-		    console.log("Got error data in setup.js.");
-		}
-
+		debugMessage("Got erroneous data on /setup endpoint.");
 		res.status(500).send('Error');
 		reject(err);
 	    } else if (reply) {
-		if (DEBUG) {
-		    console.log("Got conflict data in setup.js.");
-		}
-
+		// The database found an entry that already exists with
+		// this name.
+		debugMessage("Got conflict data in setup.js.");
 		res.status(409).send('Conflict');
 	    } else {
+		// Continue through the monad.
 		resolve();
 	    }
-	})
+	});
     }).then(() => {
 	// POTENTIAL CANIDATE FOR METHOD EXTRACTION.
 	new Promise((resolve, reject) => {
@@ -146,24 +129,21 @@ router.post('/setup', function(req, res) {
 	    // save our user object into the Redis cache.
 	    redisConn.set(userObj.username, JSON.stringify(userObj), (err) => {
 		if (err) {
-		    // Our Redis connection returned an error.
-		    if (DEBUG) {
-			console.log("Got error data in setup.js.");
-		    }
-
+		    // Our Redis connection returned an error for some reason
+		    // or another.
+		    debugMessage("Got error data in setup.js.");
 		    res.status(500).send('Error');
 		    reject(err);
 		} else {
 		    // Our Redis connection indicated that our save was successful.
-		    if (DEBUG) {
-			console.log("Got final success data in setup.js.");
-		    }
+		    debugMessage("Got final success data in setup.js.");
 		    res.status(200).send('Success');
 		    resolve();
 		}
 	    });
 	}).catch(function(err) {
 	    // Some generic error went wrong in our connection too the Redis cache.
+	    debugMessage("Got generic error on redis connection.");
 	    res.status(500).send('Error');
 	    reject(err);
 	});

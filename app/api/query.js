@@ -1,15 +1,14 @@
-const EXPRESS_PORT = require('../configuration.js').EXPRESS_PORT;
-const EXPRESS_ROOT = require('../configuration.js').EXPRESS_ROOT;
-const DEBUG = require('../configuration.js').DEBUG;
+const serveFile = require('../utilities/serving.js').serveFile,
+      debugMessage = require('../utilities/debug.js').debugMessage,
+      express = require('express'),
+      router = express.Router();
 
-const serveFile = require('../helpers.js').serveFile;
-const express = require('express');
-
-const router = express.Router();
-
+//
 // TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient();
-const bcrypt = require('bcryptjs');
+const redisConn = require('redis').createClient(),
+      bcrypt = require('bcryptjs');
+//
+//
 
 // Query  Endpoint [GET]
 //
@@ -18,9 +17,7 @@ const bcrypt = require('bcryptjs');
 // food name and see if it exists in
 // the governments API.
 router.get('/api/query/:name',function(req, res){
-    if (DEBUG) {
-	console.log("Recieved a GET on /api/query/:name.");
-    }
+    debugMessage("Recieved a GET on /api/query/:name.");
 
     // Utilizing a promise monad, we sequentially access the
     // api for the usda and get nutritional information back to the client.
