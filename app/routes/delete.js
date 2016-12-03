@@ -1,11 +1,9 @@
-const EXPRESS_PORT = require('../configuration.js').EXPRESS_PORT;
-const EXPRESS_ROOT = require('../configuration.js').EXPRESS_ROOT;
-const DEBUG = require('../configuration.js').DEBUG;
+const debugMessage = require("../helpers.js").debugMessage,
+      serveFile = require('../helpers.js').serveFile,
+      DEBUG = require('../configuration.js').DEBUG,
+      express = require('express'),
+      router = express.Router();
 
-const serveFile = require('../helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
-const express = require('express');
-
-const router = express.Router();
 
 // TODO: SEPERATE OUT!!
 const redisConn = require('redis').createClient();
@@ -15,9 +13,7 @@ const bcrypt = require('bcryptjs');
 //
 // Serves the static markup for the Delete page.
 router.get('/delete',function(req,res){
-    if (DEBUG) {
-	console.log("Recieved a GET on /delete");
-    }
+    debugMessage("Recieved a GET on /delete");
     serveFile('delete.html', res);
 });
 
@@ -27,10 +23,9 @@ router.get('/delete',function(req,res){
 // It deletes the current user object and redirects the client
 // to the login page.
 router.post('/delete', function(req, res) {
-    if (DEBUG) {
-	console.log("Recieved a POST on /delete");
-	console.log(req.body);
-    }
+    debugMessage("Recieved a POST on /delete");
+    debugMessage(`Request body: ${req.body}`);
+
     const neededFields = new Set([
 	'username',
 	'password'
@@ -50,7 +45,6 @@ router.post('/delete', function(req, res) {
     // Otherwise send a malformed error code.
     if (fields.length !== 0) {
 	res.status(422).send('Malformed');
-	return;
     }
 
     const username = req.body.username.trim();

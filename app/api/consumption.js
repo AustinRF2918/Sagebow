@@ -2,7 +2,7 @@ const EXPRESS_PORT = require('../configuration.js').EXPRESS_PORT;
 const EXPRESS_ROOT = require('../configuration.js').EXPRESS_ROOT;
 const DEBUG = require('../configuration.js').DEBUG;
 
-const serveFile = require('../helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
+const serveFile = require('../helpers.js').serveFile;
 const express = require('express');
 
 const router = express.Router();

@@ -1,24 +1,20 @@
-const EXPRESS_PORT = require('../configuration.js').EXPRESS_PORT;
-const EXPRESS_ROOT = require('../configuration.js').EXPRESS_ROOT;
-const DEBUG = require('../configuration.js').DEBUG;
+const serveFile = require('../helpers.js').serveFile,
+      express = require('express'),
+      router = express.Router(),
+      debugMessage = require('../helpers.js').debugMessage;
 
-const serveFile = require('../helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
-const express = require('express');
-
-const router = express.Router();
-
+//
 // TODO: SEPERATE OUT!!
-const redisConn = require('redis').createClient();
-const bcrypt = require('bcryptjs');
+const redisConn = require('redis').createClient(),
+      bcrypt = require('bcryptjs');
+//
+//
 
 // Login Static Serve
 //
 // Serves the static markup for the login page.
 router.get('/login', function(req, res) {
-    if (DEBUG) {
-	console.log("Recieved a GET on /login.");
-    }
-
+    debugMessage("Recieved a GET on /login.");
     serveFile('/login.html', res);
 });
 
@@ -27,10 +23,8 @@ router.get('/login', function(req, res) {
 //
 // This is the basic way that we go about logging a user in.
 router.post('/login', function(req, res) {
-    console.log(req.body);
-    if (DEBUG) {
-	console.log("Recieved a POST on /login.");
-    }
+    debugMessage("Recieved a POST on /login.");
+    debugMessage(`Request body: ${req.body}`);
 
     const neededFields = new Set([
 	'username',
@@ -51,15 +45,14 @@ router.post('/login', function(req, res) {
     // Otherwise send a malformed error code.
     if (fields.length !== 0) {
 	res.status(422).send('Malformed');
-	return;
     }
 
     // Trim the the now known to be filled
     // username and passwords portions of
     // the body and set it equal to the
     // respective variables
-    const username = req.body.username.trim();
-    const password = req.body.password.trim();
+    const username = req.body.username.trim(),
+	  password = req.body.password.trim();
 
 
     // Attempt to retrieve a username from the redis
@@ -71,24 +64,27 @@ router.post('/login', function(req, res) {
 	    // Send a 500 internal server error in the
 	    // case that some error was thrown on trying
 	    // to connect to the Redis database.
+	    debugMessage("A critical error occured on Sagebow server.");
 	    res.status(500).send('Error');
 	} else if (!userObj) {
 	    // Send a not found in the case that no user
 	    // object is found for the cooresponding username.
+	    debugMessage("A user attempted access of a userObject which does not exist.");
 	    res.status(404).send('Not Found');
 	} else if (!bcrypt.compareSync(password, userObj.passwordHash)) {
 	    // Send a malformed in the case that the password
 	    // doesn't quite match up.
+	    debugMessage("A user attempted access of a userObject which he/she does not own.");
 	    res.status(422).send('Malformed');
 	} else {
 	    // If none of these cases have happened, create a user object
 	    // of the specific client that is attempting to log in and
+	    debugMessage("Succesful authentication of a user.");
 	    // send a 200 status code.
 	    req.session.userObj = userObj;
 	    res.sendStatus(200);
 	}
     });
 });
-
 
 module.exports = router;

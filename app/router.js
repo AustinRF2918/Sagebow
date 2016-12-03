@@ -1,14 +1,12 @@
-const EXPRESS_PORT = require('./configuration.js').EXPRESS_PORT;
-const EXPRESS_ROOT = require('./configuration.js').EXPRESS_ROOT;
-const DEBUG = require('./configuration.js').DEBUG;
+const debugMessage = require("./helpers.js").debugMessage,
+      serveFile = require('./helpers.js').serveFile,
+      express = require('express');
 
-const serveFile = require('./helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
-
-let express = require('express');
-let router = express.Router();
 
 
 module.exports = function(app) {
+    let router = express.Router();
+
     // Routes any URL passed to our application
     // to the next possible routes.
     app.all('*', (req, res, next) => {
@@ -34,8 +32,10 @@ module.exports = function(app) {
     // session object.
     app.get('*', function(req, res, next) {
         if (req.session.userObj) {
+	    debugMessage(`Authenticated client is begin granted access to private routes and API.`);
             next();
         } else {
+	    debugMessage(`Client is unauthenticated! Redirecting to login.`);
             res.redirect('/login');
         }
     });

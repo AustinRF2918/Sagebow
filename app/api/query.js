@@ -2,7 +2,7 @@ const EXPRESS_PORT = require('../configuration.js').EXPRESS_PORT;
 const EXPRESS_ROOT = require('../configuration.js').EXPRESS_ROOT;
 const DEBUG = require('../configuration.js').DEBUG;
 
-const serveFile = require('../helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
+const serveFile = require('../helpers.js').serveFile;
 const express = require('express');
 
 const router = express.Router();
@@ -18,7 +18,9 @@ const bcrypt = require('bcryptjs');
 // food name and see if it exists in
 // the governments API.
 router.get('/api/query/:name',function(req, res){
-    console.log("Recieved a GET on /api/query/:name.");
+    if (DEBUG) {
+	console.log("Recieved a GET on /api/query/:name.");
+    }
 
     // Utilizing a promise monad, we sequentially access the
     // api for the usda and get nutritional information back to the client.

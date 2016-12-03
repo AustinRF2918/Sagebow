@@ -1,3 +1,6 @@
+const debugMessage = require("./app/helpers.js").debugMessage;
+const APP_PORT = require("./app/configuration.js").APP_PORT;
+
 module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     // Used modules
     const app = require('express')(),
@@ -7,11 +10,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 	redisConn = require('redis').createClient(),
 	bcrypt = require('bcryptjs');
 
-    // Application Configuration
-    const APP_PORT = 4001;
-
-    // API Key for the USDA API.
-    const API_KEY = 'DJJzSXqqAhl30URUOtKfmsZJkEZESNEqiKg58CxC';
+    debugMessage("Initialized ExpressJS dependencies.");
 
     app.use(bodyParser.json());
 
@@ -25,10 +24,15 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         saveUninitialized: false
     }));
 
+    debugMessage("Initialized ExpressJS middleware.");
+
     // Self defined modules in the application folder
     const router = require('./app/router.js')(app),
-	  serveFile = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile,
-	  attemptSave = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
+	  serveFile = require('./app/helpers.js').serveFile,
+	  attemptSave = require('./app/helpers.js').attemptSave;
 
+    debugMessage("Initialized Express router..");
+
+    debugMessage(`Listening on ${APP_PORT}.`);
     app.listen(APP_PORT);
 };
