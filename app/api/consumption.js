@@ -69,12 +69,12 @@ router.get('/api/consumption', function(req, res) {
 	  maxTime = timeRange[1];
 
     const results = req.session.userObj.nutrientHistory
-	    .filter((weightEvent) => {
-	    if (!minTime || minTime <= new Date(weightEvent.timestamp)) {
+	    .filter((event) => {
+	    if (!minTime || minTime <= new Date(event.timestamp)) {
 		// If we do not have a minimum time entered OR the weight
 		// event is in range of the weight event time stamp, check
 		// the upperbound
-		if (!maxTime || maxTime >= new Date(weightEvent.timestamp)) {
+		if (!maxTime || maxTime >= new Date(event.timestamp)) {
 		    // If we do not have a maximum time entered OR the weight
 		    // event is in range of the weight event time stamp, return
 		    // true.

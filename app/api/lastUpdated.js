@@ -26,44 +26,22 @@ router.get('/api/lastUpdated',function(req, res) {
 // May not be used?
 // DEAD CODE.
 router.get('/api/lastUpdated/:date',function(req,res){
-    const neededFields = new Set([
-	'date'
-    ]);
-
-    // A mapping of all required fields onto the request body:
-    // in the case that all objects are mapped, the filter
-    // later on will create an array of length zero, indicating
-    // that all of our data was on the body of the request, otherwise,
-    // an error will be indicated.
-    const fields = Array.from(neededFields.values())
-	.map((item) => req.body[item])
-	.filter((item) => item === null || item === undefined);
-
-
-    // Make sure all of our fields were filtered out.
-    // Otherwise send a malformed error code.
-    if (fields.length !== 0) {
-	res.status(422).send('Malformed');
-	return;
-    }
+    const values = validateRequest(['date'], req, res);
 
     // Attempt to create a date object from the URI passed into req.params.date.
     // In the case that it is not possible, the data is malformed.
     try {
-	req.session.userObj.lastUpdated = new Date(decodeURI(req.params.date));
+	req.session.userObj.lastUpdated = new Date(decodeURI(values['date']));
     } catch(error) {
 	res.status(422).send('Malformed');
-	return;
     }
 
     // Attempt to save into the database.
     try {
 	attemptSave(req, res, redisConn, req.session.userObj);
 	res.sendStatus(200);
-	return;
     } catch(error) {
 	res.status(500).send('Error');
-	return;
     }
 });
 

@@ -38,45 +38,22 @@ router.get('/api/foods', function(req, res) {
 // Performs a search on any food events that
 // have been called.
 router.get('/api/foods/*', function(req, res) {
-    const neededFields = new Set([
-	'foodName'
-    ]);
+    const values = validateRequest(['foodName'], req, res);
 
-    // A mapping of all required fields onto the request body:
-    // in the case that all objects are mapped, the filter
-    // later on will create an array of length zero, indicating
-    // that all of our data was on the body of the request, otherwise,
-    // an error will be indicated.
-    const fields = Array.from(neededFields.values())
-	.map((item) => req.body[item])
-	.filter((item) => item === null || item === undefined);
-
-
-    // Make sure all of our fields were filtered out.
-    // Otherwise send a malformed error code.
-    if (fields.length !== 0) {
-	res.status(422).send('Malformed');
-	return;
-    }
-
-    // Extract the food name from the URI passed.
     let foodName = decodeURI(req.path.split('/')[3]);
 
     // If the food name could not be parsed, the
     // request was malformed.
     if (!foodName) {
 	res.status(422).send('Malformed');
-	return;
     }
 
     // If foodname is in the map of all nutrientHistorys names, send a
     // found status, otherwise it wasn't found.
     if ( foodName in req.session.userObj.nutrientHistory.map( (item) => item.name || undefined )) {
 	res.status(200).send(foodEvent);
-	return;
     } else {
 	res.status(404).end('Not Found');
-	return;
     }
 });
 

@@ -4,7 +4,7 @@ function validateRequest(fields, req, res) {
     // Map all required items to actual request
     // body.
     const mappedFields = fields
-	.map((item) => req.body[item])
+	.map((item) => req.body[item] || req.query[item])
 	.filter((item) => item === null || item === undefined);
 
     // Make sure all of our fields were filtered out.

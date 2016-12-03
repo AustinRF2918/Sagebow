@@ -1,5 +1,6 @@
 const serveFile = require('../utilities/serving.js').serveFile,
       debugMessage = require('../utilities/debug.js').debugMessage,
+      attemptSave  = require('../utilities/database.js').attemptSave,
       express = require('express'),
       router = express.Router();
 
@@ -15,47 +16,24 @@ const redisConn = require('redis').createClient(),
 // This is an endpoint for sending over weight updates
 // from the client side.
 router.post('/api/weight', function(req, res) {
-    const neededFields = new Set([
-	'value'
-    ]);
+    const values = validateRequest(['value'], req, res);
 
-    // A mapping of all required fields onto the request body:
-    // in the case that all objects are mapped, the filter
-    // later on will create an array of length zero, indicating
-    // that all of our data was on the body of the request, otherwise,
-    // an error will be indicated.
-    const fields = Array.from(neededFields.values())
-	.map((item) => req.body[item])
-	.filter((item) => item === null || item === undefined);
-
-
-    // Make sure all of our fields were filtered out.
-    // Otherwise send a malformed error code.
-    if (fields.length !== 0) {
-	res.status(422).send('Malformed');
-	return;
-    }
-
-    const weight = req.body.value;
-    let timestamp = req.body.timestamp || new Date();
-
-    // Convert the timestamp object to a date in
-    // the case that it is not already one.
-    timestamp = new Date(timestamp);
+    let timestamp = (req.body.timestamp || new Date(req.body.timestamp)) || new Date();
 
     // This will be used in the case that the following
     // operations fail.
     let oldUserObj = JSON.parse(JSON.stringify(req.session.userObj));
 
-    let position = 0;
     const weightHistory = req.session.userObj.weightHistory;
 
+    // A litte funky here.
+    let position = 0;
     while (position < weightHistory && weightHistory.timeStamp <= timeStamp) {
 	position++;
     }
 
     req.session.userObj.weightHistory.splice(position, 0,{
-	weight: weight,
+	weight: values['weight'],
 	timestamp: timestamp
     });
 
@@ -76,6 +54,7 @@ router.post('/api/weight', function(req, res) {
 // on a range schema: We want all events between
 // min and max.
 router.get('/api/weight', function(req, res) {
+
     let timeRange = [req.query.min, req.query.max]
 	.map((item) => {
 	    if (item) {
@@ -85,7 +64,8 @@ router.get('/api/weight', function(req, res) {
 	    }
 	});
 
-    const [minTime, maxTime] = [timeRange[0], timeRange[1]];
+    const minTime = timeRange[0],
+	  maxTime = timeRange[1];
 
     const results = req.session.userObj.weightHistory
 	    .filter((weightEvent) => {

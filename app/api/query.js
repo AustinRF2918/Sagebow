@@ -19,10 +19,12 @@ const redisConn = require('redis').createClient(),
 router.get('/api/query/:name',function(req, res){
     debugMessage("Recieved a GET on /api/query/:name.");
 
+    const values = validateRequest(['name'], req, res);
+
     // Utilizing a promise monad, we sequentially access the
     // api for the usda and get nutritional information back to the client.
     new Promise( (resolve, reject) => {
-	const url = `http://api.nal.usda.gov/ndb/search/?format=json&q=${req.params.name}&max=1&api_key=${API_KEY}`;
+	const url = `http://api.nal.usda.gov/ndb/search/?format=json&q=${values['name']}&max=1&api_key=${API_KEY}`;
 
 	request(url, (err, response, body) => {
 	    if (err || response.statusCode !== 200) {
