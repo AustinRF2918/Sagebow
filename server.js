@@ -13,7 +13,6 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     // API Key for the USDA API.
     const API_KEY = 'DJJzSXqqAhl30URUOtKfmsZJkEZESNEqiKg58CxC';
 
-
     app.use(bodyParser.json());
 
     app.use(bodyParser.urlencoded({
@@ -26,13 +25,10 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
         saveUninitialized: false
     }));
 
-    const router = require('./app/router.js')(app);
-
-    //Helper functions described in server/helper.js.
-    const serveFile = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile;
-    const attemptSave = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
-    
-    // End of public routes.
+    // Self defined modules in the application folder
+    const router = require('./app/router.js')(app),
+	  serveFile = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).serveFile,
+	  attemptSave = require('./app/helpers.js')(EXPRESS_PORT, EXPRESS_ROOT).attemptSave;
 
     // PRIVATE ROUTES
 
