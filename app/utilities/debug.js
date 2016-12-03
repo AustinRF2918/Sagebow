@@ -8,5 +8,11 @@ module.exports = {
 	if (DEBUG) {
 	    console.log(`[${new Date()}]: ${msg}`);
 	} 
+    },
+
+    debugEvaluate: function(fn) {
+	if (DEBUG) {
+	    fn();
+	}
     }
 };

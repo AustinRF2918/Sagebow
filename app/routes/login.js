@@ -19,7 +19,6 @@ router.get('/login', function(req, res) {
     serveFile('/login.html', res);
 });
 
-
 // Login Endpoint [POST]
 //
 // This is the basic way that we go about logging a user in.
@@ -29,13 +28,9 @@ router.post('/login', function(req, res) {
 
     const values = validateRequest(['username', 'password'], req, res);
 
-    const username = values['username'],
-	  password = values['password'];
-
-
     // Attempt to retrieve a username from the redis
     // cache: this may have multiple outcomes.
-    redisConn.get(username, (err, userObj) => {
+    redisConn.get(values['username'], (err, userObj) => {
 	userObj = JSON.parse(userObj);
 
 	if (err) {
@@ -49,7 +44,7 @@ router.post('/login', function(req, res) {
 	    // object is found for the cooresponding username.
 	    debugMessage("A user attempted access of a userObject which does not exist.");
 	    res.status(404).send('Not Found');
-	} else if (!bcrypt.compareSync(password, userObj.passwordHash)) {
+	} else if (!bcrypt.compareSync(values['password'], userObj.passwordHash)) {
 	    // Send a malformed in the case that the password
 	    // doesn't quite match up.
 	    debugMessage("A user attempted access of a userObject which he/she does not own.");
@@ -58,7 +53,6 @@ router.post('/login', function(req, res) {
 	    // If none of these cases have happened, create a user object
 	    // of the specific client that is attempting to log in and
 	    debugMessage("Succesful authentication of a user.");
-	    // send a 200 status code.
 	    req.session.userObj = userObj;
 	    res.sendStatus(200);
 	}

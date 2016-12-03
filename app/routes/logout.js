@@ -10,7 +10,6 @@ const redisConn = require('redis').createClient(),
 //
 //
 
-
  // Logout/Login endpoint
 //
 // This is a simple "endpoint", though not exactly an endpoint. 

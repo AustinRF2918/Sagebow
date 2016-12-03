@@ -1,5 +1,6 @@
 const serveFile = require('../utilities/serving.js').serveFile,
       debugMessage = require('../utilities/debug.js').debugMessage,
+      attemptSave = require('../utilities/database.js').attemptSave,
       express = require('express'),
       router = express.Router();
 
@@ -16,40 +17,15 @@ const redisConn = require('redis').createClient(),
 // Set a consumption event that has fats, proteins
 // carbs, and a name.
 router.post('/api/consumption', function(req, res) {
-    const neededFields = new Set([
-	'fats',
-	'proteins',
-	'carbs',
-	'name'
-    ]);
+    const values = validateRequest(['fats', 'proteins', 'carbs', 'name'], req, res);
 
-    // A mapping of all required fields onto the request body:
-    // in the case that all objects are mapped, the filter
-    // later on will create an array of length zero, indicating
-    // that all of our data was on the body of the request, otherwise,
-    // an error will be indicated.
-    const fields = Array.from(neededFields.values())
-	.map((item) => req.body[item])
-	.filter((item) => item === null || item === undefined);
-
-
-    // Make sure all of our fields were filtered out.
-    // Otherwise send a malformed error code.
-    if (fields.length !== 0) {
-	res.status(422).send('Malformed');
-    }
-
-    // Set our data equal to the request body which we have
-    // ensured exists.
     try {
-	const carbs = parseFloat(req.query.carbs),
-		fats = parseFloat(req.query.fats),
-		proteins = parseFloat(req.query.proteins),
-		name = req.query.name,
-		timestamp = (req.query.timestamp && new Date(req.query.timestamp))|| new Date();
+	const carbs = parseFloat(values['carbs']),
+	      fats = parseFloat(values['fats']),
+	      proteins = parseFloat(values['proteins']),
+	      name = values['name'],
+	      timestamp = (req.query.timestamp && new Date(req.query.timestamp))|| new Date();
     } catch(error) {
-	// The data was in some way unparseable. Therefore,
-	// it was malformed.
 	res.status(422).send('Malformed');
     }
 
@@ -83,13 +59,14 @@ router.get('/api/consumption', function(req, res) {
     let timeRange = [req.query.min, req.query.max]
 	.map((item) => {
 	    if (item) {
-		return new Date(item)
+		return new Date(item);
 	    } else {
-		return undefined
+		return undefined;
 	    }
 	});
 
-    const [minTime, maxTime] = [timeRange[0], timeRange[1]];
+    const minTime = timeRange[0],
+	  maxTime = timeRange[1];
 
     const results = req.session.userObj.nutrientHistory
 	    .filter((weightEvent) => {
