@@ -3,10 +3,10 @@ html
   head
     +generateBoilerplate(true)
     script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js")
-    script(src="/res/js/structures.js")
-    script(src="/res/js/plots.js")
-    script(src="/res/js/navbar.js")
     script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.js')
+    script(src="/res/js/data_manipulation/user_attributes.js")
+    script(src="/res/js/routes/metrics_app.js")
+    script(src="/res/js/ui/navbar.js")
   body
     +navbar()
     section#header.container

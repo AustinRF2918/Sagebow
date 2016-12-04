@@ -43,37 +43,35 @@ function startLiveReload(){
     lr.listen(LIVERELOAD_PORT);
 }
 
-function notifyLivereload(event){
-    var fileName = require('path').relative(EXPRESS_ROOT, event.path);
-    console.log("Change.");
-
-        lr.changed({
-            body: {
-            files: [fileName]
-        }
-    })
+function notifyLivereload(event) {
+    console.log("Change detected: reloading..");
+    lr.changed({
+	body: {
+	files: [fileName]
+    }
+    });
 }
 
-gulp.task('pug', function(){
+gulp.task('pug', function() {
     gulp.src('./pug/*.pug')
     .pipe(pug({
        pretty: true
     }).on('error', gutil.log))
-    .pipe(gulp.dest('./public'))
+    .pipe(gulp.dest('./public'));
 });
 
-gulp.task('watch', function(){
+gulp.task('watch', function() {
     gulp.watch('./sass/**/*', ['sass']);
     gulp.watch(['./pug/**/*', './pug/*', './pug/**/**/*'], ['pug']);
 });
 
-gulp.task('sass', function(){
+gulp.task('sass', function() {
     return gulp.src(['sass/app.scss'])
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./public/res/css/'));
 });
 
-gulp.task('produce', function(){
+gulp.task('produce', function() {
     return gulp.src('ProductionFiles/**/*').pipe(
         minify({
             minify: true,
@@ -88,9 +86,8 @@ gulp.task('produce', function(){
         })).pipe(gulp.dest('Final'));
 });
 
-gulp.task('default', function()
-{
-    console.log("Current network information")
+gulp.task('default', function() {
+    console.log("Current network information");
     console.log(getNetworkInformation());
     startServer();
     startLiveReload();
