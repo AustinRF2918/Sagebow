@@ -1,9 +1,6 @@
 /*globals $, validateRequired*/
 
 var LoginView = Backbone.View.extend({
-    // The tag that represents the
-    // hook that this view is associated
-    // with.
     el: $("body"),
 
     // UI Components.
@@ -14,8 +11,8 @@ var LoginView = Backbone.View.extend({
     userFields: undefined,
 
     initialize: function(attrs) {
-	this.el = this.options.applicationContainer;
 	this.options = attrs;
+	this.el = this.options.applicationContainer;
 
 	// The user model that will be passed back and
 	// fourth between the server.

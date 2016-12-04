@@ -138,7 +138,7 @@ var DeleteView = Backbone.View.extend({
 		    } else {
 			produceModal("Oops", "An unknown error occured, maybe you should try again later.", true).display($(that.el));
 		    }
-		},
+		}
 	    });
 	} else {
 	    produceModal("Oops", "All fields are required.", true).display($(this.el));

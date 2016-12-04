@@ -1,3 +1,67 @@
+var EntryView = Backbone.View.extend({
+    el: $("body"),
+
+    // UI Components.
+
+    // Food Entry Tab
+    $foodName: undefined,
+    $carbs: undefined,
+    $fats: undefined,
+    $proteins: undefined,
+    $date: undefined,
+    $autofill: undefined,
+    $submit: undefined,
+
+    // Suggested items
+    $suggestedContainer: undefined,
+
+    // Weight Entry
+    $currentWeight: undefined,
+    $date: undefined,
+    $submit: undefined,
+
+    initialize: function(attrs) {
+	this.options = attrs;
+	this.el = this.options.applicationContainer;
+
+	// The user model that will be passed back and
+	// fourth between the server.
+	this.foodFields = this.options.food;
+
+	// UI Elements which we will use to
+	// enter data.
+	this.$foodName = this.options.$foodName;
+	this.$carbs = this.options.$carbs;
+	this.$fats = this.options.$fats;
+	this.$proteins = this.options.$proteins;
+	this.$autofill = this.options.$autofill;
+	this.$submit = this.options.$submit;
+	this.$suggestedContainer = this.options.$suggestContainer;
+	this.$currentWeight = this.options.$currentWeight;
+	this.$date = this.options.$date;
+	this.$submit = this.options.$submit;
+
+	_.bindAll(this, 'render');
+
+	this.render();
+	
+	var that = this;
+
+	$(this.el).find(".btn-login").click(function(event) {
+	    $(".btn-login").blur();
+	    that.attemptLogin(event);
+	});
+
+	$(document).keypress(function(event) {
+	    if (event.which === 13 ) {
+		if (($('body').has('.window').length == 0)) {
+		    that.attemptLogin(event);
+		} 
+	    } 
+	});
+    },
+});
+
 /* globals $ */
 function validateForm(){
     var valid = true;
@@ -25,7 +89,7 @@ function getCurrentEntry() {
         fats: $('#fats').val(),
         proteins: $('#proteins').val(),
         date: $('#timestamp').val()
-    }
+    };
 }
 
 function queryNutrientData(foodName) {
