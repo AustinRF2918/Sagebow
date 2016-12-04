@@ -30,9 +30,6 @@ router.post('/delete', function(req, res) {
 	userObj = JSON.parse(userObj);
 
 	if (req.body.DEV_UTIL === "hide") {
-	    // THIS IS IN THE CASE WE OUR DEBUGGING OUR PROGRAM SO
-	    // WE CAN RUN TESTS AND DELETE USERS WITHOUT AUTHENTICATION!!
-	    // DELETE THIS IF/WHEN THE APP IS DEPLOYED.
 	    debugEvaluate(function() {
 		redisConn.del(values['username']);
 		res.sendStatus(200);

@@ -9,7 +9,7 @@ function validateRequest(fields, req, res) {
 
     // Make sure all of our fields were filtered out.
     if (mappedFields.length !== 0) {
-	debugMessage("Got malformed data last requested endpoint: ${mappedFields}");
+	debugMessage(`Got malformed data last requested endpoint: ${mappedFields}`);
 	res.status(422).send('Malformed');
 	return null;
     } else {

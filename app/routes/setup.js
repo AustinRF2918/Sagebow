@@ -14,6 +14,10 @@ router.get('/setup', function(req, res) {
     serveFile('/setup.html', res);
 });
 
+
+function getUser(userObj) {
+}
+
 // Setup Endpoint
 //
 // This is served client side by the setup.html file. It handles

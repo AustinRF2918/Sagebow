@@ -132,3 +132,12 @@ describe('File server', function() {
 	expect(res.status.options.headers['x-sent']).to.equal(true);
     });
 });
+
+// Note because database manipulation is handled by Redis
+// it is not neccessary to go about testing it: This is
+// covered by our functional and integration tests. On
+// the otherhand debug does not need to be tested because
+// it is simply a way for me to observe variables without
+// stepping into the debugger: because it does not have any
+// side effects on the state of, no tests are
+// the application, no tests are neccessary.

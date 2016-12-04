@@ -51,6 +51,7 @@ var DropdownReplacer = (function (optionals) {
 	return $('<a>')
 	    .addClass(dropdownItemClasses.join(" "))
 	    .click(function(event){
+		event.preventDefault();
 		$anchor.text($(this).text()).attr('set', true);
 
 		if (_eventFromKeyboard(event)) {
@@ -96,6 +97,7 @@ var DropdownReplacer = (function (optionals) {
 	    // remove the hidden class, showing everything
 	    // contianed.
 	    $anchor.click(function(event){
+		event.preventDefault();
 		// Stop the event from bubbling up the call
 		// chain.
 		_dropDown($dropdownItems);
