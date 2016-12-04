@@ -4,7 +4,7 @@ function validateRequest(fields, req, res) {
     // Map all required items to actual request
     // body.
     const mappedFields = fields
-	.map((item) => req.body[item] || req.query[item])
+	.map((item) => req.body[item] || req.params[item])
 	.filter((item) => item === null || item === undefined);
 
     // Make sure all of our fields were filtered out.
@@ -15,7 +15,7 @@ function validateRequest(fields, req, res) {
     } else {
 	// Successful case.
 	let values = {};
-	fields.map((item) => values[item] = req.body[item]);
+	fields.map((item) => values[item] = req.body[item] || req.params[item]);
 	return values;
     }
 };
@@ -23,3 +23,4 @@ function validateRequest(fields, req, res) {
 module.exports = {
     validateRequest
 };
+

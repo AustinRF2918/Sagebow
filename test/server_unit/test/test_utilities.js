@@ -13,9 +13,9 @@ describe('Integrity Checker', function() {
     });
 
     it('Should successfully give us data if our input is good including parameters.', function() {
-	var data = validateRequest(["username", "password"], {
-	    body: {"username": "hello", "password": "world"},
-	    parameters: {"input": "test"}
+	var data = validateRequest(["username", "password", "input"], {
+	    params: {"input": "test"},
+	    body: {"username": "hello", "password": "world"}
 	});
 
 	expect(data["username"]).to.equal("hello");
