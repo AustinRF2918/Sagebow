@@ -18,24 +18,6 @@ var UserModelSetup = Backbone.Model.extend({
     genderSelector: 0,
     dailyCalories: 0,
 
-    initialize: function() {
-	if (DEBUG) {
-	    console.log("[models/user.js::UserSetupModel::initialize]: Initializing object...");
-	    console.log(`Fields:
-			 username: ${this.username},
-			 password: ${this.password},
-			 weight: ${this.weight},
-			 height: ${this.height},
-			 age: ${this.age},
-			 bmi: ${this.bmi},
-			 bmr: ${this.bmr},
-			 activitySelector: ${this.activitySelector},
-			 goalSelector: ${this.goalSelector},
-			 genderSelector: ${this.genderSelector},
-			 dailyCalories: ${this.dailyCalories} `);
-	}
-    },
-
     url: function() {
 	return '/setup';
     }
@@ -49,15 +31,6 @@ var UserModelLogin = Backbone.Model.extend({
     username: '',
     password: '',
 
-    initialize: function() {
-	if (DEBUG) {
-	    console.log("[models/user.js::UserSetupModel::initialize]: Initializing object...");
-	    console.log(`Fields:
-			 username: ${this.username},
-			 password: ${this.password}`)
-	}
-    },
-
     url: function() {
 	return '/login';
     }
@@ -69,15 +42,6 @@ var UserModelLogin = Backbone.Model.extend({
 var UserModelDeletion = Backbone.Model.extend({
     username: '',
     password: '',
-
-    initialize: function() {
-	if (DEBUG) {
-	    console.log("[models/user.js::UserModelDelete::initialize]: Initializing object...");
-	    console.log(`Fields:
-			 username: ${this.username},
-			 password: ${this.password}`)
-	}
-    },
 
     url: function() {
 	return '/delete';
