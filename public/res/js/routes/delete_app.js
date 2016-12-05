@@ -65,49 +65,53 @@ var DeleteView = Backbone.View.extend({
     },
 
     attemptDeletion: function(event) {
+	if (!this.validateRequired()) {
+	    produceModal("Oops", "All fields are required.", true).display($(this.el));
+	    return false;
+	}
+
 	if (event.keyCode && event.keyCode !== 13 ) {
-	    return;
+	    return false;
 	} else {
 	    $(this.el).find(".form-control").blur();
 	}
 
+	var fields = this.getFields();
 	var that = this;
 
-	if (this.validateRequired()) {
-	    var fields = this.getFields();
+	this.userFields.save(fields, {
+	    dataType: 'text',
 
-	    that.userFields.save(fields, {
-		dataType: 'text',
-
-		success: function(model, response) {
-		    var successModal = new ModalView({
-			header: "Goodbye!",
-			message: "Thanks for using Sagebow!",
-			isDangerous: false,
-			closeFn: function() {
-			    window.location.href = '/login';
-			}
-		    });
-
-		    successModal.display($(that.el));
-		},
-
-		error: function(model, response) {
-		    if (response.responseText === "Not Found") {
-			produceModal("Oops", "This username does not exist.", true).display($(that.el));
-		    } else if (response.responseText === "Malformed") {
-			produceModal("Oops", "The password you entered is incorrect.", true).display($(that.el));
-
-		    } else if (response.responseText === "Error") {
-			produceModal("Oops", "Some error occurred on our end.", true).display($(that.el));
-		    } else {
-			produceModal("Oops", "An unknown error occured, maybe you should try again later.", true).display($(that.el));
+	    success: function(model, response) {
+		var successModal = new ModalView({
+		    header: "Goodbye!",
+		    message: "Thanks for using Sagebow!",
+		    isDangerous: false,
+		    closeFn: function() {
+			window.location.href = '/login';
 		    }
+		});
+
+		successModal.display($(that.el));
+	    },
+
+	    error: function(model, response) {
+		if (response.responseText === "Not Found") {
+		    produceModal("Oops", "This username does not exist.", true).display($(that.el));
+		} else if (response.responseText === "Malformed") {
+		    produceModal("Oops", "The password you entered is incorrect.", true).display($(that.el));
+
+		} else if (response.responseText === "Error") {
+		    produceModal("Oops", "Some error occurred on our end.", true).display($(that.el));
+		} else {
+		    produceModal("Oops", "An unknown error occured, maybe you should try again later.", true).display($(that.el));
 		}
-	    });
-	} else {
-	    produceModal("Oops", "All fields are required.", true).display($(this.el));
-	}
+
+		return false;
+	    }
+	});
+
+	return true;
     }
 });
 

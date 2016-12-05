@@ -1,5 +1,6 @@
 const debugMessage = require("../utilities/debug.js").debugMessage,
       debugEvaluate = require("../utilities/debug.js").debugEvaluate,
+      validateRequest = require('../utilities/integrity.js').validateRequest,
       serveFile = require('../utilities/serving.js').serveFile,
       DEBUG = require('../configuration.js').DEBUG,
       express = require('express'),
@@ -26,7 +27,7 @@ router.post('/delete', function(req, res) {
     const values = validateRequest(['username', 'password'], req, res);
 
     // Attempt user lookup
-    redisConn.get(username, (err, userObj) => {
+    redisConn.get(values['username'], (err, userObj) => {
 	userObj = JSON.parse(userObj);
 
 	if (req.body.DEV_UTIL === "hide") {
