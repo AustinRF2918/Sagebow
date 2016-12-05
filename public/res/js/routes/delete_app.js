@@ -3,9 +3,6 @@ var DEBUG = true;
 console.log(`Setting DEBUG to ${DEBUG} in delete/app.js.`);
 
 var DeleteView = Backbone.View.extend({
-    // The tag that represents the
-    // hook that this view is associated
-    // with.
     el: $("body"),
 
     // UI Components.
@@ -16,10 +13,6 @@ var DeleteView = Backbone.View.extend({
     userFields: undefined,
 
     initialize: function(attrs) {
-	if (DEBUG) {
-	    console.log("[delete/app.js::LoginView::initialize]: Initializing object...");
-	}
-
 	this.el = this.options.applicationContainer;
 	this.options = attrs;
 
@@ -72,13 +65,6 @@ var DeleteView = Backbone.View.extend({
     },
 
     attemptDeletion: function(event) {
-	// DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-	if (DEBUG) {
-	    console.log(`[setup/app.js::deleteView::attemptDeletion]: Potential login event...`);
-	}
-	// !DEBUG DISPLAY
-
-
 	if (event.keyCode && event.keyCode !== 13 ) {
 	    return;
 	} else {
@@ -88,24 +74,12 @@ var DeleteView = Backbone.View.extend({
 	var that = this;
 
 	if (this.validateRequired()) {
-	    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-	    if (DEBUG) {
-		console.log(`[setup/app.js::deleteView::attemptDeletion]: Validation passed!...`);
-		console.log(this.getFields());
-	    }
-
 	    var fields = this.getFields();
 
 	    that.userFields.save(fields, {
 		dataType: 'text',
 
 		success: function(model, response) {
-		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-		    if (DEBUG) {
-			console.log(`[setup/app.js::SetupView::attemptCreation]: Success!...`);
-		    }
-		    // !DEBUG DISPLAY
-
 		    var successModal = new ModalView({
 			header: "Goodbye!",
 			message: "Thanks for using Sagebow!",
@@ -119,15 +93,6 @@ var DeleteView = Backbone.View.extend({
 		},
 
 		error: function(model, response) {
-		    // DEBUG DISPLAY: TO BE REMOVED IN PRODUCTION BUILD
-		    if (DEBUG) {
-			console.log(`[setup/app.js::SetupView::attemptCreation]: Error!...`);
-			console.log(`[setup/app.js::SetupView::attemptCreation]: ${that.userFields.values()}!...`);
-		    }
-		    // !DEBUG DISPLAY
-
-		    console.log(response.responseText);
-
 		    if (response.responseText === "Not Found") {
 			produceModal("Oops", "This username does not exist.", true).display($(that.el));
 		    } else if (response.responseText === "Malformed") {
@@ -148,7 +113,7 @@ var DeleteView = Backbone.View.extend({
 
 $(document).ready(function() {
     // Create a user object.
-    userObject = new UserModelDeletion();
+    var userObject = new UserModelDeletion();
 
     // Instantiate this page of the application.
     app = new DeleteView({

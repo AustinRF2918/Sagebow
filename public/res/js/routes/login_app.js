@@ -108,7 +108,7 @@ var LoginView = Backbone.View.extend({
 
 $(document).ready(function() {
     // Create a user object.
-    userObject = new UserModelLogin();
+    var userObject = new UserModelLogin();
 
     // Instantiate this page of the application.
     app = new LoginView({
