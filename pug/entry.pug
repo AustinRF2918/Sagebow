@@ -7,6 +7,7 @@ html
     script(src="/res/js/structures.js")
     script(src="/res/js/ui/navbar.js")
     script(src="/res/js/routes/entry_app.js")
+    script(src="/res/js/models/food.js")
   body
     +navbar()
     section#header.container
@@ -58,8 +59,7 @@ html
             h4 Suggested Entries
           #recent-entries
             #entry-holder.row.entry.m-y-1.m-x-1
-              .col-md-12.text-md-left.m-y-1
-                No entries to show
+                p No entries to show
       section#statistics.container.col-md-12
         #statistics-view.bs.page.text-xs-center
           .metric-displayer.text-xs-center

@@ -8,7 +8,7 @@ var EntryView = Backbone.View.extend({
     $carbs: undefined,
     $fats: undefined,
     $proteins: undefined,
-    $date: undefined,
+    $foodDate: undefined,
     $autofill: undefined,
     $submit: undefined,
 
@@ -17,16 +17,16 @@ var EntryView = Backbone.View.extend({
 
     // Weight Entry
     $currentWeight: undefined,
-    $date: undefined,
-    $submit: undefined,
+    $weightDate: undefined,
+    $submitWeight: undefined,
+
+    // Models
+    foodAPI: undefined,
+    foodEntry: undefined,
 
     initialize: function(attrs) {
 	this.options = attrs;
 	this.el = this.options.applicationContainer;
-
-	// The user model that will be passed back and
-	// fourth between the server.
-	this.foodFields = this.options.food;
 
 	// UI Elements which we will use to
 	// enter data.
@@ -34,176 +34,222 @@ var EntryView = Backbone.View.extend({
 	this.$carbs = this.options.$carbs;
 	this.$fats = this.options.$fats;
 	this.$proteins = this.options.$proteins;
+	this.$foodDate = this.options.$foodDate;
 	this.$autofill = this.options.$autofill;
-	this.$submit = this.options.$submit;
+	this.$submitEntry = this.options.$submitEntry;
 	this.$suggestedContainer = this.options.$suggestContainer;
 	this.$currentWeight = this.options.$currentWeight;
-	this.$date = this.options.$date;
-	this.$submit = this.options.$submit;
+	this.$weightDate = this.options.$weightDate;
+	this.$submitWeight = this.options.$submitWeight;
+
+	this.foodAPI = this.options.foodAPI;
+	this.foodEntry = this.options.foodEntry;
 
 	_.bindAll(this, 'render');
-
 	this.render();
-	
+
+	this.foodAPI.view = this;
+	this.foodAPI.bind("attributesChanged", this.displayItems);
+
+	this.fillRecents();
+
 	var that = this;
 
-	$(this.el).find(".btn-login").click(function(event) {
-	    $(".btn-login").blur();
-	    that.attemptLogin(event);
+	$(this.$autofill).click(function() {
+	    that.queryFoodName();
 	});
 
-	$(document).keypress(function(event) {
-	    if (event.which === 13 ) {
-		if (($('body').has('.window').length == 0)) {
-		    that.attemptLogin(event);
-		} 
-	    } 
+	$(this.$submitEntry).click(function() {
+	    that.submitFoodEntry();
+	});
+
+	$(this.$submitWeight).click(function() {
+	    that.submitWeightEntry();
+	});
+
+	var requiredItems = [this.$carbs, this.$fats, this.$proteins];
+
+	requiredItems.map(function(item) {
+	    item.on("input", function(){
+		that.validateFoodInput();
+	    });
 	});
     },
-});
 
-/* globals $ */
-function validateForm(){
-    var valid = true;
-    $('input.required').each(function(){
-        var $this = $(this);
-        if($this.val()==""){
-            $this.addClass('danger');
-            valid = false;
-        }else{
-            $this.removeClass('danger');
-        }
-    });
-    
-    if(valid){
-        $('#submit-entry').removeAttr('disabled');
-    }else{
-        $('#submit-entry').attr('disabled','disabled'); // will robinson
-    }
-}
+    validateFoodInput: function() {
+	var requiredItems = [this.$carbs, this.$fats, this.$proteins];
 
-function getCurrentEntry() {
-    return {
-        name: $('#name').val(),
-        carbs: $('#carbs').val(),
-        fats: $('#fats').val(),
-        proteins: $('#proteins').val(),
-        date: $('#timestamp').val()
-    };
-}
+	requiredItems.map(function(item) {
+	    item.removeClass('danger');
+	});
 
-function queryNutrientData(foodName) {
-    new Promise(function queryBackend(onResolve, onReject){
-        $.get('/api/query/'+foodName).done(function(foodData){
-	    console.log(foodData);
-            onResolve(foodData);
-        }).fail(function(){
-            onReject();
-        });
-    }).then(function(foodData){
-        // Fill in inputs with data
-	console.log(foodData);
-        $('#carbs').val(foodData.carbs);
-        $('#fats').val(foodData.fats);
-        $('#proteins').val(foodData.proteins);
-        validateForm();
-    }).catch(function(){
-        // Show failure to get nutrient data
-        new FingModal('Oops!','Couldn\'t find data for the food name you entered.', true).show();
-    });
-}
+	var badInputs = requiredItems
+	    .filter(function(item) {
+		return (item.val() === '');
+	    });
 
-var suggestionPromise = new Promise(function(resolve){
-    $.get('/api/foods').done(function(foodArray){
-        resolve(foodArray);
-    });
-});
+	badInputs.map(function(item){
+	    $(item).addClass('danger');
+	});
 
-function queryUserNutrientData(foodName){
-    $.get('/api/foods/'+foodName).done(function(foodData){
-        // Fill in inputs with data
-        $('#carbs').val(foodData.carbs);
-        $('#fats').val(foodData.fats);
-        $('#proteins').val(foodData.proteins);
-        $('#name').val(foodData.name);
-        validateForm();
-    });
-}
+	if (badInputs.length === 0) {
+	    $('#submit-entry').removeAttr('disabled');
+	    return true;
+	} else {
+	    $('#submit-entry').attr('disabled','disabled'); // will robinson
+	    return false;
+	}
+    },
 
-$(document).ready(function(){
-    validateForm();
-    
-    $('input.required').change(validateForm);
-    
-    $('#submit-entry').click(function(){
-        var data = getCurrentEntry();
-        
-        var name     = data.name,
-            carbs    = data.carbs,
-            fats     = data.fats,
-            proteins = data.proteins,
-            date     = data.date;
-            
-        var url = '/api/consumption?carbs='+carbs+'&fats='+fats+'&proteins='+proteins+'&';
-        
-        if(name)
-            url += 'name='+name+'&';
-            
-        if(date)
-            url += 'timestamp='+date;
-        
-        $.post(url).done(function(){
-			new FingModal('Nice!', 'You entered a food submission!', false).show();
-        }).fail(function(){
-			new FingModal('Oh No!!', 'Your food data was in some way malformed! Please check that all the required entries (carbs, fats, and proteins) were submitted!', true).show();
-        });
-    });
-    
-    $('#auto-fill').click(function(){
-        if (getCurrentEntry().name.length > 2){
-          queryNutrientData(getCurrentEntry().name);
-        } else {
-			new FingModal('Oh No!', 'You must enter a name for us to attempt to autofill!', true).show();
-        }
-    });
-    
-    suggestionPromise.then(function(foodArray){
-        var suggestionContainer = $('#recent-entries .row');
-        suggestionContainer.html('');
-        foodArray.forEach(function(foodName){
-            var el = $('<div class="col-md-12 text-md-left m-y-1">')
-                .append($('<a href="#">').text(foodName));
-            el.click(function(){
-                queryUserNutrientData(foodName);
-            });
-            suggestionContainer.append(el);
-        });
-    });
-    
-    $('#submit-weight').click(function(){
-        var weight = $('#weight').val();
-        var weightDate = $('#weightDate').val();
-        if(!weight){
-            new FingModal('Oops.','You need to set a weight value.', true).show();
-        }else{
-            console.log(weightDate);
+    submitFoodEntry: function() {
+	var that = this;
+
+	this.foodEntry.save(this.getFoodFields(), {
+	    dataType: 'text',
+
+	    success: function(model, response) {
+		var successModal = new ModalView({
+		    header: "Nice!",
+		    message: "We got the entry!",
+		    isDangerous: false
+		});
+
+		successModal.display($(that.el));
+
+		that.resetFields();
+		that.fillRecents();
+
+		return true;
+	    },
+
+	    error: function(model, response) {
+		var failureModal = new ModalView({
+		    header: "Oops!",
+		    message: "Some of the data you entered was malformed, try again!",
+		    isDangerous: true
+		});
+
+		failureModal.display($(that.el));
+		return false;
+	    }
+	});
+
+	return true;
+    },
+
+    resetFields: function() {
+	this.$foodName.val('');
+	this.$carbs.val('');
+	this.$fats.val('');
+	this.$proteins.val('');
+	$("#timestamp").val('');
+	this.validateFoodInput();
+    },
+
+    getFoodFields: function() {
+	var dateTime = this.$foodDate.val() || new Date();
+	var foodName = this.$foodName.val() || "Unnamed";
+
+	return {
+	    name: foodName,
+	    carbs: this.$carbs.val(),
+	    fats: this.$fats.val(),
+	    proteins: this.$proteins.val(),
+	    date: dateTime
+	};
+    },
+    displayItems: function(result) {
+	this.$carbs.val(this.foodAPI.get("carbs"));
+	this.$fats.val(this.foodAPI.get("fats"));
+	this.$proteins.val(this.foodAPI.get("proteins"));
+    },
+
+    queryFoodName: function() {
+	var that = this;
+	if (this.$foodName.val().length > 2) {
+	    var item = new FoodAPIModel({id: this.$foodName.val()});
+	    item.fetch().then(function(){
+		that.foodAPI = item;
+		console.log(item);
+		that.displayItems();
+		that.validateFoodInput();
+	    });
+	} else {
+	    produceModal("Oops", "You must enter at least 3 characters for autocomplete to function!", true).display($(this.el));
+	}
+    },
+
+    fillRecents: function() {
+	var that = this;
+	$.get('/api/foods').done(function(foodArray){
+	    var suggestionContainer = $('#recent-entries .row');
+	    suggestionContainer.html('');
+	    foodArray.forEach(function(foodName){
+		var el = $('<div class="col-md-12 text-md-left m-y-1">')
+		    .append($('<a href="#">').text(foodName));
+
+		el.click(function(){
+		    that.$foodName.val(foodName);
+		    that.queryFoodName();
+		});
+
+		suggestionContainer.append(el);
+	    });
+	});
+    },
+
+    submitWeightEntry: function() {
+	var weight = this.$currentWeight.val();
+        var weightDate = this.$weightDate.val() || new Date();
+	var that = this;
+
+        if (!weight) {
+	    produceModal("Oops", "You need to set a weight value.", true).display($(this.el));
+        } else{
             var postData = {
                 value: weight,
                 timestamp: weightDate
             };
             
-            $.post('/api/weight',postData).done(function(){
-              new FingModal('Nice.','Weight has been submitted.', false).show();
+            $.post('/api/weight', postData).done(function(){
+		produceModal("Nice", "Weight has been submitted", false).display($(that.el));
             });
         }
-    });
-    
-    $.get('/api/lastUpdated').done(function(dateText){
-        console.log(dateText);
-        var lastDate = moment(dateText);
-        var thresh = moment().subtract(2,'week');
-        if(lastDate < thresh){
-            new FingModal('Warning.',"You haven't submitted your weight in over two weeks! Please do so as soon as possible", true).show();
-        }
-    })
+    }
+});
+
+
+
+$(document).ready(function(){
+    DropdownReplacer.replaceDropdowns($("body"));
+
+    // Create a user object.
+    var foodAPI = new FoodAPIModel();
+    var foodEntry = new FoodEntryModel();
+
+    // Instantiate this page of the application.
+    var app = new EntryView({
+	applicationContainer: $("body"),
+
+	// Food Entry Tab
+	$foodName: $("#name"),
+	$carbs: $("#carbs"),
+	$fats: $("#fats"),
+	$proteins: $("#proteins"),
+	$foodDate: $("#timestamp"),
+	$autofill: $("#auto-fill"),
+	$submitEntry: $("#submit-entry"),
+
+	// Suggested items
+	$suggestedContainer: $("#recent-entries"),
+
+	// Weight Entry
+	$currentWeight: $("#weight"),
+	$weightDate: $("#weight-date"),
+	$submitWeight: $("#submit-weight"),
+
+	// Models
+	foodAPI: foodAPI,
+	foodEntry: foodEntry
+    });   
 });

@@ -5,14 +5,14 @@ module.exports = {
     // Gives the formatted time as well as the desired message
     // formatted to standard out.
     debugMessage: function(msg) {
-	if (DEBUG) {
-	    console.log(`[${new Date()}]: ${msg}`);
-	} 
+        if (DEBUG) {
+            console.log(`[${new Date()}]: ${msg}`);
+        }
     },
 
     debugEvaluate: function(fn) {
-	if (DEBUG) {
-	    fn();
-	}
+        if (DEBUG) {
+            fn();
+        }
     }
 };

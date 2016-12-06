@@ -101,9 +101,7 @@ var SetupView = Backbone.View.extend({
 
     attemptCreation: function(event) {
 	if (!this.validateRequired()) {
-	    var modal = produceModal("Oops", "All fields are required.", true);
-	    modal.display($(this.el));
-	    console.log("HI");
+	    produceModal("Oops", "All fields are required.", true).display($(this.el));
 	    return false;
 	}
 

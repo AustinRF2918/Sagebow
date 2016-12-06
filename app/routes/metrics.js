@@ -1,7 +1,7 @@
 const serveFile = require('../utilities/serving.js').serveFile,
-      debugMessage = require('../utilities/debug.js').debugMessage,
-      express = require('express'),
-      router = express.Router();
+    debugMessage = require('../utilities/debug.js').debugMessage,
+    express = require('express'),
+    router = express.Router();
 
 // Setup Static Serve
 //

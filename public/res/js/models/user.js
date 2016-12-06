@@ -1,6 +1,3 @@
-var DEBUG = true;
-console.log(`Setting DEBUG to ${DEBUG} in models/user.js.`);
-
 // User setup model: This is a model that cooresponds to a user
 // object that is currently being set-up. It is then passed to
 // the setup end-point for construction of a slightly more

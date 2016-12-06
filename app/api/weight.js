@@ -1,9 +1,9 @@
 const debugMessage = require('../utilities/debug.js').debugMessage,
-      validateRequest = require('../utilities/integrity.js').validateRequest,
-      attemptSave  = require('../utilities/database.js').attemptSave,
-      express = require('express'),
-      router = express.Router(),
-      redisConn = require('../configuration.js').REDIS_CONNECTION;
+    validateRequest = require('../utilities/integrity.js').validateRequest,
+    attemptSave = require('../utilities/database.js').attemptSave,
+    express = require('express'),
+    router = express.Router(),
+    redisConn = require('../configuration.js').REDIS_CONNECTION;
 
 // Weight endpoint [POST]
 //
@@ -19,19 +19,19 @@ router.post('/api/weight', function(req, res) {
 
     // A litte funky here.
     let position = 0;
-    while (position < weightHistory && weightHistory.timeStamp <= timeStamp) {
-	position++;
+    while (position < weightHistory && weightHistory.timeStamp <= timestamp) {
+        position++;
     }
 
-    req.session.userObj.weightHistory.splice(position, 0,{
-	weight: values['weight'],
-	timestamp: timestamp
+    req.session.userObj.weightHistory.splice(position, 0, {
+        weight: values['value'],
+        timestamp: timestamp
     });
 
     // In the case that our last updated data was
     // before this new one, update the last entered.
     if (new Date(req.session.userObj.lastUpdated) < timestamp) {
-	req.session.userObj.lastUpdated = timestamp;
+        req.session.userObj.lastUpdated = timestamp;
     }
 
     attemptSave(req, res, redisConn, backupUser);
@@ -47,37 +47,37 @@ router.get('/api/weight', function(req, res) {
     debugMessage("Recieved a GET on /api/weight.");
 
     let timeRange = [req.query.min, req.query.max]
-	.map((item) => {
-	    if (item) {
-		return new Date(item);
-	    } else {
-		return undefined;
-	    }
-	});
+        .map((item) => {
+            if (item) {
+                return new Date(item);
+            } else {
+                return undefined;
+            }
+        });
 
     const minTime = timeRange[0],
-	  maxTime = timeRange[1];
+        maxTime = timeRange[1];
 
     const results = req.session.userObj.weightHistory
-	    .filter((weightEvent) => {
-	    if (!minTime || minTime <= new Date(weightEvent.timestamp)) {
-		// If we do not have a minimum time entered OR the weight
-		// event is in range of the weight event time stamp, check
-		// the upperbound
-		if (!maxTime || maxTime >= new Date(weightEvent.timestamp)) {
-		    // If we do not have a maximum time entered OR the weight
-		    // event is in range of the weight event time stamp, return
-		    // true.
-		    return true;
-		} else {
-		    // The time wasn't in range of the maximum.
-		    return false;
-		}
-	    } else {
-		// The time wasn't in range of the minimum.
-		return false;
-	    }
-    });
+        .filter((weightEvent) => {
+            if (!minTime || minTime <= new Date(weightEvent.timestamp)) {
+                // If we do not have a minimum time entered OR the weight
+                // event is in range of the weight event time stamp, check
+                // the upperbound
+                if (!maxTime || maxTime >= new Date(weightEvent.timestamp)) {
+                    // If we do not have a maximum time entered OR the weight
+                    // event is in range of the weight event time stamp, return
+                    // true.
+                    return true;
+                } else {
+                    // The time wasn't in range of the maximum.
+                    return false;
+                }
+            } else {
+                // The time wasn't in range of the minimum.
+                return false;
+            }
+        });
 
     // Allows us to filter out client side objects.
     res.status(200).send(results);

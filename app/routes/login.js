@@ -1,10 +1,10 @@
 const serveFile = require('../utilities/serving.js').serveFile,
-      debugMessage = require('../utilities/debug.js').debugMessage,
-      validateRequest = require('../utilities/integrity.js').validateRequest,
-      express = require('express'),
-      router = express.Router(),
-      redisConn = require('../configuration.js').REDIS_CONNECTION,
-      bcrypt = require('bcryptjs');
+    debugMessage = require('../utilities/debug.js').debugMessage,
+    validateRequest = require('../utilities/integrity.js').validateRequest,
+    express = require('express'),
+    router = express.Router(),
+    redisConn = require('../configuration.js').REDIS_CONNECTION,
+    bcrypt = require('bcryptjs');
 
 //
 // Login Static Serve
@@ -27,31 +27,31 @@ router.post('/login', function(req, res) {
     // Attempt to retrieve a username from the redis
     // cache: this may have multiple outcomes.
     redisConn.get(values['username'], (err, userObj) => {
-	userObj = JSON.parse(userObj);
+        userObj = JSON.parse(userObj);
 
-	if (err) {
-	    // Send a 500 internal server error in the
-	    // case that some error was thrown on trying
-	    // to connect to the Redis database.
-	    debugMessage("A critical error occured on Sagebow server.");
-	    res.status(500).send('Error');
-	} else if (!userObj) {
-	    // Send a not found in the case that no user
-	    // object is found for the cooresponding username.
-	    debugMessage("A user attempted access of a userObject which does not exist.");
-	    res.status(404).send('Not Found');
-	} else if (!bcrypt.compareSync(values['password'], userObj.passwordHash)) {
-	    // Send a malformed in the case that the password
-	    // doesn't quite match up.
-	    debugMessage("A user attempted access of a userObject which he/she does not own.");
-	    res.status(422).send('Malformed');
-	} else {
-	    // If none of these cases have happened, create a user object
-	    // of the specific client that is attempting to log in and
-	    debugMessage("Succesful authentication of a user.");
-	    req.session.userObj = userObj;
-	    res.sendStatus(200);
-	}
+        if (err) {
+            // Send a 500 internal server error in the
+            // case that some error was thrown on trying
+            // to connect to the Redis database.
+            debugMessage("A critical error occured on Sagebow server.");
+            res.status(500).send('Error');
+        } else if (!userObj) {
+            // Send a not found in the case that no user
+            // object is found for the cooresponding username.
+            debugMessage("A user attempted access of a userObject which does not exist.");
+            res.status(404).send('Not Found');
+        } else if (!bcrypt.compareSync(values['password'], userObj.passwordHash)) {
+            // Send a malformed in the case that the password
+            // doesn't quite match up.
+            debugMessage("A user attempted access of a userObject which he/she does not own.");
+            res.status(422).send('Malformed');
+        } else {
+            // If none of these cases have happened, create a user object
+            // of the specific client that is attempting to log in and
+            debugMessage("Succesful authentication of a user.");
+            req.session.userObj = userObj;
+            res.sendStatus(200);
+        }
     });
 });
 
