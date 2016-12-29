@@ -25,7 +25,7 @@ module.exports = function(app) {
     // In the case that neither login or setup were called, we use
     // this wildstar pattern to check for the existance of a user
     // session object.
-    app.get('*', function(req, res, next) {
+    app.all('*', function(req, res, next) {
         if (req.session.userObj) {
 	    debugMessage(`Authenticated client is begin granted access to private routes and API.`);
             next();
