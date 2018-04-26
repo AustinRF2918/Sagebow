@@ -1,5 +1,4 @@
-const serveFile = require('../utilities/serving.js').serveFile,
-    debugMessage = require('../utilities/debug.js').debugMessage,
+const debugMessage = require('../utilities/debug.js').debugMessage,
     express = require('express'),
     router = express.Router();
 

@@ -1,5 +1,4 @@
-const debugMessage = require("./utilities/debug.js").debugMessage,
-      serveFile = require('./utilities/serving.js').serveFile;
+const debugMessage = require("./utilities/debug.js").debugMessage
 const express = require('express')
 const path = require('path')
 

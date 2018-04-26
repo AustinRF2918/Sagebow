@@ -1,7 +1,6 @@
 const debugMessage = require("../utilities/debug.js").debugMessage,
     debugEvaluate = require("../utilities/debug.js").debugEvaluate,
     validateRequest = require('../utilities/integrity.js').validateRequest,
-    serveFile = require('../utilities/serving.js').serveFile,
     DEBUG = require('../configuration.js').DEBUG,
     express = require('express'),
     router = express.Router(),

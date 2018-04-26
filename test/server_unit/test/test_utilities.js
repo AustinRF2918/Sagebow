@@ -1,5 +1,4 @@
 var validateRequest = require('../../../app/utilities/integrity.js').validateRequest;
-var serveFile = require('../../../app/utilities/serving.js').serveFile;
 var expect = require('chai').expect;
 
 describe('Integrity Checker', function() {
@@ -102,34 +101,6 @@ describe('Integrity Checker', function() {
 	});
 
 	expect(data).to.deep.equal({});
-    });
-});
-
-describe('File server', function() {
-    function res() {
-	this.status= {};
-
-	this.set = function(content, type) {
-	    this.status.content = content;
-	    this.status.type = type;
-	};
-
-	this.sendFile = function(uri, options) {
-	    this.status.uri = uri;
-	    this.status.options = options;
-	};
-    };
-
-    it('Should show proper data on input', function() {
-	res = new res;
-	serveFile("/index.html", res);
-
-	expect(res.status.content).to.equal("Content-Type");
-	expect(res.status.type).to.equal("text/html");
-	expect(res.status.uri).to.equal("/index.html");
-	expect(res.status.options.root).to.equal(".//public");
-	expect(res.status.options.dotfiles).to.equal("allow");
-	expect(res.status.options.headers['x-sent']).to.equal(true);
     });
 });
 

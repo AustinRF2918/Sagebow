@@ -1,5 +1,4 @@
-const serveFile = require('../utilities/serving.js').serveFile,
-    validateRequest = require('../utilities/integrity.js').validateRequest,
+const validateRequest = require('../utilities/integrity.js').validateRequest,
     debugMessage = require('../utilities/debug.js').debugMessage,
     express = require('express'),
     router = express.Router(),
