@@ -11,7 +11,7 @@ const debugMessage = require('./utilities/debug.js').debugMessage
 const APP_PORT = require("./configuration.js").APP_PORT
 const router = require('./router.js')
 
-module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
+module.exports = function() {
     // Middleware and libraries that we are attaching todo
     // our actual express application.
     const app = express()
