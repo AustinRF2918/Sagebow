@@ -1,15 +1,15 @@
 const debugMessage = require("./utilities/debug.js").debugMessage,
       serveFile = require('./utilities/serving.js').serveFile;
+const express = require('express')
+const path = require('path')
 
 module.exports = function(app) {
     // Public Routes
-    // 
+    //
     // All of the following routes are public. This means
     // that they do not require a user object to be created
     // and authenticated to view.
-    app.get(/^\/res\/.+/, function(req, res) {
-        serveFile(req.url.match('[^?#]+')[0], res);
-    });
+    app.use(express.static(path.join(process.cwd(), 'public')))
 
     app.use(require('./routes/login.js'));
     app.use(require('./routes/setup.js'));

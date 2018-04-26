@@ -11,7 +11,7 @@ const serveFile = require('../utilities/serving.js').serveFile,
 // Serves the static markup for the setup page.
 router.get('/setup', function(req, res) {
     debugMessage("Recieved a GET on /setup.");
-    serveFile('/setup.html', res);
+    res.render('setup');
 });
 
 // Setup Endpoint

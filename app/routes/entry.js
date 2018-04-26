@@ -8,7 +8,7 @@ const serveFile = require('../utilities/serving.js').serveFile,
 // Serves the static markup for the setup page.
 router.get('/entry', function(req, res) {
     debugMessage("Recieved a GET on /entry");
-    serveFile('entry.html', res);
+    res.render('entry');
 });
 
 module.exports = router;

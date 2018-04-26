@@ -4,6 +4,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const hat = require('hat')
+const path = require('path')
+const sass = require('node-sass-middleware')
 
 const debugMessage = require('./utilities/debug.js').debugMessage
 const APP_PORT = require("./configuration.js").APP_PORT
@@ -15,6 +17,15 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     const app = express()
 
     debugMessage("Initialized ExpressJS dependencies.");
+
+    app.set('views', path.join(process.cwd(), 'pug'))
+    app.set('view engine', 'pug')
+
+    app.use(sass({
+      src: './sass',
+      dest: path.join(process.cwd(), 'public', 'res', 'css'),
+      prefix: '/res/css'
+    }))
 
     app.use(bodyParser.json());
 

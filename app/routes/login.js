@@ -12,7 +12,7 @@ const serveFile = require('../utilities/serving.js').serveFile,
 // Serves the static markup for the login page.
 router.get('/login', function(req, res) {
     debugMessage("Recieved a GET on /login.");
-    serveFile('/login.html', res);
+    res.render('login')
 });
 
 // Login Endpoint [POST]

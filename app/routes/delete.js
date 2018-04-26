@@ -13,7 +13,7 @@ const debugMessage = require("../utilities/debug.js").debugMessage,
 // Serves the static markup for the Delete page.
 router.get('/delete', function(req, res) {
     debugMessage("Recieved a GET on /delete");
-    serveFile('delete.html', res);
+    res.render('delete');
 });
 
 // Delete endpoint

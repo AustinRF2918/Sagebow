@@ -2,17 +2,16 @@
   "name": "SagebowLogin",
   "version": "0.0.0",
   "description": "",
-  "main": "gulpfile.js",
+  "main": "run.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "gulp-minifier": "^1.2.2",
-    "gulp-pug": "^4.0.1",
-    "gulp-sass": "^4.0.1",
-    "gulp-util": "^3.0.8",
     "hat": "0.0.3",
+    "node-sass-middleware": "^0.11.0",
+    "nodemon": "^1.17.3",
+    "pug": "^2.0.3",
     "redis": "^2.8.0"
   },
   "devDependencies": {
@@ -23,6 +22,8 @@
     "zombie": "^4.2.1"
   },
   "scripts": {
+    "start": "node run.js",
+    "watch": "nodemon node run.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
