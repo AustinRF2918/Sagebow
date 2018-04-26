@@ -2,12 +2,6 @@ const debugMessage = require("./utilities/debug.js").debugMessage,
       serveFile = require('./utilities/serving.js').serveFile;
 
 module.exports = function(app) {
-    // Routes any URL passed to our application
-    // to the next possible routes.
-    app.all('*', (req, res, next) => {
-        next();
-    });
-
     // Public Routes
     // 
     // All of the following routes are public. This means
