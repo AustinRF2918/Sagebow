@@ -1,14 +1,18 @@
 // Entry point of the web application's server.
 // to run this as a script, use run.js
+const express = require('express')
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const hat = require('hat')
+
+const debugMessage = require('./utilities/debug.js').debugMessage
+const APP_PORT = require("./configuration.js").APP_PORT
+const router = require('./router.js')
 
 module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     // Middleware and libraries that we are attaching todo
     // our actual express application.
-    const app = require('express')(),
-          bodyParser = require('body-parser'),
-          session = require('express-session'),
-	  debugMessage = require('./utilities/debug.js').debugMessage,
-	  APP_PORT = require("./configuration.js").APP_PORT;
+    const app = express()
 
     debugMessage("Initialized ExpressJS dependencies.");
 
@@ -19,7 +23,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
     }));
 
     app.use(session({
-        secret: require('hat')(),
+        secret: hat(),
         resave: false,
         saveUninitialized: false
     }));
@@ -28,7 +32,7 @@ module.exports = function(EXPRESS_PORT, EXPRESS_ROOT) {
 
     // Routes are defined in app/router.js and individual
     // components can be found in the "router" folder.
-    const router = require('./router.js')(app);
+    router(app);
 
     debugMessage("Initialized Express router..");
     debugMessage(`Listening on ${APP_PORT}.`);
