@@ -13,7 +13,6 @@ const debugMessage = require('../utilities/debug.js').debugMessage,
 // the governments API.
 router.get('/api/query/:name', function(req, res) {
     debugMessage("Recieved a GET on /api/query/:name.");
-
     const name = req.params.name;
 
     // Utilizing a promise monad, we sequentially access the
@@ -23,6 +22,7 @@ router.get('/api/query/:name', function(req, res) {
 
         request(url, (err, response, body) => {
             if (err || response.statusCode !== 200) {
+                console.error(err)
                 res.status(400).end('Unable to perform request');
             } else {
                 try {

@@ -49,7 +49,11 @@ router.post('/login', function(req, res) {
             // of the specific client that is attempting to log in and
             debugMessage("Succesful authentication of a user.");
             req.session.userObj = userObj;
-            res.sendStatus(200);
+            if (req.query.mobile) {
+              res.redirect('/entry')
+            } else {
+              res.sendStatus(200);
+            }
         }
     });
 });
